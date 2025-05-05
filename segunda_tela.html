@@ -31,17 +31,14 @@
             position: relative;
         }
 
-        /* Modo Noite (padrão) */
         body.night-mode {
             background: #0a1e3b url('https://images.unsplash.com/photo-1519125323398-675f1f4d271f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
         }
 
-        /* Modo Dia */
         body.day-mode {
             background: #f0f0f0 url('https://images.unsplash.com/photo-1507521628349-dee6b5761201?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
         }
 
-        /* Estrelas piscantes */
         .stars {
             position: absolute;
             top: 0;
@@ -326,11 +323,10 @@
     </div>
 
     <script>
-        // Função para alternar entre modo dia e noite
-        function toggleMode() {
+        function applyMode(mode) {
             const body = document.body;
             const modeToggleBtn = document.getElementById('mode-toggle');
-            if (body.classList.contains('night-mode')) {
+            if (mode === 'day-mode') {
                 body.classList.remove('night-mode');
                 body.classList.add('day-mode');
                 modeToggleBtn.textContent = '☀';
@@ -341,10 +337,19 @@
             }
         }
 
-        // Adiciona evento ao botão de modo
+        function toggleMode() {
+            const body = document.body;
+            const newMode = body.classList.contains('night-mode') ? 'day-mode' : 'night-mode';
+            applyMode(newMode);
+            localStorage.setItem('themeMode', newMode);
+        }
+
+        // Carregar o modo salvo do localStorage ou usar night-mode como padrão
+        const savedMode = localStorage.getItem('themeMode') || 'night-mode';
+        applyMode(savedMode);
+
         document.getElementById('mode-toggle').addEventListener('click', toggleMode);
 
-        // Registro do Service Worker
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
                 navigator.serviceWorker.register('/service-worker.js')

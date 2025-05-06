@@ -265,6 +265,44 @@
             height: auto;
         }
 
+        .footer {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.9rem;
+            color: #e0e0e0;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px 20px;
+            border-radius: 10px;
+            text-align: center;
+            z-index: 1;
+            width: auto;
+        }
+
+        body.day-mode .footer {
+            color: #555;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .footer a {
+            color: #b19cd9;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: #9b7ed1;
+        }
+
+        body.day-mode .footer a {
+            color: #6a5acd;
+        }
+
+        body.day-mode .footer a:hover {
+            color: #5a4ab5;
+        }
+
         @media (max-width: 400px) {
             .container {
                 width: 90%;
@@ -289,6 +327,11 @@
             .btn {
                 font-size: 0.9rem;
                 padding: 12px;
+            }
+
+            .footer {
+                font-size: 0.8rem;
+                padding: 8px 15px;
             }
         }
     </style>
@@ -336,6 +379,10 @@
                 <button class="btn" onclick="window.location.href='terceira_tela.html'">EXPLORAR BIBLIOTECA CLÁSSICA</button>
             </div>
         </div>
+    </div>
+    <div class="footer">
+        Desenvolvido por Fernando Cardoso<br>
+        🔗 GitHub: <a href="https://github.com/Fernandocardoso65">@Fernandocardoso65</a>
     </div>
 
     <script>

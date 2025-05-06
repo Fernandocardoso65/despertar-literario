@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#b19cd9">
     <title>Despertar Literário</title>
-    <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="icon.png">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icon.png">
     <style>
         * {
             margin: 0;
@@ -17,7 +17,7 @@
         }
 
         body {
-            background: #0a1e3b url('https://images.unsplash.com/photo-1519125323398-675f1f4d271f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            background: #0a1e3b url('/background-night.jpg') no-repeat center center/cover;
             background-size: cover;
             background-attachment: fixed;
             height: 100vh;
@@ -31,11 +31,11 @@
         }
 
         body.night-mode {
-            background: #0a1e3b url('https://images.unsplash.com/photo-1519125323398-675f1f4d271f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            background: #0a1e3b url('/background-night.jpg') no-repeat center center/cover;
         }
 
         body.day-mode {
-            background: #f0f0f0 url('https://images.unsplash.com/photo-1507521628349-dee6b5761201?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            background: #f0f0f0 url('/background-day.jpg') no-repeat center center/cover;
         }
 
         .stars {
@@ -320,8 +320,8 @@
     </div>
     <div class="container">
         <div class="content">
-         <img src="https://i.imgur.com/eKNOJwl.jpeg" alt="Logo Despertar Literário" class="logo2">
-         <h1 id="current-date"></h1>
+            <img src="/logo.jpeg" alt="Logo Despertar Literário" class="logo2">
+            <h1 id="current-date"></h1>
             <h2>Bem-vindo ao <span>Despertar Literário!</span></h2>
             <h3>Clube de Leitura de Sorocaba</h3>
             <div class="quote-card">
@@ -412,7 +412,6 @@
             localStorage.setItem('themeMode', newMode);
         }
 
-        // Carregar o modo salvo do localStorage ou usar night-mode como padrão
         const savedMode = localStorage.getItem('themeMode') || 'night-mode';
         applyMode(savedMode);
 
@@ -424,9 +423,9 @@
         document.querySelectorAll('.btn').forEach(button => {
             button.addEventListener('click', () => {
                 if (button.textContent === 'BIBLIOTECA DIGITAL') {
-                    window.location.href = 'segunda_tela.html';
+                    window.location.href = '/segunda_tela.html';
                 } else if (button.textContent === 'EXPLORAR BIBLIOTECA CLÁSSICA') {
-                    window.location.href = 'terceira_tela.html';
+                    window.location.href = '/terceira_tela.html';
                 }
             });
         });

@@ -437,10 +437,10 @@
             document.getElementById('daily-author').textContent = `— ${dailyQuote.author}`;
         }
 
-        function toggleMode() {
+        function applyMode(mode) {
             const body = document.body;
             const modeToggleBtn = document.getElementById('mode-toggle');
-            if (body.classList.contains('night-mode')) {
+            if (mode === 'day-mode') {
                 body.classList.remove('night-mode');
                 body.classList.add('day-mode');
                 modeToggleBtn.textContent = '☀';
@@ -450,6 +450,17 @@
                 modeToggleBtn.textContent = '🌙';
             }
         }
+
+        function toggleMode() {
+            const body = document.body;
+            const newMode = body.classList.contains('night-mode') ? 'day-mode' : 'night-mode';
+            applyMode(newMode);
+            localStorage.setItem('themeMode', newMode);
+        }
+
+        // Carregar o modo salvo do localStorage ou usar night-mode como padrão
+        const savedMode = localStorage.getItem('themeMode') || 'night-mode';
+        applyMode(savedMode);
 
         displayCurrentDate();
         displayDailyQuote();

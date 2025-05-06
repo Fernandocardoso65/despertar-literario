@@ -168,4 +168,325 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
         }
 
-        body.day
+        body.day-mode .quote-card {
+            background: rgba(0, 0, 0, 0.05);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .quote {
+            font-style: italic;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: #d3d3d3;
+        }
+
+        body.day-mode .quote {
+            color: #444;
+        }
+
+        .author {
+            font-size: 0.9rem;
+            color: #b0b0b0;
+        }
+
+        body.day-mode .author {
+            color: #666;
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .btn-container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+
+        body.day-mode .btn-container {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .btn-container:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        body.day-mode .btn-container:hover {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .btn {
+            background-color: #b19cd9;
+            color: #fff;
+            border: none;
+            padding: 15px;
+            font-size: 1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+
+        body.day-mode .btn {
+            background-color: #6a5acd;
+            color: #fff;
+        }
+
+        .btn:hover {
+            background-color: #9b7ed1;
+        }
+
+        body.day-mode .btn:hover {
+            background-color: #5a4ab5;
+        }
+
+        .mode-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #fff;
+            z-index: 2;
+        }
+
+        body.day-mode .mode-toggle {
+            color: #333;
+        }
+
+        .logo2 {
+            display: block;
+            margin: 0 auto;
+            width: 150px;
+            height: auto;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #e0e0e0;
+            z-index: 2;
+        }
+
+        body.day-mode footer {
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+        }
+
+        footer p {
+            margin: 5px 0;
+        }
+
+        footer a {
+            color: #b19cd9;
+            text-decoration: none;
+        }
+
+        body.day-mode footer a {
+            color: #6a5acd;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 400px) {
+            .container {
+                width: 90%;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            h3 {
+                font-size: 1rem;
+            }
+
+            .quote {
+                font-size: 0.9rem;
+            }
+
+            .btn {
+                font-size: 0.9rem;
+                padding: 12px;
+            }
+
+            footer {
+                font-size: 0.8rem;
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body class="night-mode">
+    <button class="mode-toggle" id="mode-toggle">🌙</button>
+    <div class="stars">
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+    </div>
+    <div class="container">
+        <div class="content">
+            <img src="https://i.imgur.com/eKNOJwl.jpeg" alt="Logo Despertar Literário" class="logo2">
+            <h1 id="current-date"></h1>
+            <h2>Bem-vindo ao <span>Despertar Literário!</span></h2>
+            <h3>Clube de Leitura de Sorocaba</h3>
+            <div class="quote-card">
+                <p class="quote" id="daily-quote">"A leitura é uma fonte inesgotável de prazer."</p>
+                <p class="author" id="daily-author">— Carlos Drummond de Andrade</p>
+            </div>
+        </div>
+        <div class="buttons">
+            <div class="btn-container">
+                <button class="btn">BIBLIOTECA DIGITAL</button>
+            </div>
+            <div class="btn-container">
+                <button class="btn">EXPLORAR BIBLIOTECA CLÁSSICA</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>💬 Contato</p>
+        <p>Desenvolvido por Fernando Cardoso</p>
+         <p>🔗 GitHub: <a href="https://github.com/Fernandocardoso65" target="_blank">@Fernandocardoso65</a></p>
+          </footer>
+
+    <script>
+        const quotes = [
+            { quote: "A leitura é uma fonte inesgotável de prazer.", author: "Carlos Drummond de Andrade" },
+            { quote: "Um livro é um sonho que você segura em suas mãos.", author: "Neil Gaiman" },
+            { quote: "Ler é respirar com os olhos.", author: "Jorge Luis Borges" },
+            { quote: "Os livros são espelhos: neles se vê o que se tem por dentro.", author: "Carlos Ruiz Zafón" },
+            { quote: "A leitura de um bom livro é um diálogo incessante.", author: "Franz Kafka" },
+            { quote: "Livros são a melhor companhia para a alma.", author: "J.K. Rowling" },
+            { quote: "Quem lê viaja sem sair do lugar.", author: "Victor Hugo" },
+            { quote: "A leitura nos dá um lugar para ir quando temos que ficar onde estamos.", author: "Mason Cooley" },
+            { quote: "Um livro é uma janela para o mundo.", author: "Malala Yousafzai" },
+            { quote: "A leitura é a chave para a liberdade.", author: "Oprah Winfrey" },
+            { quote: "Ler é descobrir novos mundos dentro de si.", author: "Toni Morrison" },
+            { quote: "Um livro aberto é um cérebro que fala.", author: "Plato" },
+            { quote: "A leitura é o alimento da mente.", author: "Voltaire" },
+            { quote: "Livros são amigos que nunca nos abandonam.", author: "Marcel Proust" },
+            { quote: "Ler é o melhor remédio para a alma.", author: "Aristóteles" },
+            { quote: "Um livro é um presente que você pode abrir várias vezes.", author: "Garrison Keillor" },
+            { quote: "A leitura nos torna livres.", author: "Albert Einstein" },
+            { quote: "Cada livro é uma nova aventura.", author: "C.S. Lewis" },
+            { quote: "Ler é como voar: você vai para onde quiser.", author: "Dr. Seuss" },
+            { quote: "Um livro é um jardim que você carrega no bolso.", author: "Provérbio Árabe" },
+            { quote: "A leitura é a porta para o conhecimento.", author: "George R.R. Martin" },
+            { quote: "Livros são a memória da humanidade.", author: "Hermann Hesse" },
+            { quote: "Ler é o maior ato de coragem.", author: "Maya Angelou" },
+            { quote: "Um livro é um amigo que nunca mente.", author: "Ernest Hemingway" },
+            { quote: "A leitura é o caminho para a sabedoria.", author: "Confúcio" },
+            { quote: "Livros são a luz que guia o caminho.", author: "Stephen King" },
+            { quote: "Ler é encontrar a si mesmo nas palavras dos outros.", author: "Virginia Woolf" },
+            { quote: "Um livro é um tesouro que nunca se esgota.", author: "Mark Twain" },
+            { quote: "A leitura é a melhor forma de escapar e se encontrar.", author: "Jane Austen" },
+            { quote: "Livros são a ponte para o infinito.", author: "Gabriel García Márquez" }
+        ];
+
+        function displayCurrentDate() {
+            const today = new Date();
+            const day = today.getDate();
+            const monthNames = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+            const month = monthNames[today.getMonth()];
+            document.getElementById('current-date').textContent = `${day} de ${month}`;
+        }
+
+        function displayDailyQuote() {
+            const today = new Date();
+            const dayOfMonth = today.getDate();
+            const quoteIndex = (dayOfMonth - 1) % quotes.length;
+
+            const dailyQuote = quotes[quoteIndex];
+            document.getElementById('daily-quote').textContent = `${dailyQuote.quote}`;
+            document.getElementById('daily-author').textContent = `— ${dailyQuote.author}`;
+        }
+
+        function applyMode(mode) {
+            const body = document.body;
+            const modeToggleBtn = document.getElementById('mode-toggle');
+            if (mode === 'day-mode') {
+                body.classList.remove('night-mode');
+                body.classList.add('day-mode');
+                modeToggleBtn.textContent = '☀';
+            } else {
+                body.classList.remove('day-mode');
+                body.classList.add('night-mode');
+                modeToggleBtn.textContent = '🌙';
+            }
+        }
+
+        function toggleMode() {
+            const body = document.body;
+            const newMode = body.classList.contains('night-mode') ? 'day-mode' : 'night-mode';
+            applyMode(newMode);
+            localStorage.setItem('themeMode', newMode);
+        }
+
+        const savedMode = localStorage.getItem('themeMode') || 'night-mode';
+        applyMode(savedMode);
+
+        displayCurrentDate();
+        displayDailyQuote();
+
+        document.getElementById('mode-toggle').addEventListener('click', toggleMode);
+
+        document.querySelectorAll('.btn').forEach(button => {
+            button.addEventListener('click', () => {
+                if (button.textContent === 'BIBLIOTECA DIGITAL') {
+                    window.location.href = '/segunda_tela.html';
+                } else if (button.textContent === 'EXPLORAR BIBLIOTECA CLÁSSICA') {
+                    window.location.href = '/terceira_tela.html';
+                }
+            });
+        });
+
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(function(registration) {
+                        console.log('Service Worker registrado com sucesso:', registration);
+                    })
+                    .catch(function(error) {
+                        console.log('Falha ao registrar o Service Worker:', error);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>

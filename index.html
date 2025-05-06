@@ -28,7 +28,85 @@
             margin: 0;
             overflow: hidden;
             position: relative;
-            padding-bottom: 80px; /* Espaço para o rodapé */
+        }
+
+        body.night-mode {
+            background: #0a1e3b url('/background-night.jpg') no-repeat center center/cover;
+        }
+
+        body.day-mode {
+            background: #f0f0f0 url('/background-day.jpg') no-repeat center center/cover;
+        }
+
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            display: none;
+        }
+
+        body.night-mode .stars {
+            display: block;
+        }
+
+        .star {
+            position: absolute;
+            background: #fff;
+            border-radius: 50%;
+            animation: twinkle 2s infinite ease-in-out;
+            opacity: 0.8;
+        }
+
+        .star:nth-child(odd) {
+            width: 2px;
+            height: 2px;
+            animation-duration: 3s;
+        }
+
+        .star:nth-child(even) {
+            width: 1px;
+            height: 1px;
+            animation-duration: 4s;
+        }
+
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 0.2;
+            }
+            50% {
+                opacity: 0.8;
+            }
+        }
+
+        .star:nth-child(1) { top: 10%; left: 15%; }
+        .star:nth-child(2) { top: 20%; left: 85%; }
+       ftar Literário</title>
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icon-192.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        body {
+            background: #0a1e3b url('/background-night.jpg') no-repeat center center/cover;
+            background-size: cover;
+            background-attachment: fixed;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            margin: 0;
+            overflow: hidden;
+            position: relative;
         }
 
         body.night-mode {
@@ -267,37 +345,31 @@
             height: auto;
         }
 
-        footer {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 10px;
+        .contact-info {
+            margin-top: 20px;
             text-align: center;
             font-size: 0.9rem;
             color: #e0e0e0;
-            z-index: 2;
         }
 
-        body.day-mode footer {
-            background: rgba(255, 255, 255, 0.9);
+        body.day-mode .contact-info {
             color: #333;
         }
 
-        footer p {
+        .contact-info p {
             margin: 5px 0;
         }
 
-        footer a {
+        .contact-info a {
             color: #b19cd9;
             text-decoration: none;
         }
 
-        body.day-mode footer a {
+        body.day-mode .contact-info a {
             color: #6a5acd;
         }
 
-        footer a:hover {
+        .contact-info a:hover {
             text-decoration: underline;
         }
 
@@ -327,9 +399,8 @@
                 padding: 12px;
             }
 
-            footer {
+            .contact-info {
                 font-size: 0.8rem;
-                padding: 8px;
             }
         }
     </style>
@@ -377,13 +448,12 @@
                 <button class="btn">EXPLORAR BIBLIOTECA CLÁSSICA</button>
             </div>
         </div>
+        <div class="contact-info">
+            <p>💬 Contato</p>
+            <p>📧 Email: <a href="mailto:fernandocardoso65@exemplo.com">fernandocardoso65@exemplo.com</a></p>
+            <p>🔗 GitHub: <a href="https://github.com/Fernandocardoso65" target="_blank">@Fernandocardoso65</a></p>
+        </div>
     </div>
-
-    <footer>
-        <p>💬 Contato</p>
-        <p>Desenvolvido por Fernando Cardoso</p>
-         <p>🔗 GitHub: <a href="https://github.com/Fernandocardoso65" target="_blank">@Fernandocardoso65</a></p>
-          </footer>
 
     <script>
         const quotes = [

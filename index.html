@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#b19cd9">
     <title>Despertar Literário</title>
-    <link rel="manifest" href="/manifest.json">
-    <link rel="apple-touch-icon" href="/icon-192.png">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon.png">
     <style>
         * {
             margin: 0;
@@ -17,7 +17,7 @@
         }
 
         body {
-            background: #0a1e3b url('/background-night.jpg') no-repeat center center/cover;
+            background: #0a1e3b url('https://images.unsplash.com/photo-1519125323398-675f1f4d271f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
             background-size: cover;
             background-attachment: fixed;
             height: 100vh;
@@ -31,90 +31,11 @@
         }
 
         body.night-mode {
-            background: #0a1e3b url('/background-night.jpg') no-repeat center center/cover;
+            background: #0a1e3b url('https://images.unsplash.com/photo-1519125323398-675f1f4d271f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
         }
 
         body.day-mode {
-            background: #f0f0f0 url('/background-day.jpg') no-repeat center center/cover;
-        }
-
-        .stars {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            display: none;
-        }
-
-        body.night-mode .stars {
-            display: block;
-        }
-
-        .star {
-            position: absolute;
-            background: #fff;
-            border-radius: 50%;
-            animation: twinkle 2s infinite ease-in-out;
-            opacity: 0.8;
-        }
-
-        .star:nth-child(odd) {
-            width: 2px;
-            height: 2px;
-            animation-duration: 3s;
-        }
-
-        .star:nth-child(even) {
-            width: 1px;
-            height: 1px;
-            animation-duration: 4s;
-        }
-
-        @keyframes twinkle {
-            0%, 100% {
-                opacity: 0.2;
-            }
-            50% {
-                opacity: 0.8;
-            }
-        }
-
-        .star:nth-child(1) { top: 10%; left: 15%; }
-        .star:nth-child(2) { top: 20%; left: 85%; }
-       ftar Literário</title>
-    <link rel="manifest" href="/manifest.json">
-    <link rel="apple-touch-icon" href="/icon-192.png">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        body {
-            background: #0a1e3b url('/background-night.jpg') no-repeat center center/cover;
-            background-size: cover;
-            background-attachment: fixed;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #fff;
-            margin: 0;
-            overflow: hidden;
-            position: relative;
-        }
-
-        body.night-mode {
-            background: #0a1e3b url('/background-night.jpg') no-repeat center center/cover;
-        }
-
-        body.day-mode {
-            background: #f0f0f0 url('/background-day.jpg') no-repeat center center/cover;
+            background: #f0f0f0 url('https://images.unsplash.com/photo-1507521628349-dee6b5761201?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
         }
 
         .stars {
@@ -345,34 +266,6 @@
             height: auto;
         }
 
-        .contact-info {
-            margin-top: 20px;
-            text-align: center;
-            font-size: 0.9rem;
-            color: #e0e0e0;
-        }
-
-        body.day-mode .contact-info {
-            color: #333;
-        }
-
-        .contact-info p {
-            margin: 5px 0;
-        }
-
-        .contact-info a {
-            color: #b19cd9;
-            text-decoration: none;
-        }
-
-        body.day-mode .contact-info a {
-            color: #6a5acd;
-        }
-
-        .contact-info a:hover {
-            text-decoration: underline;
-        }
-
         @media (max-width: 400px) {
             .container {
                 width: 90%;
@@ -397,10 +290,6 @@
             .btn {
                 font-size: 0.9rem;
                 padding: 12px;
-            }
-
-            .contact-info {
-                font-size: 0.8rem;
             }
         }
     </style>
@@ -431,7 +320,7 @@
     </div>
     <div class="container">
         <div class="content">
-            <img src="https://i.imgur.com/eKNOJwl.jpeg" alt="Logo Despertar Literário" class="logo2">
+            <img src="logo.jpg" alt="Logo Despertar Literário" class="logo2">
             <h1 id="current-date"></h1>
             <h2>Bem-vindo ao <span>Despertar Literário!</span></h2>
             <h3>Clube de Leitura de Sorocaba</h3>
@@ -447,11 +336,6 @@
             <div class="btn-container">
                 <button class="btn">EXPLORAR BIBLIOTECA CLÁSSICA</button>
             </div>
-        </div>
-        <div class="contact-info">
-            <p>💬 Contato</p>
-            <p>📧 Email: <a href="mailto:fernandocardoso65@exemplo.com">fernandocardoso65@exemplo.com</a></p>
-            <p>🔗 GitHub: <a href="https://github.com/Fernandocardoso65" target="_blank">@Fernandocardoso65</a></p>
         </div>
     </div>
 
@@ -507,10 +391,10 @@
             document.getElementById('daily-author').textContent = `— ${dailyQuote.author}`;
         }
 
-        function applyMode(mode) {
+        function toggleMode() {
             const body = document.body;
             const modeToggleBtn = document.getElementById('mode-toggle');
-            if (mode === 'day-mode') {
+            if (body.classList.contains('night-mode')) {
                 body.classList.remove('night-mode');
                 body.classList.add('day-mode');
                 modeToggleBtn.textContent = '☀';
@@ -521,16 +405,6 @@
             }
         }
 
-        function toggleMode() {
-            const body = document.body;
-            const newMode = body.classList.contains('night-mode') ? 'day-mode' : 'night-mode';
-            applyMode(newMode);
-            localStorage.setItem('themeMode', newMode);
-        }
-
-        const savedMode = localStorage.getItem('themeMode') || 'night-mode';
-        applyMode(savedMode);
-
         displayCurrentDate();
         displayDailyQuote();
 
@@ -539,9 +413,9 @@
         document.querySelectorAll('.btn').forEach(button => {
             button.addEventListener('click', () => {
                 if (button.textContent === 'BIBLIOTECA DIGITAL') {
-                    window.location.href = '/segunda_tela.html';
+                    window.location.href = 'segunda_tela.html';
                 } else if (button.textContent === 'EXPLORAR BIBLIOTECA CLÁSSICA') {
-                    window.location.href = '/terceira_tela.html';
+                    window.location.href = 'terceira_tela.html';
                 }
             });
         });

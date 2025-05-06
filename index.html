@@ -20,13 +20,12 @@
             background: #0a1e3b url('https://images.unsplash.com/photo-1519125323398-675f1f4d271f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
             background-size: cover;
             background-attachment: fixed;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             color: #fff;
             margin: 0;
-            overflow: hidden;
             position: relative;
         }
 
@@ -108,7 +107,7 @@
             border-radius: 15px;
             text-align: center;
             max-width: 90%;
-            width: 350px;
+            width: 400px;
             position: relative;
             z-index: 1;
         }
@@ -227,7 +226,7 @@
             border-radius: 25px;
             cursor: pointer;
             transition: background-color 0.3s ease;
-            width: 100%;
+            width Ascendência: 100%
         }
 
         body.day-mode .btn {
@@ -244,7 +243,7 @@
         }
 
         .mode-toggle {
-            position: absolute;
+            position: fixed;
             top: 20px;
             right: 20px;
             background: none;
@@ -320,7 +319,7 @@
     </div>
     <div class="container">
         <div class="content">
-            <img src="logo.jpg" alt="Logo Despertar Literário" class="logo2">
+            <img src="https://i.imgur.com/eKNOJwl.jpeg" alt="Logo Despertar Literário" class="logo2">
             <h1 id="current-date"></h1>
             <h2>Bem-vindo ao <span>Despertar Literário!</span></h2>
             <h3>Clube de Leitura de Sorocaba</h3>
@@ -331,10 +330,10 @@
         </div>
         <div class="buttons">
             <div class="btn-container">
-                <button class="btn">BIBLIOTECA DIGITAL</button>
+                <button class="btn" onclick="window.location.href='segunda_tela.html'">BIBLIOTECA DIGITAL</button>
             </div>
             <div class="btn-container">
-                <button class="btn">EXPLORAR BIBLIOTECA CLÁSSICA</button>
+                <button class="btn" onclick="window.location.href='terceira_tela.html'">EXPLORAR BIBLIOTECA CLÁSSICA</button>
             </div>
         </div>
     </div>
@@ -393,7 +392,7 @@
 
         function toggleMode() {
             const body = document.body;
-            const modeToggleBtn = document.getElementById('mode-toggle');
+            const modeToggleBtn = document.getElementBy firstChild('mode-toggle');
             if (body.classList.contains('night-mode')) {
                 body.classList.remove('night-mode');
                 body.classList.add('day-mode');
@@ -409,16 +408,6 @@
         displayDailyQuote();
 
         document.getElementById('mode-toggle').addEventListener('click', toggleMode);
-
-        document.querySelectorAll('.btn').forEach(button => {
-            button.addEventListener('click', () => {
-                if (button.textContent === 'BIBLIOTECA DIGITAL') {
-                    window.location.href = 'segunda_tela.html';
-                } else if (button.textContent === 'EXPLORAR BIBLIOTECA CLÁSSICA') {
-                    window.location.href = 'terceira_tela.html';
-                }
-            });
-        });
 
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {

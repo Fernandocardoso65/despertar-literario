@@ -110,7 +110,7 @@
             width: 400px;
             position: relative;
             z-index: 1;
-            padding-bottom: 80px; /* Espaço para o rodapé */
+            padding-bottom: 80px;
         }
 
         body.day-mode .container {
@@ -204,6 +204,8 @@
             border-radius: 10px;
             text-align: center;
             transition: background-color 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
         body.day-mode .btn-container {
@@ -228,6 +230,8 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
             width: 100%;
+            position: relative;
+            z-index: 1;
         }
 
         body.day-mode .btn {
@@ -241,6 +245,40 @@
 
         body.day-mode .btn:hover {
             background-color: #5a4ab5;
+        }
+
+        .magic-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .btn-container:hover .magic-particles {
+            opacity: 1;
+        }
+
+        .particle {
+            position: absolute;
+            background: #fff;
+            border-radius: 50%;
+            opacity: 0;
+            animation: sparkle 1s ease-out forwards;
+        }
+
+        @keyframes sparkle {
+            0% {
+                opacity: 0.8;
+                transform: translate(0, 0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--x), var(--y)) scale(0.5);
+            }
         }
 
         .mode-toggle {
@@ -309,7 +347,7 @@
                 width: 90%;
                 max-width: 350px;
                 padding: 15px;
-                padding-bottom: 90px; /* Ajuste para altura do rodapé em telas menores */
+                padding-bottom: 90px;
             }
             h1 {
                 font-size: 1.2rem;
@@ -421,9 +459,11 @@
         <div class="buttons">
             <div class="btn-container">
                 <button class="btn" onclick="window.location.href='segunda_tela.html'">BIBLIOTECA DIGITAL</button>
+                <div class="magic-particles" id="particles1"></div>
             </div>
             <div class="btn-container">
                 <button class="btn" onclick="window.location.href='terceira_tela.html'">EXPLORAR BIBLIOTECA CLÁSSICA</button>
+                <div class="magic-particles" id="particles2"></div>
             </div>
         </div>
     </div>
@@ -509,7 +549,30 @@
             const footer = document.querySelector('.footer');
             const container = document.querySelector('.container');
             const footerHeight = footer.offsetHeight;
-            container.style.paddingBottom = `${footerHeight + 20}px`; // Adiciona 20px de margem extra
+            container.style.paddingBottom = `${footerHeight + 20}px`;
+        }
+
+        function createParticles(containerId) {
+            const container = document.getElementById(containerId);
+            for (let i = 0; i < 10; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                const size = Math.random() * 3 + 1;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                particle.style.setProperty('--x', `${(Math.random() - 0.5) * 50}px`);
+                particle.style.setProperty('--y', `${(Math.random() - 0.5) * 50}px`);
+                particle.style.animationDelay = `${Math.random() * 0.5}s`;
+                container.appendChild(particle);
+            }
+        }
+
+        function handleMouseOver(containerId) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            createParticles(containerId);
         }
 
         // Carregar o modo salvo do localStorage ou usar night-mode como padrão
@@ -518,10 +581,12 @@
 
         displayCurrentDate();
         displayDailyQuote();
-        adjustPaddingForFooter(); // Ajusta o padding ao carregar
-        window.addEventListener('resize', adjustPaddingForFooter); // Ajusta ao redimensionar
+        adjustPaddingForFooter();
+        window.addEventListener('resize', adjustPaddingForFooter);
 
         document.getElementById('mode-toggle').addEventListener('click', toggleMode);
+        document.querySelectorAll('.btn-container')[0].addEventListener('mouseover', () => handleMouseOver('particles1'));
+        document.querySelectorAll('.btn-container')[1].addEventListener('mouseover', () => handleMouseOver('particles2'));
 
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {

@@ -110,6 +110,7 @@
             width: 400px;
             position: relative;
             z-index: 1;
+            padding-bottom: 80px; /* Espaço para o rodapé */
         }
 
         body.day-mode .container {
@@ -308,6 +309,7 @@
                 width: 90%;
                 max-width: 350px;
                 padding: 15px;
+                padding-bottom: 90px; /* Ajuste para altura do rodapé em telas menores */
             }
             h1 {
                 font-size: 1.2rem;
@@ -347,6 +349,7 @@
             .container {
                 width: 90%;
                 max-width: 300px;
+                padding-bottom: 80px;
             }
             h1 {
                 font-size: 1rem;
@@ -367,6 +370,7 @@
             .footer {
                 font-size: 0.7rem;
                 padding: 6px 12px;
+                bottom: 5px;
             }
             .mode-toggle {
                 top: 8px;
@@ -501,12 +505,21 @@
             localStorage.setItem('themeMode', newMode);
         }
 
+        function adjustPaddingForFooter() {
+            const footer = document.querySelector('.footer');
+            const container = document.querySelector('.container');
+            const footerHeight = footer.offsetHeight;
+            container.style.paddingBottom = `${footerHeight + 20}px`; // Adiciona 20px de margem extra
+        }
+
         // Carregar o modo salvo do localStorage ou usar night-mode como padrão
         const savedMode = localStorage.getItem('themeMode') || 'night-mode';
         applyMode(savedMode);
 
         displayCurrentDate();
         displayDailyQuote();
+        adjustPaddingForFooter(); // Ajusta o padding ao carregar
+        window.addEventListener('resize', adjustPaddingForFooter); // Ajusta ao redimensionar
 
         document.getElementById('mode-toggle').addEventListener('click', toggleMode);
 

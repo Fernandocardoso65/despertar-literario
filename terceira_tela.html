@@ -150,6 +150,8 @@
             border-radius: 10px;
             text-align: center;
             transition: background-color 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
         body.day-mode .btn-container {
@@ -175,6 +177,8 @@
             transition: background-color 0.3s ease;
             text-decoration: none;
             width: 100%;
+            position: relative;
+            z-index: 1;
         }
 
         body.day-mode .btn {
@@ -196,6 +200,8 @@
             border-radius: 10px;
             text-align: center;
             transition: background-color 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
         body.day-mode .back-button-container {
@@ -220,6 +226,8 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
             width: 100%;
+            position: relative;
+            z-index: 1;
         }
 
         body.day-mode .back-button {
@@ -232,6 +240,41 @@
 
         body.day-mode .back-button:hover {
             background-color: #5a4ab5;
+        }
+
+        .magic-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .btn-container:hover .magic-particles,
+        .back-button-container:hover .magic-particles {
+            opacity: 1;
+        }
+
+        .particle {
+            position: absolute;
+            background: #b19cd9; /* Nova cor das partículas: roxo claro */
+            border-radius: 50%;
+            opacity: 0;
+            animation: sparkle 1s ease-out forwards;
+        }
+
+        @keyframes sparkle {
+            0% {
+                opacity: 0.8;
+                transform: translate(0, 0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--x), var(--y)) scale(0.5);
+            }
         }
 
         .mode-toggle {
@@ -300,9 +343,11 @@
         <div class="buttons">
             <div class="btn-container">
                 <a href="https://www.netmundi.org/home/classicos-da-literatura-e-da-filosofia-300-obras-para-baixar/" target="_blank" class="btn">Acessar Biblioteca</a>
+                <div class="magic-particles" id="particles1"></div>
             </div>
             <div class="back-button-container">
                 <button class="back-button" onclick="window.location.href='index.html'">Voltar</button>
+                <div class="magic-particles" id="particles2"></div>
             </div>
         </div>
     </div>
@@ -329,11 +374,44 @@
             localStorage.setItem('themeMode', newMode);
         }
 
+        function createParticles(containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return; // Verifica se o container existe
+            container.innerHTML = ''; // Limpa partículas anteriores
+            for (let i = 0; i < 10; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                const size = Math.random() * 3 + 1;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                particle.style.setProperty('--x', `${(Math.random() - 0.5) * 50}px`);
+                particle.style.setProperty('--y', `${(Math.random() - 0.5) * 50}px`);
+                particle.style.animationDelay = `${Math.random() * 0.5}s`;
+                container.appendChild(particle);
+            }
+        }
+
+        function handleMouseOver() {
+            const containers = document.querySelectorAll('.btn-container, .back-button-container');
+            containers.forEach(container => {
+                const particleContainer = container.querySelector('.magic-particles');
+                if (particleContainer) {
+                    particleContainer.innerHTML = '';
+                    createParticles(particleContainer.id);
+                }
+            });
+        }
+
         // Carregar o modo salvo do localStorage ou usar night-mode como padrão
         const savedMode = localStorage.getItem('themeMode') || 'night-mode';
         applyMode(savedMode);
 
         document.getElementById('mode-toggle').addEventListener('click', toggleMode);
+        document.querySelectorAll('.btn-container, .back-button-container').forEach(btn => {
+            btn.addEventListener('mouseover', handleMouseOver);
+        });
 
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {

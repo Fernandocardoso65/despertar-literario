@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#b19cd9">
     <title>Despertar Literário</title>
-    <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="icon.png">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icon-192.png">
     <style>
         * {
             margin: 0;
@@ -342,6 +342,31 @@
             color: #5a4ab5;
         }
 
+        #install-button {
+            background-color: #b19cd9;
+            color: #fff;
+            border: none;
+            padding: 15px;
+            font-size: 1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        body.day-mode #install-button {
+            background-color: #6a5acd;
+        }
+
+        #install-button:hover {
+            background-color: #9b7ed1;
+        }
+
+        body.day-mode #install-button:hover {
+            background-color: #5a4ab5;
+        }
+
         @media (max-width: 600px) {
             .container {
                 width: 90%;
@@ -465,6 +490,7 @@
                 <button class="btn" onclick="window.location.href='terceira_tela.html'">EXPLORAR BIBLIOTECA CLÁSSICA</button>
                 <div class="magic-particles" id="particles2"></div>
             </div>
+            <button id="install-button" class="btn" style="display: none;">Instalar App</button>
         </div>
     </div>
     <div class="footer">
@@ -597,6 +623,29 @@
                     .catch(function(error) {
                         console.log('Falha ao registrar o Service Worker:', error);
                     });
+            });
+        }
+
+        if ('serviceWorker' in navigator && 'BeforeInstallPromptEvent' in window) {
+            let deferredPrompt;
+
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+                document.getElementById('install-button').style.display = 'block';
+            });
+
+            document.getElementById('install-button').addEventListener('click', () => {
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    deferredPrompt.userChoice.then((choiceResult) => {
+                        if (choiceResult.outcome === 'accepted') {
+                            console.log('Usuário aceitou a instalação');
+                            document.getElementById('install-button').style.display = 'none';
+                        }
+                        deferredPrompt = null;
+                    });
+                }
             });
         }
     </script>

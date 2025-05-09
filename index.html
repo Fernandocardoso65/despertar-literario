@@ -622,6 +622,7 @@
                     })
                     .catch(function(error) {
                         console.log('Falha ao registrar o Service Worker:', error);
+                        alert('Erro ao registrar o Service Worker. Verifique se o arquivo /service-worker.js existe no servidor.');
                     });
             });
         }
@@ -632,21 +633,33 @@
             window.addEventListener('beforeinstallprompt', (e) => {
                 e.preventDefault();
                 deferredPrompt = e;
-                document.getElementById('install-button').style.display = 'block';
-            });
-
-            document.getElementById('install-button').addEventListener('click', () => {
-                if (deferredPrompt) {
-                    deferredPrompt.prompt();
-                    deferredPrompt.userChoice.then((choiceResult) => {
-                        if (choiceResult.outcome === 'accepted') {
-                            console.log('Usuário aceitou a instalação');
-                            document.getElementById('install-button').style.display = 'none';
-                        }
-                        deferredPrompt = null;
-                    });
+                const installButton = document.getElementById('install-button');
+                if (installButton) {
+                    installButton.style.display = 'block';
+                } else {
+                    console.log('Botão de instalação não encontrado');
                 }
             });
+
+            const installButton = document.getElementById('install-button');
+            if (installButton) {
+                installButton.addEventListener('click', () => {
+                    if (deferredPrompt) {
+                        deferredPrompt.prompt();
+                        deferredPrompt.userChoice.then((choiceResult) => {
+                            if (choiceResult.outcome === 'accepted') {
+                                console.log('Usuário aceitou a instalação');
+                                installButton.style.display = 'none';
+                            } else {
+                                console.log('Usuário recusou a instalação');
+                            }
+                            deferredPrompt = null;
+                        });
+                    } else {
+                        console.log('Evento de instalação não disponível');
+                    }
+                });
+            }
         }
     </script>
 </body>

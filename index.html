@@ -264,7 +264,7 @@
 
         .particle {
             position: absolute;
-            background: #b19cd9;
+            background: #b19cd9; /* Nova cor das partículas: roxo claro */
             border-radius: 50%;
             opacity: 0;
             animation: sparkle 1s ease-out forwards;
@@ -490,10 +490,6 @@
                 <button class="btn" onclick="window.location.href='terceira_tela.html'">EXPLORAR BIBLIOTECA CLÁSSICA</button>
                 <div class="magic-particles" id="particles2"></div>
             </div>
-            <div class="btn-container">
-                <button class="btn" onclick="window.location.href='quiz.html'">QUIZ LITERÁRIO</button>
-                <div class="magic-particles" id="particles3"></div>
-            </div>
             <button id="install-button" class="btn" style="display: none;">Instalar App</button>
         </div>
     </div>
@@ -605,6 +601,7 @@
             createParticles(containerId);
         }
 
+        // Carregar o modo salvo do localStorage ou usar night-mode como padrão
         const savedMode = localStorage.getItem('themeMode') || 'night-mode';
         applyMode(savedMode);
 
@@ -616,7 +613,6 @@
         document.getElementById('mode-toggle').addEventListener('click', toggleMode);
         document.querySelectorAll('.btn-container')[0].addEventListener('mouseover', () => handleMouseOver('particles1'));
         document.querySelectorAll('.btn-container')[1].addEventListener('mouseover', () => handleMouseOver('particles2'));
-        document.querySelectorAll('.btn-container')[2].addEventListener('mouseover', () => handleMouseOver('particles3'));
 
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {

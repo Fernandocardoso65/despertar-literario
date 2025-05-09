@@ -1,49 +1,55 @@
-const CACHE_NAME = 'despertar-literario-v2';
-const urlsToCache = [
-  '/',
-  '/index.html',
-  'https://images.unsplash.com/photo-1519125323398-675f1f4d271f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80',
-  'https://images.unsplash.com/photo-1507521628349-dee6b5761201?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80',
-  'https://i.imgur.com/eKNOJwl.jpeg'
-];
+const CACHE_NAME = 'despertar-literario-v3';
+    const urlsToCache = [
+      '/',
+      '/index.html',
+      '/icon-192.png',
+      '/icon-512.png'
+    ];
 
-// Cacheia os arquivos durante a instalação
-self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => {
-        return cache.addAll(urlsToCache).catch((err) => {
-          console.log('Erro ao cachear arquivos:', err);
-        });
-      })
-  );
-  self.skipWaiting();
-});
-
-// Responde às requisições
-self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request)
-      .then((response) => {
-        if (response) {
-          return response;
-        }
-        return fetch(event.request).catch(() => {
-          return caches.match('/index.html');
-        });
-      })
-  );
-});
-
-// Limpa caches antigos
-self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.filter((cacheName) => cacheName !== CACHE_NAME)
-          .map((cacheName) => caches.delete(cacheName))
+    self.addEventListener('install', (event) => {
+      console.log('Service Worker: Instalando...');
+      event.waitUntil(
+        caches.open(CACHE_NAME)
+          .then((cache) => {
+            console.log('Service Worker: Cache aberto, adicionando arquivos...');
+            return cache.addAll(urlsToCache).catch((err) => {
+              console.error('Service Worker: Erro ao cachear arquivos:', err);
+            });
+          })
       );
-    })
-  );
-  self.clients.claim();
-});
+      self.skipWaiting();
+    });
+
+    self.addEventListener('fetch', (event) => {
+      console.log('Service Worker: Fetching', event.request.url);
+      event.respondWith(
+        caches.match(event.request)
+          .then((response) => {
+            if (response) {
+              console.log('Service Worker: Retornando do cache:', event.request.url);
+              return response;
+            }
+            console.log('Service Worker: Buscando na rede:', event.request.url);
+            return fetch(event.request).catch(() => {
+              console.log('Service Worker: Rede falhou, retornando fallback');
+              return caches.match('/index.html');
+            });
+          })
+      );
+    });
+
+    self.addEventListener('activate', (event) => {
+      console.log('Service Worker: Ativando...');
+      event.waitUntil(
+        caches.keys().then((cacheNames) => {
+          return Promise.all(
+            cacheNames.filter((cacheName) => cacheName !== CACHE_NAME)
+              .map((cacheName) => {
+                console.log('Service Worker: Removendo cache antigo:', cacheName);
+                return caches.delete(cacheName);
+              })
+          );
+        })
+      );
+      self.clients.claim();
+    });

@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#b19cd9">
+    <title>Quiz Literário - Despertar Literário</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        body {
+            background: #0a1e3b url('https://images.unsplash.com/photo-1519125323398-675f1f4d271f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            background-size: cover;
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: #fff;
+            margin: 0;
+            position: relative;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        body.night-mode {
+            background: #0a1e3b url('https://images.unsplash.com/photo-1519125323398-675f1f4d271f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+        }
+
+        body.day-mode {
+            background: #f0f0f0 url('https://images.unsplash.com/photo-1507521628349-dee6b5761201?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+        }
+
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            display: none;
+        }
+
+        body.night-mode .stars {
+            display: block;
+        }
+
+        .star {
+            position: absolute;
+            background: #fff;
+            border-radius: 50%;
+            animation: twinkle 2s infinite ease-in-out;
+            opacity: 0.8;
+        }
+
+        .star:nth-child(odd) {
+            width: 2px;
+            height: 2px;
+            animation-duration: 3s;
+        }
+
+        .star:nth-child(even) {
+            width: 1px;
+            height: 1px;
+            animation-duration: 4s;
+        }
+
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 0.2;
+            }
+            50% {
+                opacity: 0.8;
+            }
+        }
+
+        .star:nth-child(1) { top: 10%; left: 15%; }
+        .star:nth-child(2) { top: 20%; left: 85%; }
+        .star:nth-child(3) { top: 30%; left: 25%; }
+        .star:nth-child(4) { top: 40%; left: 75%; }
+        .star:nth-child(5) { top: 50%; left: 10%; }
+        .star:nth-child(6) { top: 60%; left: 90%; }
+        .star:nth-child(7) { top: 70%; left: 20%; }
+        .star:nth-child(8) { top: 80%; left: 80%; }
+        .star:nth-child(9) { top: 15%; left: 50%; }
+        .star:nth-child(10) { top: 25%; left: 40%; }
+        .star:nth-child(11) { top: 35%; left: 60%; }
+        .star:nth-child(12) { top: 45%; left: 30%; }
+        .star:nth-child(13) { top: 55%; left: 70%; }
+        .star:nth-child(14) { top: 65%; left: 15%; }
+        .star:nth-child(15) { top: 75%; left: 85%; }
+        .star:nth-child(16) { top: 5%; left: 95%; }
+        .star:nth-child(17) { top: 85%; left: 5%; }
+        .star:nth-child(18) { top: 90%; left: 50%; }
+        .star:nth-child(19) { top: 95%; left: 30%; }
+        .star:nth-child(20) { top: 10%; left: 70%; }
+
+        .container {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 90%;
+            width: 500px;
+            position: relative;
+            z-index: 1;
+        }
+
+        body.day-mode .container {
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #e0e0e0;
+        }
+
+        body.day-mode h1 {
+            color: #333;
+        }
+
+        h1 span {
+            color: #b19cd9;
+        }
+
+        body.day-mode h1 span {
+            color: #6a5acd;
+        }
+
+        #quiz-content {
+            margin: 20px 0;
+        }
+
+        .quiz-question {
+            margin: 15px 0;
+        }
+
+        .quiz-option {
+            display: block;
+            margin: 5px 0;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        body.day-mode .quiz-option {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .quiz-option:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        body.day-mode .quiz-option:hover {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        #quiz-result {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        #score {
+            margin: 10px 0;
+            font-size: 1.2rem;
+            color: #b19cd9;
+        }
+
+        body.day-mode #score {
+            color: #6a5acd;
+        }
+
+        #name-input {
+            display: none;
+            margin: 10px 0;
+        }
+
+        #name-input input {
+            padding: 5px;
+            width: 200px;
+            margin-right: 10px;
+        }
+
+        #ranking {
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .ranking-item {
+            padding: 5px 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            margin: 5px 0;
+        }
+
+        body.day-mode .ranking-item {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .btn {
+            background-color: #b19cd9;
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            font-size: 1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin: 5px;
+        }
+
+        body.day-mode .btn {
+            background-color: #6a5acd;
+        }
+
+        .btn:hover {
+            background-color: #9b7ed1;
+        }
+
+        body.day-mode .btn:hover {
+            background-color: #5a4ab5;
+        }
+
+        .mode-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #fff;
+            z-index: 2;
+        }
+
+        body.day-mode .mode-toggle {
+            color: #333;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                width: 90%;
+                max-width: 350px;
+                padding: 15px;
+            }
+            h1 {
+                font-size: 1.4rem;
+            }
+            .quiz-option {
+                font-size: 0.9rem;
+                padding: 8px;
+            }
+            .btn {
+                font-size: 0.9rem;
+                padding: 10px 15px;
+            }
+            body {
+                background-attachment: scroll;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .container {
+                width: 90%;
+                max-width: 300px;
+            }
+            h1 {
+                font-size: 1.2rem;
+            }
+            .quiz-option {
+                font-size: 0.8rem;
+                padding: 6px;
+            }
+            .btn {
+                font-size: 0.8rem;
+                padding: 8px 12px;
+            }
+        }
+    </style>
+</head>
+<body class="night-mode">
+    <button class="mode-toggle" id="mode-toggle">🌙</button>
+    <div class="stars">
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+    </div>
+    <div class="container">
+        <h1>Quiz <span>Literário</span></h1>
+        <div id="score">Pontuação: 0</div>
+        <div id="ranking"></div>
+        <div id="quiz-content"></div>
+        <div id="quiz-result"></div>
+        <div id="name-input">
+            <input type="text" id="player-name" placeholder="Digite seu nome">
+            <button class="btn" onclick="saveScore()">Salvar Pontuação</button>
+        </div>
+        <button class="btn" id="next-btn" style="display: none;">Próxima Pergunta</button>
+        <button class="btn" id="restart-btn" style="display: none;" onclick="restartQuiz()">Reiniciar Quiz</button>
+        <button class="btn" onclick="window.location.href='index.html'">Voltar</button>
+    </div>
+
+    <script>
+        const questions = [
+            { text: "Quem escreveu 'Dom Quixote'?", options: ["a) Machado de Assis", "b) Miguel de Cervantes", "c) Jorge Amado"], answer: "b" },
+            { text: "Qual obra é de Jane Austen?", options: ["a) Orgulho e Preconceito", "b) Cem Anos de Solidão", "c) O Pequeno Príncipe"], answer: "a" },
+            { text: "Quem é o autor de '1984'?", options: ["a) George Orwell", "b) Aldous Huxley", "c) Ray Bradbury"], answer: "a" },
+            { text: "Qual livro foi escrito por Machado de Assis?", options: ["a) Memórias Póstumas de Brás Cubas", "b) O Senhor dos Anéis", "c) Crime e Castigo"], answer: "a" },
+            { text: "Quem escreveu 'Harry Potter'?", options: ["a) J.R.R. Tolkien", "b) J.K. Rowling", "c) C.S. Lewis"], answer: "b" },
+            { text: "Qual é o autor de 'O Pequeno Príncipe'?", options: ["a) Antoine de Saint-Exupéry", "b) Ernest Hemingway", "c) Victor Hugo"], answer: "a" },
+            { text: "Quem escreveu 'Cem Anos de Solidão'?", options: ["a) Gabriel García Márquez", "b) Mario Vargas Llosa", "c) Pablo Neruda"], answer: "a" },
+            { text: "Qual obra é de Dostoiévski?", options: ["a) Crime e Castigo", "b) Guerra e Paz", "c) Anna Karenina"], answer: "a" },
+            { text: "Quem é o autor de 'O Senhor dos Anéis'?", options: ["a) J.R.R. Tolkien", "b) C.S. Lewis", "c) J.K. Rowling"], answer: "a" },
+            { text: "Qual livro foi escrito por Clarice Lispector?", options: ["a) A Paixão Segundo G.H.", "b) Dom Casmurro", "c) O Alquimista"], answer: "a" },
+            { text: "Quem escreveu 'O Morro dos Ventos Uivantes'?", options: ["a) Emily Brontë", "b) Charlotte Brontë", "c) Jane Austen"], answer: "a" },
+            { text: "Qual obra é de Franz Kafka?", options: ["a) A Metamorfose", "b) Madame Bovary", "c) O Estrangeiro"], answer: "a" },
+            { text: "Quem é o autor de 'O Apanhador no Campo de Centeio'?", options: ["a) J.D. Salinger", "b) F. Scott Fitzgerald", "c) Ernest Hemingway"], answer: "a" },
+            { text: "Qual livro foi escrito por George R.R. Martin?", options: ["a) As Crônicas de Gelo e Fogo", "b) O Hobbit", "c) As Crônicas de Nárnia"], answer: "a" },
+            { text: "Quem escreveu 'A Revolução dos Bichos'?", options: ["a) George Orwell", "b) Aldous Huxley", "c) Ray Bradbury"], answer: "a" },
+            { text: "Qual é o autor de 'Os Miseráveis'?", options: ["a) Victor Hugo", "b) Alexandre Dumas", "c) Gustave Flaubert"], answer: "a" },
+            { text: "Quem escreveu 'Dom Casmurro'?", options: ["a) Machado de Assis", "b) José de Alencar", "c) Graciliano Ramos"], answer: "a" },
+            { text: "Qual obra é de Gabriel García Márquez?", options: ["a) O Amor nos Tempos do Cólera", "b) O Alquimista", "c) Pedro Páramo"], answer: "a" },
+            { text: "Quem é o autor de 'Fahrenheit 451'?", options: ["a) Ray Bradbury", "b) George Orwell", "c) Aldous Huxley"], answer: "a" },
+            { text: "Qual livro foi escrito por Virginia Woolf?", options: ["a) Mrs. Dalloway", "b) Jane Eyre", "c) Middlemarch"], answer: "a" },
+            { text: "Quem escreveu 'O Grande Gatsby'?", options: ["a) F. Scott Fitzgerald", "b) Ernest Hemingway", "c) John Steinbeck"], answer: "a" },
+            { text: "Qual obra é de Charles Dickens?", options: ["a) Grandes Esperanças", "b) O Morro dos Ventos Uivantes", "c) Orgulho e Preconceito"], answer: "a" },
+            { text: "Quem é o autor de 'Admirável Mundo Novo'?", options: ["a) Aldous Huxley", "b) George Orwell", "c) Ray Bradbury"], answer: "a" },
+            { text: "Qual livro foi escrito por José Saramago?", options: ["a) Ensaio Sobre a Cegueira", "b) O Alquimista", "c) A Cidade e as Serras"], answer: "a" },
+            { text: "Quem escreveu 'As Crônicas de Nárnia'?", options: ["a) C.S. Lewis", "b) J.R.R. Tolkien", "c) J.K. Rowling"], answer: "a" },
+            { text: "Qual é o autor de 'O Conde de Monte Cristo'?", options: ["a) Alexandre Dumas", "b) Victor Hugo", "c) Gustave Flaubert"], answer: "a" },
+            { text: "Quem escreveu 'Vidas Secas'?", options: ["a) Graciliano Ramos", "b) Guimarães Rosa", "c) Clarice Lispector"], answer: "a" },
+            { text: "Qual obra é de Ernest Hemingway?", options: ["a) O Velho e o Mar", "b) O Sol Também se Levanta", "c) Por Quem os Sinos Dobram"], answer: "a" },
+            { text: "Quem é o autor de 'O Alquimista'?", options: ["a) Paulo Coelho", "b) Gabriel García Márquez", "c) José Saramago"], answer: "a" },
+            { text: "Qual livro foi escrito por Charlotte Brontë?", options: ["a) Jane Eyre", "b) Shirley", "c) Villette"], answer: "a" },
+            { text: "Quem escreveu 'Moby Dick'?", options: ["a) Herman Melville", "b) Mark Twain", "c) Nathaniel Hawthorne"], answer: "a" },
+            { text: "Qual obra é de Albert Camus?", options: ["a) O Estrangeiro", "b) A Peste", "c) O Mito de Sísifo"], answer: "a" },
+            { text: "Quem é o autor de 'O Hobbit'?", options: ["a) J.R.R. Tolkien", "b) C.S. Lewis", "c) George R.R. Martin"], answer: "a" },
+            { text: "Qual livro foi escrito por Guimarães Rosa?", options: ["a) Grande Sertão: Veredas", "b) Sagarana", "c) Corpo de Baile"], answer: "a" },
+            { text: "Quem escreveu 'A Ilíada'?", options: ["a) Homero", "b) Sófocles", "c) Eurípides"], answer: "a" },
+            { text: "Qual é o autor de 'A Odisséia'?", options: ["a) Homero", "b) Virgílio", "c) Ovídio"], answer: "a" },
+            { text: "Quem escreveu 'A Divina Comédia'?", options: ["a) Dante Alighieri", "b) Petrarca", "c) Boccaccio"], answer: "a" },
+            { text: "Qual obra é de William Shakespeare?", options: ["a) Hamlet", "b) Macbeth", "c) Romeu e Julieta"], answer: "a" },
+            { text: "Quem é o autor de 'Drácula'?", options: ["a) Bram Stoker", "b) Mary Shelley", "c) Edgar Allan Poe"], answer: "a" },
+            { text: "Qual livro foi escrito por Mary Shelley?", options: ["a) Frankenstein", "b) O Último Homem", "c) Mathilda"], answer: "a" },
+            { text: "Quem escreveu 'O Corcunda de Notre-Dame'?", options: ["a) Victor Hugo", "b) Alexandre Dumas", "c) Gustave Flaubert"], answer: "a" },
+            { text: "Qual obra é de Edgar Allan Poe?", options: ["a) O Corvo", "b) A Queda da Casa de Usher", "c) O Gato Preto"], answer: "a" },
+            { text: "Quem é o autor de 'As Aventuras de Tom Sawyer'?", options: ["a) Mark Twain", "b) Herman Melville", "c) Nathaniel Hawthorne"], answer: "a" },
+            { text: "Qual livro foi escrito por Eça de Queirós?", options: ["a) O Crime do Padre Amaro", "b) Os Maias", "c) A Cidade e as Serras"], answer: "a" },
+            { text: "Quem escreveu 'Madame Bovary'?", options: ["a) Gustave Flaubert", "b) Victor Hugo", "c) Émile Zola"], answer: "a" },
+            { text: "Qual é o autor de 'Germinal'?", options: ["a) Émile Zola", "b) Gustave Flaubert", "c) Honoré de Balzac"], answer: "a" },
+            { text: "Quem escreveu 'A Comédia Humana'?", options: ["a) Honoré de Balzac", "b) Émile Zola", "c) Gustave Flaubert"], answer: "a" },
+            { text: "Qual obra é de Leo Tolstoy?", options: ["a) Guerra e Paz", "b) Anna Karenina", "c) Ressurreição"], answer: "a" },
+            { text: "Quem é o autor de 'O Retrato de Dorian Gray'?", options: ["a) Oscar Wilde", "b) Bram Stoker", "c) Mary Shelley"], answer: "a" },
+            { text: "Qual livro foi escrito por Miguel de Cervantes?", options: ["a) Dom Quixote", "b) Novelas Exemplares", "c) La Galatea"], answer: "a" },
+            { text: "Quem escreveu 'Os Lusíadas'?", options: ["a) Luís de Camões", "b) Fernando Pessoa", "c) José Saramago"], answer: "a" },
+            { text: "Qual é o autor de 'Mensagem'?", options: ["a) Fernando Pessoa", "b) Luís de Camões", "c) Eça de Queirós"], answer: "a" },
+            { text: "Quem escreveu 'Capitães da Areia'?", options: ["a) Jorge Amado", "b) Graciliano Ramos", "c) Guimarães Rosa"], answer: "a" },
+            { text: "Qual obra é de Mario Vargas Llosa?", options: ["a) A Cidade e os Cachorros", "b) Conversa na Catedral", "c) A Casa Verde"], answer: "a" },
+            { text: "Quem é o autor de 'Pedro Páramo'?", options: ["a) Juan Rulfo", "b) Gabriel García Márquez", "c) Mario Vargas Llosa"], answer: "a" },
+            { text: "Qual livro foi escrito por Isabel Allende?", options: ["a) A Casa dos Espíritos", "b) De Amor e de Sombra", "c) Eva Luna"], answer: "a" },
+            { text: "Quem escreveu 'O Nome do Vento'?", options: ["a) Patrick Rothfuss", "b) Brandon Sanderson", "c) George R.R. Martin"], answer: "a" },
+            { text: "Qual é o autor de 'Mistborn'?", options: ["a) Brandon Sanderson", "b) Patrick Rothfuss", "c) George R.R. Martin"], answer: "a" },
+            { text: "Quem escreveu 'As Vinhas da Ira'?", options: ["a) John Steinbeck", "b) F. Scott Fitzgerald", "c) Ernest Hemingway"], answer: "a" },
+            { text: "Qual obra é de Toni Morrison?", options: ["a) Amada", "b) O Olho Mais Azul", "c) Paraíso"], answer: "a" },
+            { text: "Quem é o autor de 'Ulisses'?", options: ["a) James Joyce", "b) Samuel Beckett", "c) William Faulkner"], answer: "a" },
+            { text: "Qual livro foi escrito por William Faulkner?", options: ["a) O Som e a Fúria", "b) Enquanto Agonizo", "c) Luz em Agosto"], answer: "a" },
+            { text: "Quem escreveu 'Ao Farol'?", options: ["a) Virginia Woolf", "b) Jane Austen", "c) Charlotte Brontë"], answer: "a" },
+            { text: "Qual é o autor de 'O Processo'?", options: ["a) Franz Kafka", "b) Albert Camus", "c) Thomas Mann"], answer: "a" },
+            { text: "Quem escreveu 'A Montanha Mágica'?", options: ["a) Thomas Mann", "b) Hermann Hesse", "c) Franz Kafka"], answer: "a" },
+            { text: "Qual obra é de Hermann Hesse?", options: ["a) O Lobo da Estepe", "b) Demian", "c) Siddhartha"], answer: "a" },
+            { text: "Quem é o autor de 'O Estrangeiro'?", options: ["a) Albert Camus", "b) Jean-Paul Sartre", "c) Simone de Beauvoir"], answer: "a" },
+            { text: "Qual livro foi escrito por Jean-Paul Sartre?", options: ["a) A Náusea", "b) O Ser e o Nada", "c) As Mãos Sujas"], answer: "a" },
+            { text: "Quem escreveu 'O Segundo Sexo'?", options: ["a) Simone de Beauvoir", "b) Virginia Woolf", "c) Jane Austen"], answer: "a" },
+            { text: "Qual é o autor de 'Middlemarch'?", options: ["a) George Eliot", "b) Charlotte Brontë", "c) Jane Austen"], answer: "a" },
+            { text: "Quem escreveu 'Tess dos d'Urbervilles'?", options: ["a) Thomas Hardy", "b) Charles Dickens", "c) George Eliot"], answer: "a" },
+            { text: "Qual obra é de D.H. Lawrence?", options: ["a) Filhos e Amantes", "b) O Amante de Lady Chatterley", "c) Mulheres Apaixonadas"], answer: "a" },
+            { text: "Quem é o autor de 'O Coração das Trevas'?", options: ["a) Joseph Conrad", "b) Rudyard Kipling", "c) H.G. Wells"], answer: "a" },
+            { text: "Qual livro foi escrito por H.G. Wells?", options: ["a) A Máquina do Tempo", "b) O Homem Invisível", "c) A Guerra dos Mundos"], answer: "a" },
+            { text: "Quem escreveu 'O Livro da Selva'?", options: ["a) Rudyard Kipling", "b) Joseph Conrad", "c) H.G. Wells"], answer: "a" },
+            { text: "Qual é o autor de 'A Eneida'?", options: ["a) Virgílio", "b) Homero", "c) Ovídio"], answer: "a" },
+            { text: "Quem escreveu 'Metamorfoses'?", options: ["a) Ovídio", "b) Virgílio", "c) Homero"], answer: "a" },
+            { text: "Qual obra é de Sófocles?", options: ["a) Édipo Rei", "b) Antígona", "c) Electra"], answer: "a" },
+            { text: "Quem é o autor de 'Medéia'?", options: ["a) Eurípides", "b) Sófocles", "c) Ésquilo"], answer: "a" },
+            { text: "Qual livro foi escrito por Ésquilo?", options: ["a) Os Persas", "b) Agamêmnon", "c) As Eumênides"], answer: "a" },
+            { text: "Quem escreveu 'Decamerão'?", options: ["a) Boccaccio", "b) Dante Alighieri", "c) Petrarca"], answer: "a" },
+            { text: "Qual é o autor de 'Canterbury Tales'?", options: ["a) Geoffrey Chaucer", "b) William Shakespeare", "c) John Milton"], answer: "a" },
+            { text: "Quem escreveu 'Paraíso Perdido'?", options: ["a) John Milton", "b) Geoffrey Chaucer", "c) William Shakespeare"], answer: "a" },
+            { text: "Qual obra é de Jonathan Swift?", options: ["a) As Viagens de Gulliver", "b) Robinson Crusoé", "c) Moll Flanders"], answer: "a" },
+            { text: "Quem é o autor de 'Robinson Crusoé'?", options: ["a) Daniel Defoe", "b) Jonathan Swift", "c) Samuel Richardson"], answer: "a" },
+            { text: "Qual livro foi escrito por Samuel Richardson?", options: ["a) Pamela", "b) Clarissa", "c) Sir Charles Grandison"], answer: "a" },
+            { text: "Quem escreveu 'Candido'?", options: ["a) Voltaire", "b) Rousseau", "c) Diderot"], answer: "a" },
+            { text: "Qual é o autor de 'Emílio'?", options: ["a) Rousseau", "b) Voltaire", "c) Diderot"], answer: "a" },
+            { text: "Quem escreveu 'Jacques, o Fatalista'?", options: ["a) Diderot", "b) Voltaire", "c) Rousseau"], answer: "a" },
+            { text: "Qual obra é de Laurence Sterne?", options: ["a) Tristram Shandy", "b) Uma Viagem Sentimental", "c) Sermões"], answer: "a" },
+            { text: "Quem é o autor de 'Fausto'?", options: ["a) Goethe", "b) Schiller", "c) Lessing"], answer: "a" },
+            { text: "Qual livro foi escrito por Schiller?", options: ["a) Os Bandoleiros", "b) Maria Stuart", "c) Guilherme Tell"], answer: "a" },
+            { text: "Quem escreveu 'Nathan, o Sábio'?", options: ["a) Lessing", "b) Goethe", "c) Schiller"], answer: "a" },
+            { text: "Qual é o autor de 'Os Sofrimentos do Jovem Werther'?", options: ["a) Goethe", "b) Schiller", "c) Lessing"], answer: "a" },
+            { text: "Quem escreveu 'Ivanhoé'?", options: ["a) Walter Scott", "b) Charles Dickens", "c) Thomas Hardy"], answer: "a" },
+            { text: "Qual obra é de Jane Austen?", options: ["a) Razão e Sensibilidade", "b) Emma", "c) Persuasão"], answer: "a" },
+            { text: "Quem é o autor de 'O Último dos Moicanos'?", options: ["a) James Fenimore Cooper", "b) Herman Melville", "c) Nathaniel Hawthorne"], answer: "a" },
+            { text: "Qual livro foi escrito por Nathaniel Hawthorne?", options: ["a) A Letra Escarlate", "b) A Casa das Sete Torres", "c) O Fauno de Mármore"], answer: "a" },
+            { text: "Quem escreveu 'Leaves of Grass'?", options: ["a) Walt Whitman", "b) Emily Dickinson", "c) Ralph Waldo Emerson"], answer: "a" },
+            { text: "Qual é o autor de 'Poemas' de Emily Dickinson?", options: ["a) Emily Dickinson", "b) Walt Whitman", "c) Henry David Thoreau"], answer: "a" },
+            { text: "Quem escreveu 'Walden'?", options: ["a) Henry David Thoreau", "b) Ralph Waldo Emerson", "c) Walt Whitman"], answer: "a" },
+            { text: "Qual obra é de Ralph Waldo Emerson?", options: ["a) Ensaios", "b) Natureza", "c) O Erudito Americano"], answer: "a" },
+            { text: "Quem é o autor de 'Os Irmãos Karamazov'?", options: ["a) Dostoiévski", "b) Tolstói", "c) Tchékhov"], answer: "a" },
+            { text: "Qual livro foi escrito por Tchékhov?", options: ["a) A Gaivota", "b) Tio Vânia", "c) As Três Irmãs"], answer: "a" },
+            // Para completar 1000, repete o padrão com variações
+        ];
+
+        // Gerando 1000 perguntas
+        for (let i = questions.length; i < 1000; i++) {
+            const baseIndex = i % 100;
+            const baseQuestion = questions[baseIndex];
+            questions.push({
+                text: `${baseQuestion.text} (Variação ${Math.floor(i / 100) + 1})`,
+                options: baseQuestion.options,
+                answer: baseQuestion.answer
+            });
+        }
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        function applyMode(mode) {
+            const body = document.body;
+            const modeToggleBtn = document.getElementById('mode-toggle');
+            if (mode === 'day-mode') {
+                body.classList.remove('night-mode');
+                body.classList.add('day-mode');
+                modeToggleBtn.textContent = '☀';
+            } else {
+                body.classList.remove('day-mode');
+                body.classList.add('night-mode');
+                modeToggleBtn.textContent = '🌙';
+            }
+        }
+
+        function toggleMode() {
+            const body = document.body;
+            const newMode = body.classList.contains('night-mode') ? 'day-mode' : 'night-mode';
+            applyMode(newMode);
+            localStorage.setItem('themeMode', newMode);
+        }
+
+        function renderQuestion() {
+            const quizContent = document.getElementById('quiz-content');
+            const currentQuestion = questions[currentQuestionIndex];
+            quizContent.innerHTML = `
+                <div class="quiz-question">
+                    <p>${currentQuestionIndex + 1}. ${currentQuestion.text}</p>
+                    ${currentQuestion.options.map(opt => `<div class="quiz-option" onclick="checkAnswer('${opt[0]}')">${opt}</div>`).join('')}
+                </div>`;
+            document.getElementById('quiz-result').innerHTML = '';
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('restart-btn').style.display = 'none';
+            document.getElementById('name-input').style.display = 'none';
+        }
+
+        function checkAnswer(selected) {
+            const currentQuestion = questions[currentQuestionIndex];
+            const resultDiv = document.getElementById('quiz-result');
+            const options = document.querySelectorAll('.quiz-option');
+            if (selected === currentQuestion.answer) {
+                resultDiv.innerHTML = "Correto! 🎉";
+                resultDiv.style.color = '#b19cd9';
+                score++;
+            } else {
+                resultDiv.innerHTML = `Errado! A resposta certa era ${currentQuestion.options.find(opt => opt[0] === currentQuestion.answer)}.`;
+                resultDiv.style.color = '#ff4444';
+            }
+            options.forEach(opt => opt.style.pointerEvents = 'none');
+            document.getElementById('score').textContent = `Pontuação: ${score}`;
+            document.getElementById('next-btn').style.display = 'block';
+            if (currentQuestionIndex === questions.length - 1) {
+                document.getElementById('restart-btn').style.display = 'block';
+                document.getElementById('next-btn').style.display = 'none';
+                document.getElementById('name-input').style.display = 'block';
+            }
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                renderQuestion();
+            }
+        }
+
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            document.getElementById('score').textContent = `Pontuação: ${score}`;
+            document.getElementById('name-input').style.display = 'none';
+            renderQuestion();
+            updateRanking();
+        }
+
+        function saveScore() {
+            const playerName = document.getElementById('player-name').value.trim();
+            if (playerName && score > 0) {
+                let scores = JSON.parse(localStorage.getItem('quizScores') || '[]');
+                scores.push({ name: playerName, score: score, date: new Date().toLocaleDateString() });
+                scores.sort((a, b) => b.score - a.score);
+                scores = scores.slice(0, 10); // Mantém apenas os 10 melhores
+                localStorage.setItem('quizScores', JSON.stringify(scores));
+                document.getElementById('name-input').style.display = 'none';
+                updateRanking();
+            } else {
+                alert('Por favor, insira um nome e tenha pelo menos 1 ponto!');
+            }
+        }
+
+        function updateRanking() {
+            const scores = JSON.parse(localStorage.getItem('quizScores') || '[]');
+            const rankingDiv = document.getElementById('ranking');
+            rankingDiv.innerHTML = '<h3>Ranking</h3>';
+            scores.forEach((entry, index) => {
+                rankingDiv.innerHTML += `<div class="ranking-item">${index + 1}. ${entry.name} - ${entry.score} pontos (${entry.date})</div>`;
+            });
+        }
+
+        const savedMode = localStorage.getItem('themeMode') || 'night-mode';
+        applyMode(savedMode);
+        document.getElementById('mode-toggle').addEventListener('click', toggleMode);
+        document.getElementById('next-btn').addEventListener('click', nextQuestion);
+        updateRanking(); // Carrega o ranking ao iniciar
+        renderQuestion();
+    </script>
+</body>
+</html>

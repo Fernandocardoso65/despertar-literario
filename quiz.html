@@ -38,6 +38,11 @@
             color: #b19cd9;
             margin-bottom: 20px;
         }
+        #first-place {
+            font-size: 1.2rem;
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
         #question {
             font-size: 1.2rem;
             margin-bottom: 15px;
@@ -119,7 +124,7 @@
             h1 {
                 font-size: 1.4rem;
             }
-            #timer, #question, #score {
+            #timer, #first-place, #question, #score {
                 font-size: 1rem;
             }
             .option {
@@ -146,7 +151,8 @@
 <body>
     <div class="container">
         <h1>Quiz Literário</h1>
-        <div id="timer">Tempo Total: 5:00</div>
+        <div id="timer">Tempo Total: 2:00</div>
+        <div id="first-place"></div>
         <div id="question"></div>
         <div class="options" id="options"></div>
         <div id="score">Pontuação: 0</div>
@@ -239,7 +245,7 @@
             { question: "Quem é o autor de 'A Montanha Mágica'?", options: ["Thomas Mann", "Hermann Hesse", "Franz Kafka", "Günter Grass"], answer: "Thomas Mann" },
             { question: "Qual é o gênero de 'O Hobbit' de J.R.R. Tolkien?", options: ["Fantasia", "Mistério", "Romance", "Histórico"], answer: "Fantasia" },
             { question: "Quem escreveu 'Os Irmãos Karamazov'?", options: ["Fyodor Dostoevsky", "Leo Tolstoy", "Ivan Turgenev", "Nikolai Gogol"], answer: "Fyodor Dostoevsky" },
-            { question: "Qual obra é de autoria de Cecília Meireles?", options: ["Romanceiro da Inconfidência", "Claro Enigma", "Libertinagem", "Poemas Completos"], answer: "Romanceiro da Inconfidência" },
+            { question: "Qual obra é de autoria de Cecília Meireles?", options: ["Romanceiro da Inconfidência", "Claro Enigma", "Libertinagem", "Morte e Vida Severina"], answer: "Romanceiro da Inconfidência" },
             { question: "Quem é o autor de 'O Médico e o Monstro'?", options: ["Robert Louis Stevenson", "Bram Stoker", "Oscar Wilde", "H.G. Wells"], answer: "Robert Louis Stevenson" },
             { question: "Qual é a nacionalidade de Salman Rushdie?", options: ["Indiano", "Paquistanês", "Egípcio", "Iraniano"], answer: "Indiano" },
             { question: "Quem escreveu 'Os Versos Satânicos'?", options: ["Salman Rushdie", "Arundhati Roy", "Vikram Seth", "Amitav Ghosh"], answer: "Salman Rushdie" },
@@ -272,7 +278,7 @@
 
         let availableQuestions = [...questionsPool]; // Cópia do pool para uso
         let score = 0;
-        let timeLeft = 300; // 5 minutos em segundos
+        let timeLeft = 120; // 2 minutos em segundos
         let timerInterval;
         let currentQuestion = null;
 
@@ -363,8 +369,9 @@
             leaderboard = leaderboard.slice(0, 5); // Mantém apenas os 5 primeiros
             localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
 
-            // Exibir placar
+            // Exibir placar e nome do primeiro lugar
             displayLeaderboard();
+            displayFirstPlace();
             document.getElementById('name-section').style.display = 'none';
             document.getElementById('leaderboard').style.display = 'block';
         }
@@ -380,12 +387,24 @@
             });
         }
 
+        function displayFirstPlace() {
+            const leaderboard = JSON.parse(localStorage.getItem('leaderboard')) || [];
+            if (leaderboard.length > 0) {
+                const firstPlace = leaderboard[0];
+                document.getElementById('first-place').textContent = `Líder: ${firstPlace.name} - ${firstPlace.score} pontos`;
+                document.getElementById('first-place').style.display = 'block';
+            } else {
+                document.getElementById('first-place').textContent = 'Nenhum líder ainda!';
+                document.getElementById('first-place').style.display = 'block';
+            }
+        }
+
         // Inicia o quiz
         window.onload = () => {
             shuffleArray(availableQuestions); // Embaralha o pool de perguntas
             startTimer();
             displayQuestion();
-            displayLeaderboard();
+            displayFirstPlace(); // Exibe o primeiro lugar ao carregar
         };
     </script>
 </body>

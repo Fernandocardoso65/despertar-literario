@@ -27,6 +27,7 @@
             color: #fff;
             margin: 0;
             position: relative;
+            overflow: auto; /* Adicionado para rolagem suave */
         }
 
         body.night-mode {
@@ -109,8 +110,8 @@
             max-width: 90%;
             width: 400px;
             position: relative;
-            z-index: 1;
-            padding-bottom: calc(100px + env(safe-area-inset-bottom)); /* Adjusted to account for browser UI */
+            z-index: 10; /* Aumentado para garantir que fique acima do footer */
+            padding-bottom: calc(100px + env(safe-area-inset-bottom));
         }
 
         body.day-mode .container {
@@ -206,6 +207,7 @@
             transition: background-color 0.3s ease;
             position: relative;
             overflow: hidden;
+            z-index: 11; /* Aumentado para garantir que os botões fiquem acima */
         }
 
         body.day-mode .btn-container {
@@ -306,7 +308,7 @@
 
         .footer {
             position: fixed;
-            bottom: calc(10px + env(safe-area-inset-bottom)); /* Adjusted to account for browser UI */
+            bottom: calc(15px + env(safe-area-inset-bottom)); /* Aumentado para mais espaço */
             left: 50%;
             transform: translateX(-50%);
             font-size: 0.9rem;
@@ -372,7 +374,7 @@
                 width: 90%;
                 max-width: 350px;
                 padding: 15px;
-                padding-bottom: calc(110px + env(safe-area-inset-bottom)); /* Adjusted for mobile */
+                padding-bottom: calc(120px + env(safe-area-inset-bottom)); /* Aumentado para evitar sobreposição */
             }
             .quote-card {
                 margin-bottom: 25px;
@@ -399,7 +401,7 @@
             .footer {
                 font-size: 0.8rem;
                 padding: 8px 15px;
-                bottom: calc(5px + env(safe-area-inset-bottom)); /* Adjusted for mobile */
+                bottom: calc(15px + env(safe-area-inset-bottom)); /* Ajustado para mobile */
             }
             .mode-toggle {
                 top: 10px;
@@ -418,7 +420,7 @@
             .container {
                 width: 90%;
                 max-width: 300px;
-                padding-bottom: calc(100px + env(safe-area-inset-bottom)); /* Adjusted for smaller screens */
+                padding-bottom: calc(110px + env(safe-area-inset-bottom)); /* Aumentado para telas menores */
             }
             .quote-card {
                 margin-bottom: 20px;
@@ -445,7 +447,7 @@
             .footer {
                 font-size: 0.7rem;
                 padding: 6px 12px;
-                bottom: calc(5px + env(safe-area-inset-bottom)); /* Adjusted for smaller screens */
+                bottom: calc(15px + env(safe-area-inset-bottom)); /* Ajustado para telas menores */
             }
             .mode-toggle {
                 top: 8px;
@@ -590,8 +592,11 @@
         function adjustPaddingForFooter() {
             const footer = document.querySelector('.footer');
             const container = document.querySelector('.container');
-            const footerHeight = footer.offsetHeight;
-            container.style.paddingBottom = `calc(${footerHeight + 20}px + env(safe-area-inset-bottom))`; /* Adjusted to include safe-area-inset-bottom */
+            if (footer && container) {
+                const footerHeight = footer.offsetHeight;
+                const extraMargin = 30; // Margem extra para evitar sobreposição
+                container.style.paddingBottom = `calc(${footerHeight + extraMargin}px + env(safe-area-inset-bottom))`;
+            }
         }
 
         function createParticles(containerId) {
@@ -624,6 +629,7 @@
         displayDailyQuote();
         adjustPaddingForFooter();
         window.addEventListener('resize', adjustPaddingForFooter);
+        window.addEventListener('scroll', adjustPaddingForFooter);
 
         document.getElementById('mode-toggle').addEventListener('click', toggleMode);
         document.querySelectorAll('.btn-container')[0].addEventListener('mouseover', () => handleMouseOver('particles1'));

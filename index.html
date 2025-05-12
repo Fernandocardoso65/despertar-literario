@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#b19cd9">
+    <meta name="description" content="Despertar Literário - Clube de Leitura de Sorocaba. Teste seus conhecimentos com nosso Quiz Literário!">
+    <meta name="keywords" content="literatura, quiz literário, clube de leitura, Sorocaba">
     <title>Despertar Literário</title>
     <link rel="manifest" href="/manifest.json">
     <link rel="apple-touch-icon" href="/icon-192.png">
@@ -110,7 +112,7 @@
             width: 400px;
             position: relative;
             z-index: 1;
-            padding-bottom: 80px; /* Ajustado para evitar sobreposição */
+            padding-bottom: 80px;
         }
 
         body.day-mode .container {
@@ -206,7 +208,7 @@
             transition: background-color 0.3s ease;
             position: relative;
             overflow: hidden;
-            z-index: 2; /* Garante que os botões fiquem acima do rodapé */
+            z-index: 2;
         }
 
         body.day-mode .btn-container {
@@ -316,7 +318,7 @@
             padding: 10px 20px;
             border-radius: 10px;
             text-align: center;
-            z-index: 1; /* Mantém o rodapé abaixo dos botões */
+            z-index: 1;
             width: auto;
         }
 
@@ -373,7 +375,7 @@
                 width: 90%;
                 max-width: 350px;
                 padding: 15px;
-                padding-bottom: 120px; /* Aumentado para evitar sobreposição */
+                padding-bottom: 120px;
             }
             h1 {
                 font-size: 1.2rem;
@@ -395,7 +397,7 @@
                 font-size: 0.8rem;
                 padding: 8px 15px;
                 bottom: 5px;
-                width: 90%; /* Garante que o rodapé não seja muito largo */
+                width: 90%;
                 max-width: 300px;
             }
             .mode-toggle {
@@ -415,7 +417,7 @@
             .container {
                 width: 90%;
                 max-width: 300px;
-                padding-bottom: 130px; /* Ajuste adicional para telas menores */
+                padding-bottom: 130px;
             }
             h1 {
                 font-size: 1rem;
@@ -488,15 +490,15 @@
         </div>
         <div class="buttons">
             <div class="btn-container">
-                <button class="btn" onclick="window.location.href='segunda_tela.html'">BIBLIOTECA DIGITAL</button>
+                <button class="btn" onclick="window.location.href='/segunda_tela.html'">BIBLIOTECA DIGITAL</button>
                 <div class="magic-particles" id="particles1"></div>
             </div>
             <div class="btn-container">
-                <button class="btn" onclick="window.location.href='terceira_tela.html'">EXPLORAR BIBLIOTECA CLÁSSICA</button>
+                <button class="btn" onclick="window.location.href='/terceira_tela.html'">EXPLORAR BIBLIOTECA CLÁSSICA</button>
                 <div class="magic-particles" id="particles2"></div>
             </div>
             <div class="btn-container">
-                <button class="btn" onclick="window.location.href='quiz.html'">QUIZ LITERÁRIO</button>
+                <button class="btn" onclick="window.location.href='/quiz'">QUIZ LITERÁRIO</button>
                 <div class="magic-particles" id="particles3"></div>
             </div>
             <button id="install-button" class="btn" style="display: none;">Instalar App</button>
@@ -584,7 +586,7 @@
             const footer = document.querySelector('.footer');
             const container = document.querySelector('.container');
             const footerHeight = footer.offsetHeight;
-            container.style.paddingBottom = `${footerHeight + 40}px`; // Aumentado para mais espaço
+            container.style.paddingBottom = `${footerHeight + 40}px`;
         }
 
         function createParticles(containerId) {

@@ -5,9 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#b19cd9">
     <title>Biblioteca Digital - Despertar Literário</title>
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icon-192.png">
     <style>
         body {
-            background: #0a1e3b;
+            background: #0a1e3b url('https://images.unsplash.com/photo-1519125323398-675f1f4d271f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            background-size: cover;
+            background-attachment: fixed;
             color: #fff;
             font-family: 'Arial', sans-serif;
             display: flex;
@@ -15,6 +19,7 @@
             align-items: center;
             min-height: 100vh;
             margin: 0;
+            position: relative;
         }
         .container {
             background: rgba(0, 0, 0, 0.7);
@@ -23,10 +28,17 @@
             text-align: center;
             max-width: 90%;
             width: 500px;
+            position: relative;
+            z-index: 1;
         }
         h1 {
             font-size: 1.8rem;
             margin-bottom: 20px;
+        }
+        p {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            color: #d3d3d3;
         }
         .btn {
             background-color: #b19cd9;
@@ -37,9 +49,27 @@
             border-radius: 25px;
             cursor: pointer;
             margin: 5px;
+            transition: background-color 0.3s ease;
         }
         .btn:hover {
             background-color: #9b7ed1;
+        }
+        @media (max-width: 600px) {
+            .container {
+                width: 90%;
+                max-width: 350px;
+                padding: 15px;
+            }
+            h1 {
+                font-size: 1.4rem;
+            }
+            p {
+                font-size: 0.9rem;
+            }
+            .btn {
+                font-size: 0.9rem;
+                padding: 10px;
+            }
         }
     </style>
 </head>
@@ -49,5 +79,20 @@
         <p>Explore nossa coleção de livros digitais aqui.</p>
         <button class="btn" onclick="window.location.href='/index.html'">Voltar</button>
     </div>
+
+    <script>
+        // Registro do Service Worker (opcional, desativado temporariamente para teste)
+        // if ('serviceWorker' in navigator) {
+        //     window.addEventListener('load', function() {
+        //         navigator.serviceWorker.register('/service-worker.js')
+        //             .then(function(registration) {
+        //                 console.log('Service Worker registrado com sucesso:', registration);
+        //             })
+        //             .catch(function(error) {
+        //                 console.log('Falha ao registrar o Service Worker:', error);
+        //             });
+        //     });
+        // }
+    </script>
 </body>
 </html>

@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#b19cd9">
+    <title>Quiz Literário - Despertar Literário</title>
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icon-192.png">
+    <style>
+        body {
+            background: #0a1e3b url('https://images.unsplash.com/photo-1519125323398-675f1f4d271f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            position: relative;
+        }
+        .container {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 90%;
+            width: 500px;
+            position: relative;
+            z-index: 1;
+        }
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+        #timer {
+            font-size: 1.5rem;
+            color: #b19cd9;
+            margin-bottom: 20px;
+        }
+        #question {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .option {
+            background-color: #b19cd9;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            font-size: 1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .option:hover {
+            background-color: #9b7ed1;
+        }
+        .option.correct {
+            background-color: #4CAF50;
+        }
+        .option.wrong {
+            background-color: #f44336;
+        }
+        #score {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+        .btn {
+            background-color: #b19cd9;
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            font-size: 1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .btn:hover {
+            background-color: #9b7ed1;
+        }
+        #name-section {
+            margin: 20px 0;
+        }
+        #player-name {
+            padding: 10px;
+            font-size: 1rem;
+            border-radius: 5px;
+            border: none;
+            margin-right: 10px;
+        }
+        #leaderboard {
+            margin-top: 20px;
+            text-align: left;
+        }
+        #leaderboard h2 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        #leaderboard-list {
+            list-style: none;
+            padding: 0;
+        }
+        #leaderboard-list li {
+            font-size: 1rem;
+            margin: 5px 0;
+        }
+        @media (max-width: 600px) {
+            .container {
+                width: 90%;
+                max-width: 350px;
+                padding: 15px;
+            }
+            h1 {
+                font-size: 1.4rem;
+            }
+            #timer, #question, #score {
+                font-size: 1rem;
+            }
+            .option {
+                font-size: 0.9rem;
+                padding: 8px;
+            }
+            .btn {
+                font-size: 0.9rem;
+                padding: 10px;
+            }
+            #player-name {
+                font-size: 0.9rem;
+                padding: 8px;
+            }
+            #leaderboard h2 {
+                font-size: 1.2rem;
+            }
+            #leaderboard-list li {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Quiz Literário</h1>
+        <div id="timer">Tempo Total: 5:00</div>
+        <div id="question"></div>
+        <div class="options" id="options"></div>
+        <div id="score">Pontuação: 0</div>
+        <div id="name-section" style="display: none;">
+            <input type="text" id="player-name" placeholder="Digite seu nome">
+            <button class="btn" onclick="saveScore()">Salvar Pontuação</button>
+        </div>
+        <div id="leaderboard" style="display: none;">
+            <h2>Placar de Líderes</h2>
+            <ul id="leaderboard-list"></ul>
+        </div>
+        <button class="btn" onclick="endQuiz()" id="end-btn" style="display: none;">Encerrar Quiz</button>
+        <button class="btn" onclick="window.location.href='/index.html'" id="back-btn">Voltar</button>
+    </div>
+
+    <script>
+        // Função para embaralhar array
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        const questionsPool = [
+            { question: "Quem escreveu 'A Metamorfose'?", options: ["Franz Kafka", "Hermann Hesse", "Thomas Mann", "Günter Grass"], answer: "Franz Kafka" },
+            { question: "Qual obra é considerada a primeira novela moderna?", options: ["Dom Quixote", "A Divina Comédia", "Decameron", "Os Lusíadas"], answer: "Dom Quixote" },
+            { question: "Quem é o autor de 'Crime e Castigo'?", options: ["Fyodor Dostoevsky", "Leo Tolstoy", "Vladimir Nabokov", "Anton Chekhov"], answer: "Fyodor Dostoevsky" },
+            { question: "Qual é a obra mais famosa de Machado de Assis?", options: ["Dom Casmurro", "Quincas Borba", "Helena", "Esaú e Jacó"], answer: "Dom Casmurro" },
+            { question: "Quem escreveu 'O Pequeno Príncipe'?", options: ["Antoine de Saint-Exupéry", "Victor Hugo", "Franz Kafka", "Jane Austen"], answer: "Antoine de Saint-Exupéry" },
+            { question: "Qual é o gênero de 'O Senhor dos Anéis'?", options: ["Fantasia", "Ficção Científica", "Romance", "Terror"], answer: "Fantasia" },
+            { question: "Quem é o autor de 'Harry Potter'?", options: ["J.R.R. Tolkien", "J.K. Rowling", "C.S. Lewis", "Stephen King"], answer: "J.K. Rowling" },
+            { question: "Em que ano foi publicado '1984' de George Orwell?", options: ["1949", "1950", "1960", "1970"], answer: "1949" },
+            { question: "Qual obra é conhecida como o maior clássico da literatura brasileira?", options: ["Memórias Póstumas de Brás Cubas", "O Guarani", "Iracema", "Grande Sertão: Veredas"], answer: "Grande Sertão: Veredas" },
+            { question: "Quem escreveu 'Dom Quixote'?", options: ["Miguel de Cervantes", "William Shakespeare", "Machado de Assis", "Jorge Amado"], answer: "Miguel de Cervantes" },
+            { question: "Qual é a nacionalidade de Gabriel García Márquez?", options: ["Colombiano", "Mexicano", "Argentino", "Chileno"], answer: "Colombiano" },
+            { question: "Quem escreveu 'Cem Anos de Solidão'?", options: ["Gabriel García Márquez", "Mario Vargas Llosa", "Isabel Allende", "Julio Cortázar"], answer: "Gabriel García Márquez" },
+            { question: "Qual é o primeiro livro da série 'As Crônicas de Nárnia'?", options: ["O Leão, a Feiticeira e o Guarda-Roupa", "Príncipe Caspian", "A Viagem do Peregrino da Alvorada", "A Cadeira de Prata"], answer: "O Leão, a Feiticeira e o Guarda-Roupa" },
+            { question: "Quem é o autor de 'Orgulho e Preconceito'?", options: ["Jane Austen", "Charlotte Brontë", "Emily Brontë", "Mary Shelley"], answer: "Jane Austen" },
+            { question: "Qual obra é um exemplo de literatura gótica?", options: ["Frankenstein", "Moby Dick", "Os Miseráveis", "O Retrato de Dorian Gray"], answer: "Frankenstein" },
+            { question: "Quem escreveu 'Os Lusíadas'?", options: ["Luís de Camões", "Fernando Pessoa", "Eça de Queirós", "Camilo Castelo Branco"], answer: "Luís de Camões" },
+            { question: "Qual é o gênero literário de 'O Alquimista' de Paulo Coelho?", options: ["Fantasia", "Romance", "Alegoria", "Suspense"], answer: "Alegoria" },
+            { question: "Quem é o autor de 'Moby Dick'?", options: ["Herman Melville", "Mark Twain", "Nathaniel Hawthorne", "Edgar Allan Poe"], answer: "Herman Melville" },
+            { question: "Qual obra foi escrita por Clarice Lispector?", options: ["A Paixão Segundo G.H.", "O Cortiço", "Vidas Secas", "Capitães da Areia"], answer: "A Paixão Segundo G.H." },
+            { question: "Quem escreveu 'O Morro dos Ventos Uivantes'?", options: ["Emily Brontë", "Charlotte Brontë", "Jane Austen", "George Eliot"], answer: "Emily Brontë" },
+            { question: "Qual é a nacionalidade de Franz Kafka?", options: ["Tcheco", "Alemão", "Russo", "Francês"], answer: "Tcheco" },
+            { question: "Quem escreveu 'O Retrato de Dorian Gray'?", options: ["Oscar Wilde", "Bram Stoker", "Robert Louis Stevenson", "H.G. Wells"], answer: "Oscar Wilde" },
+            { question: "Qual obra é de autoria de José de Alencar?", options: ["O Guarani", "Macunaíma", "Sagarana", "Fogo Morto"], answer: "O Guarani" },
+            { question: "Quem é o autor de 'As Aventuras de Tom Sawyer'?", options: ["Mark Twain", "Louisa May Alcott", "Jack London", "Harriet Beecher Stowe"], answer: "Mark Twain" },
+            { question: "Qual é o gênero de 'Drácula' de Bram Stoker?", options: ["Terror", "Romance", "Fantasia", "Mistério"], answer: "Terror" },
+            { question: "Quem escreveu 'A Divina Comédia'?", options: ["Dante Alighieri", "Giovanni Boccaccio", "Petrarca", "Homero"], answer: "Dante Alighieri" },
+            { question: "Qual obra é de autoria de Graciliano Ramos?", options: ["Vidas Secas", "A Moreninha", "O Ateneu", "Senhora"], answer: "Vidas Secas" },
+            { question: "Quem é o autor de 'Guerra e Paz'?", options: ["Leo Tolstoy", "Fyodor Dostoevsky", "Ivan Turgenev", "Nikolai Gogol"], answer: "Leo Tolstoy" },
+            { question: "Qual é a nacionalidade de Jorge Amado?", options: ["Brasileiro", "Argentino", "Português", "Mexicano"], answer: "Brasileiro" },
+            { question: "Quem escreveu 'Capitães da Areia'?", options: ["Jorge Amado", "Érico Veríssimo", "Aluísio Azevedo", "Manuel Bandeira"], answer: "Jorge Amado" },
+            { question: "Qual obra foi escrita por Virginia Woolf?", options: ["Mrs. Dalloway", "Middlemarch", "Jane Eyre", "Persuasão"], answer: "Mrs. Dalloway" },
+            { question: "Quem é o autor de 'A Ilíada'?", options: ["Homero", "Virgílio", "Sófocles", "Eurípedes"], answer: "Homero" },
+            { question: "Qual é o gênero de 'A Revolução dos Bichos'?", options: ["Sátira", "Romance", "Fantasia", "Suspense"], answer: "Sátira" },
+            { question: "Quem escreveu 'O Cortiço'?", options: ["Aluísio Azevedo", "José de Alencar", "Machado de Assis", "Raul Pompeia"], answer: "Aluísio Azevedo" },
+            { question: "Qual obra é de autoria de Ernest Hemingway?", options: ["O Velho e o Mar", "As Vinhas da Ira", "O Sol Também se Levanta", "Por Quem os Sinos Dobram"], answer: "O Velho e o Mar" },
+            { question: "Quem é o autor de 'Macunaíma'?", options: ["Mário de Andrade", "Oswald de Andrade", "Manuel Bandeira", "João Cabral de Melo Neto"], answer: "Mário de Andrade" },
+            { question: "Qual é a nacionalidade de Isabel Allende?", options: ["Chilena", "Peruana", "Colombiana", "Argentina"], answer: "Chilena" },
+            { question: "Quem escreveu 'A Casa dos Espíritos'?", options: ["Isabel Allende", "Laura Esquivel", "Gabriel García Márquez", "Mario Vargas Llosa"], answer: "Isabel Allende" },
+            { question: "Qual obra é de autoria de Eça de Queirós?", options: ["O Primo Basílio", "O Ateneu", "Senhora", "Lavoura Arcaica"], answer: "O Primo Basílio" },
+            { question: "Quem é o autor de 'O Apanhador no Campo de Centeio'?", options: ["J.D. Salinger", "F. Scott Fitzgerald", "John Steinbeck", "William Faulkner"], answer: "J.D. Salinger" },
+            { question: "Qual é o gênero de 'O Nome da Rosa' de Umberto Eco?", options: ["Mistério", "Fantasia", "Romance", "Biografia"], answer: "Mistério" },
+            { question: "Quem escreveu 'Sagarana'?", options: ["João Guimarães Rosa", "Graciliano Ramos", "Lygia Fagundes Telles", "Clarice Lispector"], answer: "João Guimarães Rosa" },
+            { question: "Qual obra é de autoria de Fernando Pessoa?", options: ["Livro do Desassossego", "Memorial de Aires", "Os Sertões", "Triste Fim de Policarpo Quaresma"], answer: "Livro do Desassossego" },
+            { question: "Quem é o autor de 'O Grande Gatsby'?", options: ["F. Scott Fitzgerald", "Ernest Hemingway", "William Faulkner", "John Steinbeck"], answer: "F. Scott Fitzgerald" },
+            { question: "Qual é a nacionalidade de Milan Kundera?", options: ["Tcheco", "Polonês", "Húngaro", "Russo"], answer: "Tcheco" },
+            { question: "Quem escreveu 'A Insustentável Leveza do Ser'?", options: ["Milan Kundera", "Franz Kafka", "Italo Calvino", "Thomas Mann"], answer: "Milan Kundera" },
+            { question: "Qual obra é de autoria de Guimarães Rosa?", options: ["Sagarana", "O Cortiço", "Iracema", "Memórias de um Sargento de Milícias"], answer: "Sagarana" },
+            { question: "Quem é o autor de 'O Estrangeiro'?", options: ["Albert Camus", "Jean-Paul Sartre", "Simone de Beauvoir", "André Gide"], answer: "Albert Camus" },
+            { question: "Qual é o gênero de 'Admirável Mundo Novo' de Aldous Huxley?", options: ["Distopia", "Fantasia", "Romance", "Suspense"], answer: "Distopia" },
+            { question: "Quem escreveu 'O Processo'?", options: ["Franz Kafka", "Hermann Hesse", "Thomas Mann", "Günter Grass"], answer: "Franz Kafka" },
+            { question: "Qual obra é de autoria de Manuel Bandeira?", options: ["Libertinagem", "Claro Enigma", "Romanceiro da Inconfidência", "Poemas Completos"], answer: "Libertinagem" },
+            { question: "Quem é o autor de 'Os Miseráveis'?", options: ["Victor Hugo", "Alexandre Dumas", "Émile Zola", "Gustave Flaubert"], answer: "Victor Hugo" },
+            { question: "Qual é a nacionalidade de Haruki Murakami?", options: ["Japonês", "Chinês", "Coreano", "Tailandês"], answer: "Japonês" },
+            { question: "Quem escreveu 'Norwegian Wood'?", options: ["Haruki Murakami", "Banana Yoshimoto", "Yukio Mishima", "Kenzaburo Oe"], answer: "Haruki Murakami" },
+            { question: "Qual obra é de autoria de Lima Barreto?", options: ["Triste Fim de Policarpo Quaresma", "O Ateneu", "O Mulato", "A Moreninha"], answer: "Triste Fim de Policarpo Quaresma" },
+            { question: "Quem é o autor de 'A Peste'?", options: ["Albert Camus", "Jean-Paul Sartre", "André Gide", "Simone de Beauvoir"], answer: "Albert Camus" },
+            { question: "Qual é o gênero de 'Lolita' de Vladimir Nabokov?", options: ["Romance", "Suspense", "Fantasia", "Sátira"], answer: "Romance" },
+            { question: "Quem escreveu 'Madame Bovary'?", options: ["Gustave Flaubert", "Émile Zola", "Victor Hugo", "Honoré de Balzac"], answer: "Gustave Flaubert" },
+            { question: "Qual obra é de autoria de Lygia Fagundes Telles?", options: ["As Meninas", "Felicidade Clandestina", "Água Viva", "A Paixão Segundo G.H."], answer: "As Meninas" },
+            { question: "Quem é o autor de 'O Som e a Fúria'?", options: ["William Faulkner", "F. Scott Fitzgerald", "John Steinbeck", "Ernest Hemingway"], answer: "William Faulkner" },
+            { question: "Qual é a nacionalidade de Toni Morrison?", options: ["Americana", "Britânica", "Canadense", "Australiana"], answer: "Americana" },
+            { question: "Quem escreveu 'Amada'?", options: ["Toni Morrison", "Alice Walker", "Maya Angelou", "Zora Neale Hurston"], answer: "Toni Morrison" },
+            { question: "Qual obra é de autoria de Érico Veríssimo?", options: ["Olhai os Lírios do Campo", "O Cortiço", "Senhora", "O Guarani"], answer: "Olhai os Lírios do Campo" },
+            { question: "Quem é o autor de 'A Montanha Mágica'?", options: ["Thomas Mann", "Hermann Hesse", "Franz Kafka", "Günter Grass"], answer: "Thomas Mann" },
+            { question: "Qual é o gênero de 'O Hobbit' de J.R.R. Tolkien?", options: ["Fantasia", "Mistério", "Romance", "Histórico"], answer: "Fantasia" },
+            { question: "Quem escreveu 'Os Irmãos Karamazov'?", options: ["Fyodor Dostoevsky", "Leo Tolstoy", "Ivan Turgenev", "Nikolai Gogol"], answer: "Fyodor Dostoevsky" },
+            { question: "Qual obra é de autoria de Cecília Meireles?", options: ["Romanceiro da Inconfidência", "Claro Enigma", "Libertinagem", "Poemas Completos"], answer: "Romanceiro da Inconfidência" },
+            { question: "Quem é o autor de 'O Médico e o Monstro'?", options: ["Robert Louis Stevenson", "Bram Stoker", "Oscar Wilde", "H.G. Wells"], answer: "Robert Louis Stevenson" },
+            { question: "Qual é a nacionalidade de Salman Rushdie?", options: ["Indiano", "Paquistanês", "Egípcio", "Iraniano"], answer: "Indiano" },
+            { question: "Quem escreveu 'Os Versos Satânicos'?", options: ["Salman Rushdie", "Arundhati Roy", "Vikram Seth", "Amitav Ghosh"], answer: "Salman Rushdie" },
+            { question: "Qual obra é de autoria de Raul Pompeia?", options: ["O Ateneu", "O Mulato", "Senhora", "A Moreninha"], answer: "O Ateneu" },
+            { question: "Quem é o autor de 'As Vinhas da Ira'?", options: ["John Steinbeck", "F. Scott Fitzgerald", "William Faulkner", "Ernest Hemingway"], answer: "John Steinbeck" },
+            { question: "Qual é o gênero de 'O Perfume' de Patrick Süskind?", options: ["Suspense", "Fantasia", "Romance", "Histórico"], answer: "Suspense" },
+            { question: "Quem escreveu 'O Lobo da Estepe'?", options: ["Hermann Hesse", "Thomas Mann", "Franz Kafka", "Günter Grass"], answer: "Hermann Hesse" },
+            { question: "Qual obra é de autoria de João Cabral de Melo Neto?", options: ["Morte e Vida Severina", "Claro Enigma", "Libertinagem", "Romanceiro da Inconfidência"], answer: "Morte e Vida Severina" },
+            { question: "Quem é o autor de 'O Senhor das Moscas'?", options: ["William Golding", "Aldous Huxley", "George Orwell", "Ray Bradbury"], answer: "William Golding" },
+            { question: "Qual é a nacionalidade de Chinua Achebe?", options: ["Nigeriano", "Queniano", "Sul-africano", "Ganense"], answer: "Nigeriano" },
+            { question: "Quem escreveu 'O Mundo se Despedaça'?", options: ["Chinua Achebe", "Ngũgĩ wa Thiong'o", "Wole Soyinka", "Buchi Emecheta"], answer: "Chinua Achebe" },
+            { question: "Qual obra é de autoria de Raduan Nassar?", options: ["Lavoura Arcaica", "O Cortiço", "Senhora", "O Guarani"], answer: "Lavoura Arcaica" },
+            { question: "Quem é o autor de 'Fahrenheit 451'?", options: ["Ray Bradbury", "Aldous Huxley", "George Orwell", "Philip K. Dick"], answer: "Ray Bradbury" },
+            { question: "Qual é o gênero de 'O Conto da Aia' de Margaret Atwood?", options: ["Distopia", "Fantasia", "Romance", "Suspense"], answer: "Distopia" },
+            { question: "Quem escreveu 'O Castelo'?", options: ["Franz Kafka", "Hermann Hesse", "Thomas Mann", "Günter Grass"], answer: "Franz Kafka" },
+            { question: "Qual obra é de autoria de Carlos Drummond de Andrade?", options: ["Claro Enigma", "Libertinagem", "Romanceiro da Inconfidência", "Morte e Vida Severina"], answer: "Claro Enigma" },
+            { question: "Quem é o autor de 'A Máquina do Tempo'?", options: ["H.G. Wells", "Jules Verne", "Isaac Asimov", "Arthur C. Clarke"], answer: "H.G. Wells" },
+            { question: "Qual é a nacionalidade de Jhumpa Lahiri?", options: ["Indiana", "Paquistanesa", "Bangladesh", "Sri Lanka"], answer: "Indiana" },
+            { question: "Quem escreveu 'O Intérprete de Males'?", options: ["Jhumpa Lahiri", "Arundhati Roy", "Salman Rushdie", "Vikram Seth"], answer: "Jhumpa Lahiri" },
+            { question: "Qual obra é de autoria de Bernardo Guimarães?", options: ["A Escrava Isaura", "O Mulato", "O Ateneu", "Senhora"], answer: "A Escrava Isaura" },
+            { question: "Quem é o autor de 'Ao Farol'?", options: ["Virginia Woolf", "Jane Austen", "George Eliot", "Charlotte Brontë"], answer: "Virginia Woolf" },
+            { question: "Qual é o gênero de 'Neuromancer' de William Gibson?", options: ["Cyberpunk", "Fantasia", "Romance", "Histórico"], answer: "Cyberpunk" },
+            { question: "Quem escreveu 'O Jogo da Amarelinha'?", options: ["Julio Cortázar", "Gabriel García Márquez", "Mario Vargas Llosa", "Jorge Luis Borges"], answer: "Julio Cortázar" },
+            { question: "Qual obra é de autoria de Oswald de Andrade?", options: ["Memórias Sentimentais de João Miramar", "Claro Enigma", "Libertinagem", "Romanceiro da Inconfidência"], answer: "Memórias Sentimentais de João Miramar" },
+            { question: "Quem é o autor de 'Duna'?", options: ["Frank Herbert", "Isaac Asimov", "Arthur C. Clarke", "Robert A. Heinlein"], answer: "Frank Herbert" },
+            { question: "Qual é a nacionalidade de Mo Yan?", options: ["Chinês", "Japonês", "Coreano", "Tailandês"], answer: "Chinês" },
+            { question: "Quem escreveu 'O Vermelho e o Negro'?", options: ["Stendhal", "Honoré de Balzac", "Gustave Flaubert", "Émile Zola"], answer: "Stendhal" },
+            { question: "Qual obra é de autoria de Euclides da Cunha?", options: ["Os Sertões", "O Cortiço", "Senhora", "O Guarani"], answer: "Os Sertões" }
+        ];
+
+        let availableQuestions = [...questionsPool]; // Cópia do pool para uso
+        let score = 0;
+        let timeLeft = 300; // 5 minutos em segundos
+        let timerInterval;
+        let currentQuestion = null;
+
+        function startTimer() {
+            document.getElementById('timer').textContent = `Tempo Total: ${Math.floor(timeLeft / 60)}:${String(timeLeft % 60).padStart(2, '0')}`;
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                document.getElementById('timer').textContent = `Tempo Total: ${Math.floor(timeLeft / 60)}:${String(timeLeft % 60).padStart(2, '0')}`;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    endQuiz();
+                }
+            }, 1000);
+        }
+
+        function shuffleAndGetQuestion() {
+            if (availableQuestions.length === 0) {
+                endQuiz(); // Termina o quiz se todas as perguntas forem usadas
+                return null;
+            }
+            const randomIndex = Math.floor(Math.random() * availableQuestions.length);
+            currentQuestion = availableQuestions.splice(randomIndex, 1)[0]; // Remove e retorna a pergunta
+            return currentQuestion;
+        }
+
+        function displayQuestion() {
+            const question = shuffleAndGetQuestion();
+            if (!question) return; // Se não houver mais perguntas, para
+            document.getElementById('question').textContent = question.question;
+            const optionsDiv = document.getElementById('options');
+            optionsDiv.innerHTML = '';
+            let shuffledOptions = shuffleArray([...question.options]); // Embaralha as opções
+            shuffledOptions.forEach(option => {
+                const button = document.createElement('button');
+                button.textContent = option;
+                button.classList.add('option');
+                button.addEventListener('click', () => checkAnswer(option));
+                optionsDiv.appendChild(button);
+            });
+            document.getElementById('end-btn').style.display = 'inline-block';
+        }
+
+        function checkAnswer(selected) {
+            const options = document.querySelectorAll('.option');
+            clearInterval(timerInterval); // Para o cronômetro da pergunta
+            if (selected === currentQuestion.answer) {
+                score += 10;
+                options.forEach(option => {
+                    if (option.textContent === selected) option.classList.add('correct');
+                });
+            } else {
+                options.forEach(option => {
+                    if (option.textContent === selected) option.classList.add('wrong');
+                    if (option.textContent === currentQuestion.answer) option.classList.add('correct');
+                });
+            }
+            document.getElementById('score').textContent = `Pontuação: ${score}`;
+            setTimeout(() => {
+                options.forEach(option => {
+                    option.classList.remove('correct', 'wrong');
+                });
+                startTimer(); // Reinicia o cronômetro geral
+                displayQuestion(); // Próxima pergunta
+            }, 1000);
+        }
+
+        function endQuiz() {
+            clearInterval(timerInterval);
+            document.getElementById('timer').style.display = 'none';
+            document.getElementById('question').style.display = 'none';
+            document.getElementById('options').style.display = 'none';
+            document.getElementById('end-btn').style.display = 'none';
+            document.getElementById('score').textContent = `Pontuação Final: ${score}`;
+            document.getElementById('name-section').style.display = 'block';
+        }
+
+        function saveScore() {
+            const name = document.getElementById('player-name').value.trim();
+            if (!name) {
+                alert('Por favor, digite seu nome!');
+                return;
+            }
+
+            // Salvar pontuação no localStorage
+            let leaderboard = JSON.parse(localStorage.getItem('leaderboard')) || [];
+            leaderboard.push({ name, score });
+            leaderboard.sort((a, b) => b.score - a.score); // Ordena por pontuação decrescente
+            leaderboard = leaderboard.slice(0, 5); // Mantém apenas os 5 primeiros
+            localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
+
+            // Exibir placar
+            displayLeaderboard();
+            document.getElementById('name-section').style.display = 'none';
+            document.getElementById('leaderboard').style.display = 'block';
+        }
+
+        function displayLeaderboard() {
+            const leaderboard = JSON.parse(localStorage.getItem('leaderboard')) || [];
+            const leaderboardList = document.getElementById('leaderboard-list');
+            leaderboardList.innerHTML = '';
+            leaderboard.forEach((entry, index) => {
+                const li = document.createElement('li');
+                li.textContent = `${index + 1}. ${entry.name}: ${entry.score} pontos`;
+                leaderboardList.appendChild(li);
+            });
+        }
+
+        // Inicia o quiz
+        window.onload = () => {
+            shuffleArray(availableQuestions); // Embaralha o pool de perguntas
+            startTimer();
+            displayQuestion();
+            displayLeaderboard();
+        };
+    </script>
+</body>
+</html>

@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#b19cd9">
+    <meta name="description" content="Participe do Quiz Literário do Despertar Literário - Clube de Leitura de Sorocaba. Teste seus conhecimentos literários!">
+    <meta name="keywords" content="quiz literário, literatura, clube de leitura, Sorocaba">
     <title>Quiz Literário - Despertar Literário</title>
     <link rel="manifest" href="/manifest.json">
     <link rel="apple-touch-icon" href="/icon-192.png">
@@ -21,7 +23,6 @@
             background-size: cover;
             background-attachment: fixed;
             color: #fff;
-            font-family: 'Arial', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -217,6 +218,11 @@
             background-color: #f44336;
         }
 
+        .option:disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
         #score {
             font-size: 1.2rem;
             margin-bottom: 20px;
@@ -297,9 +303,17 @@
             color: #e0e0e0;
         }
 
+        #player-name::placeholder {
+            color: #b0b0b0;
+        }
+
         body.day-mode #player-name {
             background: rgba(0, 0, 0, 0.05);
             color: #555;
+        }
+
+        body.day-mode #player-name::placeholder {
+            color: #888;
         }
 
         #leaderboard {
@@ -348,6 +362,17 @@
             color: #333;
         }
 
+        .loading {
+            font-size: 1rem;
+            color: #b19cd9;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        body.day-mode .loading {
+            color: #6a5acd;
+        }
+
         @media (max-width: 600px) {
             .container {
                 width: 90%;
@@ -390,7 +415,7 @@
     </style>
 </head>
 <body class="night-mode">
-    <button class="mode-toggle" id="mode-toggle">🌙</button>
+    <button class="mode-toggle" id="mode-toggle" aria-label="Alternar entre modo noturno e diurno">🌙</button>
     <div class="stars">
         <div class="star"></div>
         <div class="star"></div>
@@ -415,25 +440,26 @@
     </div>
     <div class="container">
         <h1>Quiz Literário</h1>
-        <div id="timer">Tempo Total: 2:00</div>
-        <div id="first-place"></div>
-        <div id="question"></div>
-        <div class="options" id="options"></div>
-        <div id="score">Pontuação: 0</div>
+        <div id="timer" aria-live="polite">Tempo Total: 2:00</div>
+        <div id="first-place" aria-live="polite"></div>
+        <div id="question" aria-live="assertive"></div>
+        <div class="loading" id="loading">Carregando próxima pergunta...</div>
+        <div class="options" id="options" role="radiogroup"></div>
+        <div id="score" aria-live="polite">Pontuação: 0</div>
         <div id="name-section" style="display: none;">
-            <input type="text" id="player-name" placeholder="Digite seu nome">
-            <button class="btn" onclick="saveScore()">Salvar Pontuação</button>
+            <input type="text" id="player-name" placeholder="Digite seu nome" aria-label="Digite seu nome para salvar a pontuação">
+            <button class="btn" onclick="saveScore()" aria-label="Salvar pontuação no placar">Salvar Pontuação</button>
         </div>
         <div id="leaderboard" style="display: none;">
             <h2>Placar de Líderes</h2>
-            <ul id="leaderboard-list"></ul>
+            <ul id="leaderboard-list" aria-label="Lista de líderes do quiz"></ul>
         </div>
         <div class="btn-container">
-            <button class="btn" onclick="endQuiz()" id="end-btn" style="display: none;">Encerrar Quiz</button>
+            <button class="btn" onclick="endQuiz()" id="end-btn" style="display: none;" aria-label="Encerrar o quiz">Encerrar Quiz</button>
             <div class="magic-particles" id="particles1"></div>
         </div>
         <div class="btn-container">
-            <button class="btn" onclick="window.location.href='/index.html'" id="back-btn">Voltar</button>
+            <button class="btn" onclick="window.location.href='/index.html'" id="back-btn" aria-label="Voltar para a página inicial">Voltar</button>
             <div class="magic-particles" id="particles2"></div>
         </div>
     </div>
@@ -543,7 +569,6 @@
             { question: "Qual é a nacionalidade de Mo Yan?", options: ["Chinês", "Japonês", "Coreano", "Tailandês"], answer: "Chinês" },
             { question: "Quem escreveu 'O Vermelho e o Negro'?", options: ["Stendhal", "Honoré de Balzac", "Gustave Flaubert", "Émile Zola"], answer: "Stendhal" },
             { question: "Qual obra é de autoria de Euclides da Cunha?", options: ["Os Sertões", "O Cortiço", "Senhora", "O Guarani"], answer: "Os Sertões" },
-            // Novas perguntas variadas
             { question: "Qual autor escreveu 'A Revolta de Atlas'?", options: ["Ayn Rand", "George Orwell", "Ray Bradbury", "Isaac Asimov"], answer: "Ayn Rand" },
             { question: "Qual obra é um clássico da literatura africana moderna?", options: ["Coisas Desmoronam-se", "O Leão e o Rato", "O Velho e o Mar", "O Sol é Para Todos"], answer: "Coisas Desmoronam-se" },
             { question: "Quem escreveu 'Crepúsculo'?", options: ["Stephenie Meyer", "J.K. Rowling", "Suzanne Collins", "Cassandra Clare"], answer: "Stephenie Meyer" },
@@ -576,6 +601,7 @@
 
         function shuffleAndGetQuestion() {
             if (availableQuestions.length === 0) {
+                clearInterval(timerInterval);
                 endQuiz();
                 return null;
             }
@@ -595,6 +621,8 @@
                 const button = document.createElement('button');
                 button.textContent = option;
                 button.classList.add('option');
+                button.setAttribute('role', 'radio');
+                button.setAttribute('aria-label', `Opção: ${option}`);
                 button.addEventListener('click', () => checkAnswer(option));
                 optionsDiv.appendChild(button);
             });
@@ -604,6 +632,8 @@
         function checkAnswer(selected) {
             const options = document.querySelectorAll('.option');
             clearInterval(timerInterval);
+            options.forEach(option => option.disabled = true); // Desabilita os botões
+            document.getElementById('loading').style.display = 'block'; // Mostra feedback de carregamento
             if (selected === currentQuestion.answer) {
                 score += 10;
                 options.forEach(option => {
@@ -617,8 +647,10 @@
             }
             document.getElementById('score').textContent = `Pontuação: ${score}`;
             setTimeout(() => {
+                document.getElementById('loading').style.display = 'none'; // Esconde o feedback
                 options.forEach(option => {
                     option.classList.remove('correct', 'wrong');
+                    option.disabled = false; // Reabilita os botões
                 });
                 startTimer();
                 displayQuestion();
@@ -637,12 +669,14 @@
 
         function saveScore() {
             const name = document.getElementById('player-name').value.trim();
-            if (!name) {
-                alert('Por favor, digite seu nome!');
+            if (!name || name.length === 0) {
+                alert('Por favor, digite um nome válido!');
                 return;
             }
 
             let leaderboard = JSON.parse(localStorage.getItem('leaderboard')) || [];
+            // Remove qualquer entrada anterior com o mesmo nome
+            leaderboard = leaderboard.filter(entry => entry.name !== name);
             leaderboard.push({ name, score });
             leaderboard.sort((a, b) => b.score - a.score);
             leaderboard = leaderboard.slice(0, 5);
@@ -684,10 +718,12 @@
                 body.classList.remove('night-mode');
                 body.classList.add('day-mode');
                 modeToggleBtn.textContent = '☀';
+                modeToggleBtn.setAttribute('aria-label', 'Alternar para modo noturno');
             } else {
                 body.classList.remove('day-mode');
                 body.classList.add('night-mode');
                 modeToggleBtn.textContent = '🌙';
+                modeToggleBtn.setAttribute('aria-label', 'Alternar para modo diurno');
             }
         }
 

@@ -110,7 +110,7 @@
             width: 400px;
             position: relative;
             z-index: 1;
-            padding-bottom: 100px; /* Aumentado para evitar sobreposição */
+            padding-bottom: calc(100px + env(safe-area-inset-bottom)); /* Adjusted to account for browser UI */
         }
 
         body.day-mode .container {
@@ -163,7 +163,7 @@
             background: rgba(255, 255, 255, 0.1);
             padding: 15px;
             border-radius: 10px;
-            margin-bottom: 30px; /* Aumentado para evitar sobreposição */
+            margin-bottom: 30px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
         }
 
@@ -195,7 +195,7 @@
         .buttons {
             display: flex;
             flex-direction: column;
-            gap: 20px; /* Aumentado para melhor espaçamento */
+            gap: 20px;
         }
 
         .btn-container {
@@ -306,7 +306,7 @@
 
         .footer {
             position: fixed;
-            bottom: 10px;
+            bottom: calc(10px + env(safe-area-inset-bottom)); /* Adjusted to account for browser UI */
             left: 50%;
             transform: translateX(-50%);
             font-size: 0.9rem;
@@ -372,13 +372,13 @@
                 width: 90%;
                 max-width: 350px;
                 padding: 15px;
-                padding-bottom: 110px; /* Ajustado para evitar sobreposição */
+                padding-bottom: calc(110px + env(safe-area-inset-bottom)); /* Adjusted for mobile */
             }
             .quote-card {
-                margin-bottom: 25px; /* Ajustado para telas menores */
+                margin-bottom: 25px;
             }
             .buttons {
-                gap: 15px; /* Ajustado para telas menores */
+                gap: 15px;
             }
             h1 {
                 font-size: 1.2rem;
@@ -399,7 +399,7 @@
             .footer {
                 font-size: 0.8rem;
                 padding: 8px 15px;
-                bottom: 5px;
+                bottom: calc(5px + env(safe-area-inset-bottom)); /* Adjusted for mobile */
             }
             .mode-toggle {
                 top: 10px;
@@ -418,13 +418,13 @@
             .container {
                 width: 90%;
                 max-width: 300px;
-                padding-bottom: 100px; /* Ajustado para telas menores */
+                padding-bottom: calc(100px + env(safe-area-inset-bottom)); /* Adjusted for smaller screens */
             }
             .quote-card {
-                margin-bottom: 20px; /* Ajustado para telas menores */
+                margin-bottom: 20px;
             }
             .buttons {
-                gap: 12px; /* Ajustado para telas menores */
+                gap: 12px;
             }
             h1 {
                 font-size: 1rem;
@@ -432,7 +432,7 @@
             h2 {
                 font-size: 1.2rem;
             }
-            رعایت {
+            h3 {
                 font-size: 0.9rem;
             }
             .quote {
@@ -445,7 +445,7 @@
             .footer {
                 font-size: 0.7rem;
                 padding: 6px 12px;
-                bottom: 5px;
+                bottom: calc(5px + env(safe-area-inset-bottom)); /* Adjusted for smaller screens */
             }
             .mode-toggle {
                 top: 8px;
@@ -591,7 +591,7 @@
             const footer = document.querySelector('.footer');
             const container = document.querySelector('.container');
             const footerHeight = footer.offsetHeight;
-            container.style.paddingBottom = `${footerHeight + 20}px`;
+            container.style.paddingBottom = `calc(${footerHeight + 20}px + env(safe-area-inset-bottom))`; /* Adjusted to include safe-area-inset-bottom */
         }
 
         function createParticles(containerId) {
@@ -617,7 +617,6 @@
             createParticles(containerId);
         }
 
-        // Carregar o modo salvo do localStorage ou usar night-mode como padrão
         const savedMode = localStorage.getItem('themeMode') || 'night-mode';
         applyMode(savedMode);
 
@@ -636,10 +635,6 @@
                 navigator.serviceWorker.register('/service-worker.js')
                     .then(function(registration) {
                         console.log('Service Worker registrado com sucesso:', registration);
-                    })
-                    .catch(function(error) {
-                        console.log('Falha ao registrar o Service Worker:', error);
-                        alert('Erro ao registrar
                     })
                     .catch(function(error) {
                         console.log('Falha ao registrar o Service Worker:', error);

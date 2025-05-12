@@ -110,7 +110,7 @@
             width: 400px;
             position: relative;
             z-index: 1;
-            padding-bottom: 80px;
+            padding-bottom: 100px; /* Aumentado para evitar sobreposição */
         }
 
         body.day-mode .container {
@@ -163,7 +163,7 @@
             background: rgba(255, 255, 255, 0.1);
             padding: 15px;
             border-radius: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 30px; /* Aumentado para evitar sobreposição */
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
         }
 
@@ -195,7 +195,7 @@
         .buttons {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 20px; /* Aumentado para melhor espaçamento */
         }
 
         .btn-container {
@@ -264,7 +264,7 @@
 
         .particle {
             position: absolute;
-            background: #b19cd9; /* Nova cor das partículas: roxo claro */
+            background: #b19cd9;
             border-radius: 50%;
             opacity: 0;
             animation: sparkle 1s ease-out forwards;
@@ -372,7 +372,13 @@
                 width: 90%;
                 max-width: 350px;
                 padding: 15px;
-                padding-bottom: 90px;
+                padding-bottom: 110px; /* Ajustado para evitar sobreposição */
+            }
+            .quote-card {
+                margin-bottom: 25px; /* Ajustado para telas menores */
+            }
+            .buttons {
+                gap: 15px; /* Ajustado para telas menores */
             }
             h1 {
                 font-size: 1.2rem;
@@ -412,7 +418,13 @@
             .container {
                 width: 90%;
                 max-width: 300px;
-                padding-bottom: 80px;
+                padding-bottom: 100px; /* Ajustado para telas menores */
+            }
+            .quote-card {
+                margin-bottom: 20px; /* Ajustado para telas menores */
+            }
+            .buttons {
+                gap: 12px; /* Ajustado para telas menores */
             }
             h1 {
                 font-size: 1rem;
@@ -420,7 +432,7 @@
             h2 {
                 font-size: 1.2rem;
             }
-            h3 {
+            رعایت {
                 font-size: 0.9rem;
             }
             .quote {
@@ -498,7 +510,7 @@
         </div>
     </div>
     <div class="footer">
-        Fernando Cardoso<br>
+        Desenvolvido por Fernando Cardoso<br>
         🔗 GitHub: <a href="https://github.com/Fernandocardoso65">@Fernandocardoso65</a>
     </div>
 
@@ -624,6 +636,10 @@
                 navigator.serviceWorker.register('/service-worker.js')
                     .then(function(registration) {
                         console.log('Service Worker registrado com sucesso:', registration);
+                    })
+                    .catch(function(error) {
+                        console.log('Falha ao registrar o Service Worker:', error);
+                        alert('Erro ao registrar
                     })
                     .catch(function(error) {
                         console.log('Falha ao registrar o Service Worker:', error);

@@ -110,7 +110,7 @@
             width: 400px;
             position: relative;
             z-index: 1;
-            padding-bottom: 80px;
+            padding-bottom: 80px; /* Ajustado para evitar sobreposição */
         }
 
         body.day-mode .container {
@@ -206,6 +206,7 @@
             transition: background-color 0.3s ease;
             position: relative;
             overflow: hidden;
+            z-index: 2; /* Garante que os botões fiquem acima do rodapé */
         }
 
         body.day-mode .btn-container {
@@ -264,7 +265,7 @@
 
         .particle {
             position: absolute;
-            background: #b19cd9; /* Nova cor das partículas: roxo claro */
+            background: #b19cd9;
             border-radius: 50%;
             opacity: 0;
             animation: sparkle 1s ease-out forwards;
@@ -315,7 +316,7 @@
             padding: 10px 20px;
             border-radius: 10px;
             text-align: center;
-            z-index: 1;
+            z-index: 1; /* Mantém o rodapé abaixo dos botões */
             width: auto;
         }
 
@@ -372,7 +373,7 @@
                 width: 90%;
                 max-width: 350px;
                 padding: 15px;
-                padding-bottom: 90px;
+                padding-bottom: 120px; /* Aumentado para evitar sobreposição */
             }
             h1 {
                 font-size: 1.2rem;
@@ -394,6 +395,8 @@
                 font-size: 0.8rem;
                 padding: 8px 15px;
                 bottom: 5px;
+                width: 90%; /* Garante que o rodapé não seja muito largo */
+                max-width: 300px;
             }
             .mode-toggle {
                 top: 10px;
@@ -412,7 +415,7 @@
             .container {
                 width: 90%;
                 max-width: 300px;
-                padding-bottom: 80px;
+                padding-bottom: 130px; /* Ajuste adicional para telas menores */
             }
             h1 {
                 font-size: 1rem;
@@ -434,6 +437,8 @@
                 font-size: 0.7rem;
                 padding: 6px 12px;
                 bottom: 5px;
+                width: 90%;
+                max-width: 280px;
             }
             .mode-toggle {
                 top: 8px;
@@ -579,7 +584,7 @@
             const footer = document.querySelector('.footer');
             const container = document.querySelector('.container');
             const footerHeight = footer.offsetHeight;
-            container.style.paddingBottom = `${footerHeight + 20}px`;
+            container.style.paddingBottom = `${footerHeight + 40}px`; // Aumentado para mais espaço
         }
 
         function createParticles(containerId) {
@@ -605,7 +610,6 @@
             createParticles(containerId);
         }
 
-        // Carregar o modo salvo do localStorage ou usar night-mode como padrão
         const savedMode = localStorage.getItem('themeMode') || 'night-mode';
         applyMode(savedMode);
 

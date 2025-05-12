@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#b19cd9">
-    <meta name="description" content="Despertar Literário - Clube de Leitura de Sorocaba. Teste seus conhecimentos com nosso Quiz Literário!">
-    <meta name="keywords" content="literatura, quiz literário, clube de leitura, Sorocaba">
     <title>Despertar Literário</title>
     <link rel="manifest" href="/manifest.json">
     <link rel="apple-touch-icon" href="/icon-192.png">
@@ -208,7 +206,6 @@
             transition: background-color 0.3s ease;
             position: relative;
             overflow: hidden;
-            z-index: 2;
         }
 
         body.day-mode .btn-container {
@@ -267,7 +264,7 @@
 
         .particle {
             position: absolute;
-            background: #b19cd9;
+            background: #b19cd9; /* Nova cor das partículas: roxo claro */
             border-radius: 50%;
             opacity: 0;
             animation: sparkle 1s ease-out forwards;
@@ -375,7 +372,7 @@
                 width: 90%;
                 max-width: 350px;
                 padding: 15px;
-                padding-bottom: 120px;
+                padding-bottom: 90px;
             }
             h1 {
                 font-size: 1.2rem;
@@ -397,8 +394,6 @@
                 font-size: 0.8rem;
                 padding: 8px 15px;
                 bottom: 5px;
-                width: 90%;
-                max-width: 300px;
             }
             .mode-toggle {
                 top: 10px;
@@ -417,7 +412,7 @@
             .container {
                 width: 90%;
                 max-width: 300px;
-                padding-bottom: 130px;
+                padding-bottom: 80px;
             }
             h1 {
                 font-size: 1rem;
@@ -439,8 +434,6 @@
                 font-size: 0.7rem;
                 padding: 6px 12px;
                 bottom: 5px;
-                width: 90%;
-                max-width: 280px;
             }
             .mode-toggle {
                 top: 8px;
@@ -490,15 +483,15 @@
         </div>
         <div class="buttons">
             <div class="btn-container">
-                <button class="btn" onclick="window.location.href='/segunda_tela.html'">BIBLIOTECA DIGITAL</button>
+                <button class="btn" onclick="window.location.href='segunda_tela.html'">BIBLIOTECA DIGITAL</button>
                 <div class="magic-particles" id="particles1"></div>
             </div>
             <div class="btn-container">
-                <button class="btn" onclick="window.location.href='/terceira_tela.html'">EXPLORAR BIBLIOTECA CLÁSSICA</button>
+                <button class="btn" onclick="window.location.href='terceira_tela.html'">EXPLORAR BIBLIOTECA CLÁSSICA</button>
                 <div class="magic-particles" id="particles2"></div>
             </div>
             <div class="btn-container">
-                <button class="btn" onclick="window.location.href='/quiz'">QUIZ LITERÁRIO</button>
+                <button class="btn" onclick="window.location.href='quiz.html'">QUIZ LITERÁRIO</button>
                 <div class="magic-particles" id="particles3"></div>
             </div>
             <button id="install-button" class="btn" style="display: none;">Instalar App</button>
@@ -586,7 +579,7 @@
             const footer = document.querySelector('.footer');
             const container = document.querySelector('.container');
             const footerHeight = footer.offsetHeight;
-            container.style.paddingBottom = `${footerHeight + 40}px`;
+            container.style.paddingBottom = `${footerHeight + 20}px`;
         }
 
         function createParticles(containerId) {
@@ -612,6 +605,7 @@
             createParticles(containerId);
         }
 
+        // Carregar o modo salvo do localStorage ou usar night-mode como padrão
         const savedMode = localStorage.getItem('themeMode') || 'night-mode';
         applyMode(savedMode);
 

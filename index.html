@@ -7,6 +7,8 @@
     <title>Despertar Literário</title>
     <link rel="manifest" href="/manifest.json">
     <link rel="apple-touch-icon" href="/icon-192.png">
+    <!-- Font Awesome para ícone do GitHub -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -27,7 +29,7 @@
             color: #fff;
             margin: 0;
             position: relative;
-            overflow: auto; /* Adicionado para rolagem suave */
+            overflow: auto;
         }
 
         body.night-mode {
@@ -107,11 +109,11 @@
             padding: 20px;
             border-radius: 15px;
             text-align: center;
-            max-width: 90%;
-            width: 400px;
+            width: 90%;
+            max-width: 360px; /* Tamanho padronizado */
             position: relative;
-            z-index: 5; /* Aumentado para garantir que fique acima do footer */
-            padding-bottom: calc(100px + env(safe-area-inset-bottom));
+            z-index: 5;
+            padding-bottom: calc(80px + env(safe-area-inset-bottom)); /* Ajustado para footer compacto */
         }
 
         body.day-mode .container {
@@ -207,7 +209,7 @@
             transition: background-color 0.3s ease;
             position: relative;
             overflow: hidden;
-            z-index: 11; /* Aumentado para garantir que os botões fiquem acima */
+            z-index: 11;
         }
 
         body.day-mode .btn-container {
@@ -308,17 +310,20 @@
 
         .footer {
             position: fixed;
-            bottom: calc(15px + env(safe-area-inset-bottom)); /* Aumentado para mais espaço */
+            bottom: calc(10px + env(safe-area-inset-bottom));
             left: 50%;
             transform: translateX(-50%);
             font-size: 0.9rem;
             color: #e0e0e0;
             background: rgba(0, 0, 0, 0.7);
-            padding: 10px 20px;
+            padding: 8px 15px;
             border-radius: 10px;
             text-align: center;
             z-index: 1;
-            width: auto;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         body.day-mode .footer {
@@ -342,6 +347,11 @@
 
         body.day-mode .footer a:hover {
             color: #5a4ab5;
+        }
+
+        .footer i {
+            font-size: 1rem;
+            vertical-align: middle;
         }
 
         #install-button {
@@ -372,12 +382,12 @@
         @media (max-width: 600px) {
             .container {
                 width: 90%;
-                max-width: 350px;
+                max-width: 340px;
                 padding: 15px;
-                padding-bottom: calc(120px + env(safe-area-inset-bottom)); /* Aumentado para evitar sobreposição */
+                padding-bottom: calc(90px + env(safe-area-inset-bottom));
             }
             .quote-card {
-                margin-bottom: 25px;
+                margin-bottom: zooms: 25px;
             }
             .buttons {
                 gap: 15px;
@@ -400,8 +410,11 @@
             }
             .footer {
                 font-size: 0.8rem;
-                padding: 8px 15px;
-                bottom: calc(15px + env(safe-area-inset-bottom)); /* Ajustado para mobile */
+                padding: 6px 12px;
+                gap: 5px;
+            }
+            .footer i {
+                font-size: 0.9rem;
             }
             .mode-toggle {
                 top: 10px;
@@ -420,7 +433,7 @@
             .container {
                 width: 90%;
                 max-width: 300px;
-                padding-bottom: calc(110px + env(safe-area-inset-bottom)); /* Aumentado para telas menores */
+                padding-bottom: calc(80px + env(safe-area-inset-bottom));
             }
             .quote-card {
                 margin-bottom: 20px;
@@ -446,8 +459,11 @@
             }
             .footer {
                 font-size: 0.7rem;
-                padding: 6px 12px;
-                bottom: calc(15px + env(safe-area-inset-bottom)); /* Ajustado para telas menores */
+                padding: 5px 10px;
+                gap: 4px;
+            }
+            .footer i {
+                font-size: 0.8rem;
             }
             .mode-toggle {
                 top: 8px;
@@ -512,10 +528,9 @@
         </div>
     </div>
     <div class="footer">
-        Desenvolvido por Fernando Cardoso<br>
-        🔗 GitHub: <a href="https://github.com/Fernandocardoso65">@Fernandocardoso65</a>
+        Desenvolvido por <a href="https://github.com/Fernandocardoso65"><i class="fab fa-github"></i> @Fernandocardoso65</a>
     </div>
-
+    <!-- Seu JavaScript original permanece inalterado -->
     <script>
         const quotes = [
             { quote: "A leitura é uma fonte inesgotável de prazer.", author: "Carlos Drummond de Andrade" },
@@ -594,7 +609,7 @@
             const container = document.querySelector('.container');
             if (footer && container) {
                 const footerHeight = footer.offsetHeight;
-                const extraMargin = 30; // Margem extra para evitar sobreposição
+                const extraMargin = 20; // Margem extra reduzida para footer compacto
                 container.style.paddingBottom = `calc(${footerHeight + extraMargin}px + env(safe-area-inset-bottom))`;
             }
         }

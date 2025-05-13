@@ -530,10 +530,6 @@
     <div class="footer">
         Desenvolvido por <a href="https://github.com/Fernandocardoso65"><i class="fab fa-github"></i> @Fernandocardoso65</a>
     </div>
-    <div id="install-prompt" style="display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #b19cd9; color: #fff; padding: 10px 20px; border-radius: 10px; z-index: 10;">
-        Instale o Despertar Literário no seu celular!
-        <button onclick="hideInstallPrompt()" style="margin-left: 10px; background: none; border: none; color: #fff; cursor: pointer;">✖</button>
-    </div>
     <script>
         const quotes = [
             { quote: "A leitura é uma fonte inesgotável de prazer.", author: "Carlos Drummond de Andrade" },
@@ -711,51 +707,6 @@
                 });
             }
         }
-
-        let deferredPrompt;
-
-        // Detecta o evento beforeinstallprompt (para Android/Chrome)
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            showInstallPrompt();
-        });
-
-        // Verifica se está em iOS ou Android e não está em modo standalone
-        function showInstallPrompt() {
-            const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent) && !window.MSStream;
-            const isAndroid = /Android/.test(navigator.userAgent);
-            const isStandalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
-
-            if ((isIOS || isAndroid) && !isStandalone) {
-                document.getElementById('install-prompt').style.display = 'block';
-            }
-        }
-
-        function hideInstallPrompt() {
-            document.getElementById('install-prompt').style.display = 'none';
-        }
-
-        // Para iOS, o usuário precisa adicionar manualmente; para Android, podemos disparar o prompt
-        document.getElementById('install-prompt').addEventListener('click', () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        console.log('Usuário instalou o PWA');
-                    }
-                    deferredPrompt = null;
-                    hideInstallPrompt();
-                });
-            } else {
-                alert('Para instalar, use o menu do navegador: "Adicionar à Tela Inicial" (Android) ou "Adicionar à Tela Principal" (iOS).');
-            }
-        });
-
-        // Esconde o prompt se o app já estiver instalado
-        window.addEventListener('appinstalled', () => {
-            hideInstallPrompt();
-        });
     </script>
 </body>
 </html>

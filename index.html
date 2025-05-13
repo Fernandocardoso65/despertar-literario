@@ -7,6 +7,7 @@
     <title>Despertar Literário</title>
     <link rel="manifest" href="/manifest.json">
     <link rel="apple-touch-icon" href="/icon-192.png">
+    <!-- Font Awesome para ícone do GitHub -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
         * {
@@ -74,8 +75,12 @@
         }
 
         @keyframes twinkle {
-            0%, 100% { opacity: 0.2; }
-            50% { opacity: 0.8; }
+            0%, 100% {
+                opacity: 0.2;
+            }
+            50% {
+                opacity: 0.8;
+            }
         }
 
         .star:nth-child(1) { top: 10%; left: 15%; }
@@ -270,8 +275,14 @@
         }
 
         @keyframes sparkle {
-            0% { opacity: 0.8; transform: translate(0, 0) scale(1); }
-            100% { opacity: 0; transform: translate(var(--x), var(--y)) scale(0.5); }
+            0% {
+                opacity: 0.8;
+                transform: translate(0, 0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--x), var(--y)) scale(0.5);
+            }
         }
 
         .mode-toggle {
@@ -343,7 +354,7 @@
             vertical-align: middle;
         }
 
-        #install-button, #update-button {
+        #install-button {
             background-color: #b19cd9;
             color: #fff;
             border: none;
@@ -356,15 +367,15 @@
             margin-top: 10px;
         }
 
-        body.day-mode #install-button, body.day-mode #update-button {
+        body.day-mode #install-button {
             background-color: #6a5acd;
         }
 
-        #install-button:hover, #update-button:hover {
+        #install-button:hover {
             background-color: #9b7ed1;
         }
 
-        body.day-mode #install-button:hover, body.day-mode #update-button:hover {
+        body.day-mode #install-button:hover {
             background-color: #5a4ab5;
         }
 
@@ -381,16 +392,41 @@
             .buttons {
                 gap: 15px;
             }
-            h1 { font-size: 1.2rem; }
-            h2 { font-size: 1.4rem; }
-            h3 { font-size: 1rem; }
-            .quote { font-size: 0.9rem; }
-            .btn { font-size: 0.9rem; padding: 12px; }
-            .footer { font-size: 0.8rem; padding: 6px 12px; gap: 5px; }
-            .footer i { font-size: 0.9rem; }
-            .mode-toggle { top: 10px; right: 10px; font-size: 1.2rem; }
-            .logo2 { width: 120px; }
-            body { background-attachment: scroll; }
+            h1 {
+                font-size: 1.2rem;
+            }
+            h2 {
+                font-size: 1.4rem;
+            }
+            h3 {
+                font-size: 1rem;
+            }
+            .quote {
+                font-size: 0.9rem;
+            }
+            .btn {
+                font-size: 0.9rem;
+                padding: 12px;
+            }
+            .footer {
+                font-size: 0.8rem;
+                padding: 6px 12px;
+                gap: 5px;
+            }
+            .footer i {
+                font-size: 0.9rem;
+            }
+            .mode-toggle {
+                top: 10px;
+                right: 10px;
+                font-size: 1.2rem;
+            }
+            .logo2 {
+                width: 120px;
+            }
+            body {
+                background-attachment: scroll;
+            }
         }
 
         @media (max-width: 400px) {
@@ -399,17 +435,44 @@
                 max-width: 300px;
                 padding-bottom: calc(80px + env(safe-area-inset-bottom));
             }
-            .quote-card { margin-bottom: 20px; }
-            .buttons { gap: 12px; }
-            h1 { font-size: 1rem; }
-            h2 { font-size: 1.2rem; }
-            h3 { font-size: 0.9rem; }
-            .quote { font-size: 0.8rem; }
-            .btn { font-size: 0.8rem; padding: 10px; }
-            .footer { font-size: 0.7rem; padding: 5px 10px; gap: 4px; }
-            .footer i { font-size: 0.8rem; }
-            .mode-toggle { top: 8px; right: 8px; font-size: 1rem; }
-            .logo2 { width: 100px; }
+            .quote-card {
+                margin-bottom: 20px;
+            }
+            .buttons {
+                gap: 12px;
+            }
+            h1 {
+                font-size: 1rem;
+            }
+            h2 {
+                font-size: 1.2rem;
+            }
+            h3 {
+                font-size: 0.9rem;
+            }
+            .quote {
+                font-size: 0.8rem;
+            }
+            .btn {
+                font-size: 0.8rem;
+                padding: 10px;
+            }
+            .footer {
+                font-size: 0.7rem;
+                padding: 5px 10px;
+                gap: 4px;
+            }
+            .footer i {
+                font-size: 0.8rem;
+            }
+            .mode-toggle {
+                top: 8px;
+                right: 8px;
+                font-size: 1rem;
+            }
+            .logo2 {
+                width: 100px;
+            }
         }
     </style>
 </head>
@@ -462,7 +525,6 @@
                 <div class="magic-particles" id="particles3"></div>
             </div>
             <button id="install-button" class="btn" style="display: none;">Instalar App</button>
-            <button id="update-button" class="btn" style="display: none;">Atualizar App</button>
         </div>
     </div>
     <div class="footer">
@@ -514,6 +576,7 @@
             const today = new Date();
             const dayOfMonth = today.getDate();
             const quoteIndex = (dayOfMonth - 1) % quotes.length;
+
             const dailyQuote = quotes[quoteIndex];
             document.getElementById('daily-quote').textContent = `${dailyQuote.quote}`;
             document.getElementById('daily-author').textContent = `— ${dailyQuote.author}`;
@@ -552,7 +615,6 @@
 
         function createParticles(containerId) {
             const container = document.getElementById(containerId);
-            container.innerHTML = '';
             for (let i = 0; i < 10; i++) {
                 const particle = document.createElement('div');
                 particle.classList.add('particle');
@@ -569,6 +631,8 @@
         }
 
         function handleMouseOver(containerId) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
             createParticles(containerId);
         }
 
@@ -588,50 +652,51 @@
 
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
-                navigator.serviceWorker.register('/sw.js')
+                navigator.serviceWorker.register('/service-worker.js')
                     .then(function(registration) {
                         console.log('Service Worker registrado com sucesso:', registration);
                     })
                     .catch(function(error) {
                         console.log('Falha ao registrar o Service Worker:', error);
-                        alert('Erro ao registrar o Service Worker. Verifique se o arquivo /sw.js existe no servidor.');
+                        alert('Erro ao registrar o Service Worker. Verifique se o arquivo /service-worker.js existe no servidor.');
                     });
             });
         }
 
         if ('serviceWorker' in navigator && 'BeforeInstallPromptEvent' in window) {
             let deferredPrompt;
+
             window.addEventListener('beforeinstallprompt', (e) => {
                 e.preventDefault();
                 deferredPrompt = e;
-                document.getElementById('install-button').style.display = 'block';
-            });
-
-            document.getElementById('install-button').addEventListener('click', () => {
-                if (deferredPrompt) {
-                    deferredPrompt.prompt();
-                    deferredPrompt.userChoice.then((choiceResult) => {
-                        if (choiceResult.outcome === 'accepted') {
-                            console.log('Usuário aceitou a instalação');
-                            document.getElementById('install-button').style.display = 'none';
-                        }
-                        deferredPrompt = null;
-                    });
+                const installButton = document.getElementById('install-button');
+                if (installButton) {
+                    installButton.style.display = 'block';
+                } else {
+                    console.log('Botão de instalação não encontrado');
                 }
             });
-        }
 
-        document.getElementById('update-button').addEventListener('click', () => {
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.getRegistrations().then(regs => {
-                    regs.forEach(reg => reg.unregister());
-                    caches.keys().then(cacheNames => {
-                        cacheNames.forEach(name => caches.delete(name));
-                        window.location.reload(true);
-                    });
+            const installButton = document.getElementById('install-button');
+            if (installButton) {
+                installButton.addEventListener('click', () => {
+                    if (deferredPrompt) {
+                        deferredPrompt.prompt();
+                        deferredPrompt.userChoice.then((choiceResult) => {
+                            if (choiceResult.outcome === 'accepted') {
+                                console.log('Usuário aceitou a instalação');
+                                installButton.style.display = 'none';
+                            } else {
+                                console.log('Usuário recusou a instalação');
+                            }
+                            deferredPrompt = null;
+                        });
+                    } else {
+                        console.log('Evento de instalação não disponível');
+                    }
                 });
             }
-        });
+        }
     </script>
 </body>
 </html>

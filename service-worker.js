@@ -1,4 +1,4 @@
-const CACHE_NAME = 'despertar-literario-v1.0.3'; // Novo nome para forçar atualização
+const CACHE_NAME = 'despertar-literario-v1.0.4'; // Novo nome para forçar atualização
 const urlsToCache = [
     '/',
     '/index.html',

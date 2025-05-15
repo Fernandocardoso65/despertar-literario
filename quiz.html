@@ -154,6 +154,17 @@
             color: #555;
         }
 
+        #fact {
+            font-size: 1rem;
+            margin-bottom: 15px;
+            color: #ffcc00;
+            display: none;
+        }
+
+        body.day-mode #fact {
+            color: #cc9900;
+        }
+
         .options {
             display: flex;
             flex-direction: column;
@@ -382,7 +393,7 @@
             h1 {
                 font-size: 1.4rem;
             }
-            #timer, #first-place, #question, #score {
+            #timer, #first-place, #question, #score, #fact {
                 font-size: 1rem;
             }
             .option {
@@ -443,6 +454,7 @@
         <div id="timer" aria-live="polite">Tempo Total: 2:00</div>
         <div id="first-place" aria-live="polite"></div>
         <div id="question" aria-live="assertive"></div>
+        <div id="fact" aria-live="assertive"></div>
         <div class="loading" id="loading">Carregando próxima pergunta...</div>
         <div class="options" id="options" role="radiogroup"></div>
         <div id="score" aria-live="polite">Pontuação: 0</div>
@@ -474,111 +486,111 @@
         }
 
         const questionsPool = [
-            { question: "Quem escreveu 'A Metamorfose'?", options: ["Franz Kafka", "Hermann Hesse", "Thomas Mann", "Günter Grass"], answer: "Franz Kafka" },
-            { question: "Qual obra é considerada a primeira novela moderna?", options: ["Dom Quixote", "A Divina Comédia", "Decameron", "Os Lusíadas"], answer: "Dom Quixote" },
-            { question: "Quem é o autor de 'Crime e Castigo'?", options: ["Fyodor Dostoevsky", "Leo Tolstoy", "Vladimir Nabokov", "Anton Chekhov"], answer: "Fyodor Dostoevsky" },
-            { question: "Qual é a obra mais famosa de Machado de Assis?", options: ["Dom Casmurro", "Quincas Borba", "Helena", "Esaú e Jacó"], answer: "Dom Casmurro" },
-            { question: "Quem escreveu 'O Pequeno Príncipe'?", options: ["Antoine de Saint-Exupéry", "Victor Hugo", "Franz Kafka", "Jane Austen"], answer: "Antoine de Saint-Exupéry" },
-            { question: "Qual é o gênero de 'O Senhor dos Anéis'?", options: ["Fantasia", "Ficção Científica", "Romance", "Terror"], answer: "Fantasia" },
-            { question: "Quem é o autor de 'Harry Potter'?", options: ["J.R.R. Tolkien", "J.K. Rowling", "C.S. Lewis", "Stephen King"], answer: "J.K. Rowling" },
-            { question: "Em que ano foi publicado '1984' de George Orwell?", options: ["1949", "1950", "1960", "1970"], answer: "1949" },
-            { question: "Qual obra é conhecida como o maior clássico da literatura brasileira?", options: ["Memórias Póstumas de Brás Cubas", "O Guarani", "Iracema", "Grande Sertão: Veredas"], answer: "Grande Sertão: Veredas" },
-            { question: "Quem escreveu 'Dom Quixote'?", options: ["Miguel de Cervantes", "William Shakespeare", "Machado de Assis", "Jorge Amado"], answer: "Miguel de Cervantes" },
-            { question: "Qual é a nacionalidade de Gabriel García Márquez?", options: ["Colombiano", "Mexicano", "Argentino", "Chileno"], answer: "Colombiano" },
-            { question: "Quem escreveu 'Cem Anos de Solidão'?", options: ["Gabriel García Márquez", "Mario Vargas Llosa", "Isabel Allende", "Julio Cortázar"], answer: "Gabriel García Márquez" },
-            { question: "Qual é o primeiro livro da série 'As Crônicas de Nárnia'?", options: ["O Leão, a Feiticeira e o Guarda-Roupa", "Príncipe Caspian", "A Viagem do Peregrino da Alvorada", "A Cadeira de Prata"], answer: "O Leão, a Feiticeira e o Guarda-Roupa" },
-            { question: "Quem é o autor de 'Orgulho e Preconceito'?", options: ["Jane Austen", "Charlotte Brontë", "Emily Brontë", "Mary Shelley"], answer: "Jane Austen" },
-            { question: "Qual obra é um exemplo de literatura gótica?", options: ["Frankenstein", "Moby Dick", "Os Miseráveis", "O Retrato de Dorian Gray"], answer: "Frankenstein" },
-            { question: "Quem escreveu 'Os Lusíadas'?", options: ["Luís de Camões", "Fernando Pessoa", "Eça de Queirós", "Camilo Castelo Branco"], answer: "Luís de Camões" },
-            { question: "Qual é o gênero literário de 'O Alquimista' de Paulo Coelho?", options: ["Fantasia", "Romance", "Alegoria", "Suspense"], answer: "Alegoria" },
-            { question: "Quem é o autor de 'Moby Dick'?", options: ["Herman Melville", "Mark Twain", "Nathaniel Hawthorne", "Edgar Allan Poe"], answer: "Herman Melville" },
-            { question: "Qual obra foi escrita por Clarice Lispector?", options: ["A Paixão Segundo G.H.", "O Cortiço", "Vidas Secas", "Capitães da Areia"], answer: "A Paixão Segundo G.H." },
-            { question: "Quem escreveu 'O Morro dos Ventos Uivantes'?", options: ["Emily Brontë", "Charlotte Brontë", "Jane Austen", "George Eliot"], answer: "Emily Brontë" },
-            { question: "Qual é a nacionalidade de Franz Kafka?", options: ["Tcheco", "Alemão", "Russo", "Francês"], answer: "Tcheco" },
-            { question: "Quem escreveu 'O Retrato de Dorian Gray'?", options: ["Oscar Wilde", "Bram Stoker", "Robert Louis Stevenson", "H.G. Wells"], answer: "Oscar Wilde" },
-            { question: "Qual obra é de autoria de José de Alencar?", options: ["O Guarani", "Macunaíma", "Sagarana", "Fogo Morto"], answer: "O Guarani" },
-            { question: "Quem é o autor de 'As Aventuras de Tom Sawyer'?", options: ["Mark Twain", "Louisa May Alcott", "Jack London", "Harriet Beecher Stowe"], answer: "Mark Twain" },
-            { question: "Qual é o gênero de 'Drácula' de Bram Stoker?", options: ["Terror", "Romance", "Fantasia", "Mistério"], answer: "Terror" },
-            { question: "Quem escreveu 'A Divina Comédia'?", options: ["Dante Alighieri", "Giovanni Boccaccio", "Petrarca", "Homero"], answer: "Dante Alighieri" },
-            { question: "Qual obra é de autoria de Graciliano Ramos?", options: ["Vidas Secas", "A Moreninha", "O Ateneu", "Senhora"], answer: "Vidas Secas" },
-            { question: "Quem é o autor de 'Guerra e Paz'?", options: ["Leo Tolstoy", "Fyodor Dostoevsky", "Ivan Turgenev", "Nikolai Gogol"], answer: "Leo Tolstoy" },
-            { question: "Qual é a nacionalidade de Jorge Amado?", options: ["Brasileiro", "Argentino", "Português", "Mexicano"], answer: "Brasileiro" },
-            { question: "Quem escreveu 'Capitães da Areia'?", options: ["Jorge Amado", "Érico Veríssimo", "Aluísio Azevedo", "Manuel Bandeira"], answer: "Jorge Amado" },
-            { question: "Qual obra foi escrita por Virginia Woolf?", options: ["Mrs. Dalloway", "Middlemarch", "Jane Eyre", "Persuasão"], answer: "Mrs. Dalloway" },
-            { question: "Quem é o autor de 'A Ilíada'?", options: ["Homero", "Virgílio", "Sófocles", "Eurípedes"], answer: "Homero" },
-            { question: "Qual é o gênero de 'A Revolução dos Bichos'?", options: ["Sátira", "Romance", "Fantasia", "Suspense"], answer: "Sátira" },
-            { question: "Quem escreveu 'O Cortiço'?", options: ["Aluísio Azevedo", "José de Alencar", "Machado de Assis", "Raul Pompeia"], answer: "Aluísio Azevedo" },
-            { question: "Qual obra é de autoria de Ernest Hemingway?", options: ["O Velho e o Mar", "As Vinhas da Ira", "O Sol Também se Levanta", "Por Quem os Sinos Dobram"], answer: "O Velho e o Mar" },
-            { question: "Quem é o autor de 'Macunaíma'?", options: ["Mário de Andrade", "Oswald de Andrade", "Manuel Bandeira", "João Cabral de Melo Neto"], answer: "Mário de Andrade" },
-            { question: "Qual é a nacionalidade de Isabel Allende?", options: ["Chilena", "Peruana", "Colombiana", "Argentina"], answer: "Chilena" },
-            { question: "Quem escreveu 'A Casa dos Espíritos'?", options: ["Isabel Allende", "Laura Esquivel", "Gabriel García Márquez", "Mario Vargas Llosa"], answer: "Isabel Allende" },
-            { question: "Qual obra é de autoria de Eça de Queirós?", options: ["O Primo Basílio", "O Ateneu", "Senhora", "Lavoura Arcaica"], answer: "O Primo Basílio" },
-            { question: "Quem é o autor de 'O Apanhador no Campo de Centeio'?", options: ["J.D. Salinger", "F. Scott Fitzgerald", "John Steinbeck", "William Faulkner"], answer: "J.D. Salinger" },
-            { question: "Qual é o gênero de 'O Nome da Rosa' de Umberto Eco?", options: ["Mistério", "Fantasia", "Romance", "Biografia"], answer: "Mistério" },
-            { question: "Quem escreveu 'Sagarana'?", options: ["João Guimarães Rosa", "Graciliano Ramos", "Lygia Fagundes Telles", "Clarice Lispector"], answer: "João Guimarães Rosa" },
-            { question: "Qual obra é de autoria de Fernando Pessoa?", options: ["Livro do Desassossego", "Memorial de Aires", "Os Sertões", "Triste Fim de Policarpo Quaresma"], answer: "Livro do Desassossego" },
-            { question: "Quem é o autor de 'O Grande Gatsby'?", options: ["F. Scott Fitzgerald", "Ernest Hemingway", "William Faulkner", "John Steinbeck"], answer: "F. Scott Fitzgerald" },
-            { question: "Qual é a nacionalidade de Milan Kundera?", options: ["Tcheco", "Polonês", "Húngaro", "Russo"], answer: "Tcheco" },
-            { question: "Quem escreveu 'A Insustentável Leveza do Ser'?", options: ["Milan Kundera", "Franz Kafka", "Italo Calvino", "Thomas Mann"], answer: "Milan Kundera" },
-            { question: "Qual obra é de autoria de Guimarães Rosa?", options: ["Sagarana", "O Cortiço", "Iracema", "Memórias de um Sargento de Milícias"], answer: "Sagarana" },
-            { question: "Quem é o autor de 'O Estrangeiro'?", options: ["Albert Camus", "Jean-Paul Sartre", "Simone de Beauvoir", "André Gide"], answer: "Albert Camus" },
-            { question: "Qual é o gênero de 'Admirável Mundo Novo' de Aldous Huxley?", options: ["Distopia", "Fantasia", "Romance", "Suspense"], answer: "Distopia" },
-            { question: "Quem escreveu 'O Processo'?", options: ["Franz Kafka", "Hermann Hesse", "Thomas Mann", "Günter Grass"], answer: "Franz Kafka" },
-            { question: "Qual obra é de autoria de Manuel Bandeira?", options: ["Libertinagem", "Claro Enigma", "Romanceiro da Inconfidência", "Poemas Completos"], answer: "Libertinagem" },
-            { question: "Quem é o autor de 'Os Miseráveis'?", options: ["Victor Hugo", "Alexandre Dumas", "Émile Zola", "Gustave Flaubert"], answer: "Victor Hugo" },
-            { question: "Qual é a nacionalidade de Haruki Murakami?", options: ["Japonês", "Chinês", "Coreano", "Tailandês"], answer: "Japonês" },
-            { question: "Quem escreveu 'Norwegian Wood'?", options: ["Haruki Murakami", "Banana Yoshimoto", "Yukio Mishima", "Kenzaburo Oe"], answer: "Haruki Murakami" },
-            { question: "Qual obra é de autoria de Lima Barreto?", options: ["Triste Fim de Policarpo Quaresma", "O Ateneu", "O Mulato", "A Moreninha"], answer: "Triste Fim de Policarpo Quaresma" },
-            { question: "Quem é o autor de 'A Peste'?", options: ["Albert Camus", "Jean-Paul Sartre", "André Gide", "Simone de Beauvoir"], answer: "Albert Camus" },
-            { question: "Qual é o gênero de 'Lolita' de Vladimir Nabokov?", options: ["Romance", "Suspense", "Fantasia", "Sátira"], answer: "Romance" },
-            { question: "Quem escreveu 'Madame Bovary'?", options: ["Gustave Flaubert", "Émile Zola", "Victor Hugo", "Honoré de Balzac"], answer: "Gustave Flaubert" },
-            { question: "Qual obra é de autoria de Lygia Fagundes Telles?", options: ["As Meninas", "Felicidade Clandestina", "Água Viva", "A Paixão Segundo G.H."], answer: "As Meninas" },
-            { question: "Quem é o autor de 'O Som e a Fúria'?", options: ["William Faulkner", "F. Scott Fitzgerald", "John Steinbeck", "Ernest Hemingway"], answer: "William Faulkner" },
-            { question: "Qual é a nacionalidade de Toni Morrison?", options: ["Americana", "Britânica", "Canadense", "Australiana"], answer: "Americana" },
-            { question: "Quem escreveu 'Amada'?", options: ["Toni Morrison", "Alice Walker", "Maya Angelou", "Zora Neale Hurston"], answer: "Toni Morrison" },
-            { question: "Qual obra é de autoria de Érico Veríssimo?", options: ["Olhai os Lírios do Campo", "O Cortiço", "Senhora", "O Guarani"], answer: "Olhai os Lírios do Campo" },
-            { question: "Quem é o autor de 'A Montanha Mágica'?", options: ["Thomas Mann", "Hermann Hesse", "Franz Kafka", "Günter Grass"], answer: "Thomas Mann" },
-            { question: "Qual é o gênero de 'O Hobbit' de J.R.R. Tolkien?", options: ["Fantasia", "Mistério", "Romance", "Histórico"], answer: "Fantasia" },
-            { question: "Quem escreveu 'Os Irmãos Karamazov'?", options: ["Fyodor Dostoevsky", "Leo Tolstoy", "Ivan Turgenev", "Nikolai Gogol"], answer: "Fyodor Dostoevsky" },
-            { question: "Qual obra é de autoria de Cecília Meireles?", options: ["Romanceiro da Inconfidência", "Claro Enigma", "Libertinagem", "Morte e Vida Severina"], answer: "Romanceiro da Inconfidência" },
-            { question: "Quem é o autor de 'O Médico e o Monstro'?", options: ["Robert Louis Stevenson", "Bram Stoker", "Oscar Wilde", "H.G. Wells"], answer: "Robert Louis Stevenson" },
-            { question: "Qual é a nacionalidade de Salman Rushdie?", options: ["Indiano", "Paquistanês", "Egípcio", "Iraniano"], answer: "Indiano" },
-            { question: "Quem escreveu 'Os Versos Satânicos'?", options: ["Salman Rushdie", "Arundhati Roy", "Vikram Seth", "Amitav Ghosh"], answer: "Salman Rushdie" },
-            { question: "Qual obra é de autoria de Raul Pompeia?", options: ["O Ateneu", "O Mulato", "Senhora", "A Moreninha"], answer: "O Ateneu" },
-            { question: "Quem é o autor de 'As Vinhas da Ira'?", options: ["John Steinbeck", "F. Scott Fitzgerald", "William Faulkner", "Ernest Hemingway"], answer: "John Steinbeck" },
-            { question: "Qual é o gênero de 'O Perfume' de Patrick Süskind?", options: ["Suspense", "Fantasia", "Romance", "Histórico"], answer: "Suspense" },
-            { question: "Quem escreveu 'O Lobo da Estepe'?", options: ["Hermann Hesse", "Thomas Mann", "Franz Kafka", "Günter Grass"], answer: "Hermann Hesse" },
-            { question: "Qual obra é de autoria de João Cabral de Melo Neto?", options: ["Morte e Vida Severina", "Claro Enigma", "Libertinagem", "Romanceiro da Inconfidência"], answer: "Morte e Vida Severina" },
-            { question: "Quem é o autor de 'O Senhor das Moscas'?", options: ["William Golding", "Aldous Huxley", "George Orwell", "Ray Bradbury"], answer: "William Golding" },
-            { question: "Qual é a nacionalidade de Chinua Achebe?", options: ["Nigeriano", "Queniano", "Sul-africano", "Ganense"], answer: "Nigeriano" },
-            { question: "Quem escreveu 'O Mundo se Despedaça'?", options: ["Chinua Achebe", "Ngũgĩ wa Thiong'o", "Wole Soyinka", "Buchi Emecheta"], answer: "Chinua Achebe" },
-            { question: "Qual obra é de autoria de Raduan Nassar?", options: ["Lavoura Arcaica", "O Cortiço", "Senhora", "O Guarani"], answer: "Lavoura Arcaica" },
-            { question: "Quem é o autor de 'Fahrenheit 451'?", options: ["Ray Bradbury", "Aldous Huxley", "George Orwell", "Philip K. Dick"], answer: "Ray Bradbury" },
-            { question: "Qual é o gênero de 'O Conto da Aia' de Margaret Atwood?", options: ["Distopia", "Fantasia", "Romance", "Suspense"], answer: "Distopia" },
-            { question: "Quem escreveu 'O Castelo'?", options: ["Franz Kafka", "Hermann Hesse", "Thomas Mann", "Günter Grass"], answer: "Franz Kafka" },
-            { question: "Qual obra é de autoria de Carlos Drummond de Andrade?", options: ["Claro Enigma", "Libertinagem", "Romanceiro da Inconfidência", "Morte e Vida Severina"], answer: "Claro Enigma" },
-            { question: "Quem é o autor de 'A Máquina do Tempo'?", options: ["H.G. Wells", "Jules Verne", "Isaac Asimov", "Arthur C. Clarke"], answer: "H.G. Wells" },
-            { question: "Qual é a nacionalidade de Jhumpa Lahiri?", options: ["Indiana", "Paquistanesa", "Bangladesh", "Sri Lanka"], answer: "Indiana" },
-            { question: "Quem escreveu 'O Intérprete de Males'?", options: ["Jhumpa Lahiri", "Arundhati Roy", "Salman Rushdie", "Vikram Seth"], answer: "Jhumpa Lahiri" },
-            { question: "Qual obra é de autoria de Bernardo Guimarães?", options: ["A Escrava Isaura", "O Mulato", "O Ateneu", "Senhora"], answer: "A Escrava Isaura" },
-            { question: "Quem é o autor de 'Ao Farol'?", options: ["Virginia Woolf", "Jane Austen", "George Eliot", "Charlotte Brontë"], answer: "Virginia Woolf" },
-            { question: "Qual é o gênero de 'Neuromancer' de William Gibson?", options: ["Cyberpunk", "Fantasia", "Romance", "Histórico"], answer: "Cyberpunk" },
-            { question: "Quem escreveu 'O Jogo da Amarelinha'?", options: ["Julio Cortázar", "Gabriel García Márquez", "Mario Vargas Llosa", "Jorge Luis Borges"], answer: "Julio Cortázar" },
-            { question: "Qual obra é de autoria de Oswald de Andrade?", options: ["Memórias Sentimentais de João Miramar", "Claro Enigma", "Libertinagem", "Romanceiro da Inconfidência"], answer: "Memórias Sentimentais de João Miramar" },
-            { question: "Quem é o autor de 'Duna'?", options: ["Frank Herbert", "Isaac Asimov", "Arthur C. Clarke", "Robert A. Heinlein"], answer: "Frank Herbert" },
-            { question: "Qual é a nacionalidade de Mo Yan?", options: ["Chinês", "Japonês", "Coreano", "Tailandês"], answer: "Chinês" },
-            { question: "Quem escreveu 'O Vermelho e o Negro'?", options: ["Stendhal", "Honoré de Balzac", "Gustave Flaubert", "Émile Zola"], answer: "Stendhal" },
-            { question: "Qual obra é de autoria de Euclides da Cunha?", options: ["Os Sertões", "O Cortiço", "Senhora", "O Guarani"], answer: "Os Sertões" },
-            { question: "Qual autor escreveu 'A Revolta de Atlas'?", options: ["Ayn Rand", "George Orwell", "Ray Bradbury", "Isaac Asimov"], answer: "Ayn Rand" },
-            { question: "Qual obra é um clássico da literatura africana moderna?", options: ["Coisas Desmoronam-se", "O Leão e o Rato", "O Velho e o Mar", "O Sol é Para Todos"], answer: "Coisas Desmoronam-se" },
-            { question: "Quem escreveu 'Crepúsculo'?", options: ["Stephenie Meyer", "J.K. Rowling", "Suzanne Collins", "Cassandra Clare"], answer: "Stephenie Meyer" },
-            { question: "Qual é o gênero de 'O Guia do Mochileiro das Galáxias'?", options: ["Ficção Científica", "Fantasia", "Comédia", "Mistério"], answer: "Ficção Científica" },
-            { question: "Quem é o autor de 'Memórias do Subsolo'?", options: ["Fyodor Dostoevsky", "Leo Tolstoy", "Anton Chekhov", "Nikolai Gogol"], answer: "Fyodor Dostoevsky" },
-            { question: "Qual obra foi escrita por Agatha Christie?", options: ["Assassinato no Expresso do Oriente", "O Nome da Rosa", "O Código Da Vinci", "O Conde de Monte Cristo"], answer: "Assassinato no Expresso do Oriente" },
-            { question: "Qual é a nacionalidade de Chimamanda Ngozi Adichie?", options: ["Nigeriana", "Ganesa", "Sul-africana", "Kenyana"], answer: "Nigeriana" },
-            { question: "Quem escreveu 'O Sol é Para Todos'?", options: ["Harper Lee", "Mark Twain", "John Steinbeck", "Ernest Hemingway"], answer: "Harper Lee" },
-            { question: "Qual obra é um exemplo de poesia épica?", options: ["A Odisseia", "Cem Anos de Solidão", "Madame Bovary", "O Pequeno Príncipe"], answer: "A Odisseia" },
-            { question: "Quem escreveu 'A Revolução dos Caracóis'?", options: ["Mia Couto", "Chinua Achebe", "Ngũgĩ wa Thiong'o", "Wole Soyinka"], answer: "Mia Couto" }
+            { question: "Quem escreveu 'A Metamorfose'?", options: ["Franz Kafka", "Hermann Hesse", "Thomas Mann", "Günter Grass"], answer: "Franz Kafka", fact: "'A Metamorfose' foi publicada em 1915 e é uma das obras mais conhecidas de Kafka, escrita em apenas três semanas." },
+            { question: "Qual obra é considerada a primeira novela moderna?", options: ["Dom Quixote", "A Divina Comédia", "Decameron", "Os Lusíadas"], answer: "Dom Quixote", fact: "'Dom Quixote' de Cervantes, publicado em 1605, é frequentemente citado como a primeira novela moderna devido à sua narrativa complexa." },
+            { question: "Quem é o autor de 'Crime e Castigo'?", options: ["Fyodor Dostoevsky", "Leo Tolstoy", "Vladimir Nabokov", "Anton Chekhov"], answer: "Fyodor Dostoevsky", fact: "'Crime e Castigo' (1866) foi inspirado em casos reais de assassinatos que Dostoevsky leu em jornais." },
+            { question: "Qual é a obra mais famosa de Machado de Assis?", options: ["Dom Casmurro", "Quincas Borba", "Helena", "Esaú e Jacó"], answer: "Dom Casmurro", fact: "'Dom Casmurro' (1899) é famoso pelo narrador não confiável, Bentinho, que deixa o leitor questionar a verdade sobre Capitu." },
+            { question: "Quem escreveu 'O Pequeno Príncipe'?", options: ["Antoine de Saint-Exupéry", "Victor Hugo", "Franz Kafka", "Jane Austen"], answer: "Antoine de Saint-Exupéry", fact: "'O Pequeno Príncipe' (1943) foi escrito enquanto Saint-Exupéry estava exilado nos EUA durante a Segunda Guerra Mundial." },
+            { question: "Qual é o gênero de 'O Senhor dos Anéis'?", options: ["Fantasia", "Ficção Científica", "Romance", "Terror"], answer: "Fantasia", fact: "J.R.R. Tolkien criou o universo de 'O Senhor dos Anéis' inspirado em mitologias nórdicas e celtas, além de sua experiência na Primeira Guerra Mundial." },
+            { question: "Quem é o autor de 'Harry Potter'?", options: ["J.R.R. Tolkien", "J.K. Rowling", "C.S. Lewis", "Stephen King"], answer: "J.K. Rowling", fact: "J.K. Rowling escreveu o primeiro livro de 'Harry Potter' em cafés de Edimburgo, enquanto era mãe solteira." },
+            { question: "Em que ano foi publicado '1984' de George Orwell?", options: ["1949", "1950", "1960", "1970"], answer: "1949", fact: "George Orwell escreveu '1984' em 1948, enquanto lutava contra a tuberculose, e morreu poucos meses após sua publicação." },
+            { question: "Qual obra é conhecida como o maior clássico da literatura brasileira?", options: ["Memórias Póstumas de Brás Cubas", "O Guarani", "Iracema", "Grande Sertão: Veredas"], answer: "Grande Sertão: Veredas", fact: "'Grande Sertão: Veredas' (1956) de Guimarães Rosa é escrito em uma linguagem única, misturando regionalismos e neologismos." },
+            { question: "Quem escreveu 'Dom Quixote'?", options: ["Miguel de Cervantes", "William Shakespeare", "Machado de Assis", "Jorge Amado"], answer: "Miguel de Cervantes", fact: "Cervantes escreveu a segunda parte de 'Dom Quixote' (1615) após um autor anônimo publicar uma sequência não autorizada." },
+            { question: "Qual é a nacionalidade de Gabriel García Márquez?", options: ["Colombiano", "Mexicano", "Argentino", "Chileno"], answer: "Colombiano", fact: "Gabriel García Márquez ganhou o Nobel de Literatura em 1982, sendo o primeiro colombiano a receber o prêmio." },
+            { question: "Quem escreveu 'Cem Anos de Solidão'?", options: ["Gabriel García Márquez", "Mario Vargas Llosa", "Isabel Allende", "Julio Cortázar"], answer: "Gabriel García Márquez", fact: "'Cem Anos de Solidão' (1967) vendeu mais de 50 milhões de cópias e é um marco do realismo mágico." },
+            { question: "Qual é o primeiro livro da série 'As Crônicas de Nárnia'?", options: ["O Leão, a Feiticeira e o Guarda-Roupa", "Príncipe Caspian", "A Viagem do Peregrino da Alvorada", "A Cadeira de Prata"], answer: "O Leão, a Feiticeira e o Guarda-Roupa", fact: "C.S. Lewis escreveu 'O Leão, a Feiticeira e o Guarda-Roupa' (1950) inspirado em contos de fadas e sua fé cristã." },
+            { question: "Quem é o autor de 'Orgulho e Preconceito'?", options: ["Jane Austen", "Charlotte Brontë", "Emily Brontë", "Mary Shelley"], answer: "Jane Austen", fact: "Jane Austen publicou 'Orgulho e Preconceito' (1813) anonimamente, como 'Por uma Dama'." },
+            { question: "Qual obra é um exemplo de literatura gótica?", options: ["Frankenstein", "Moby Dick", "Os Miseráveis", "O Retrato de Dorian Gray"], answer: "Frankenstein", fact: "Mary Shelley escreveu 'Frankenstein' (1818) aos 19 anos, inspirada por um desafio de escrita entre amigos." },
+            { question: "Quem escreveu 'Os Lusíadas'?", options: ["Luís de Camões", "Fernando Pessoa", "Eça de Queirós", "Camilo Castelo Branco"], answer: "Luís de Camões", fact: "'Os Lusíadas' (1572) de Camões celebra as navegações portuguesas e é inspirado na 'Eneida' de Virgílio." },
+            { question: "Qual é o gênero literário de 'O Alquimista' de Paulo Coelho?", options: ["Fantasia", "Romance", "Alegoria", "Suspense"], answer: "Alegoria", fact: "'O Alquimista' (1988) de Paulo Coelho foi rejeitado por várias editoras antes de se tornar um best-seller mundial." },
+            { question: "Quem é o autor de 'Moby Dick'?", options: ["Herman Melville", "Mark Twain", "Nathaniel Hawthorne", "Edgar Allan Poe"], answer: "Herman Melville", fact: "'Moby Dick' (1851) foi um fracasso comercial durante a vida de Melville, mas hoje é um clássico." },
+            { question: "Qual obra foi escrita por Clarice Lispector?", options: ["A Paixão Segundo G.H.", "O Cortiço", "Vidas Secas", "Capitães da Areia"], answer: "A Paixão Segundo G.H.", fact: "Clarice Lispector escreveu 'A Paixão Segundo G.H.' (1964) em apenas alguns meses, explorando temas existenciais." },
+            { question: "Quem escreveu 'O Morro dos Ventos Uivantes'?", options: ["Emily Brontë", "Charlotte Brontë", "Jane Austen", "George Eliot"], answer: "Emily Brontë", fact: "'O Morro dos Ventos Uivantes' (1847) foi o único romance de Emily Brontë, publicado sob o pseudônimo Ellis Bell." },
+            { question: "Qual é a nacionalidade de Franz Kafka?", options: ["Tcheco", "Alemão", "Russo", "Francês"], answer: "Tcheco", fact: "Kafka escreveu em alemão, mas viveu em Praga, então parte do Império Austro-Húngaro, hoje República Tcheca." },
+            { question: "Quem escreveu 'O Retrato de Dorian Gray'?", options: ["Oscar Wilde", "Bram Stoker", "Robert Louis Stevenson", "H.G. Wells"], answer: "Oscar Wilde", fact: "'O Retrato de Dorian Gray' (1890) foi o único romance de Oscar Wilde e causou escândalo por sua temática moral." },
+            { question: "Qual obra é de autoria de José de Alencar?", options: ["O Guarani", "Macunaíma", "Sagarana", "Fogo Morto"], answer: "O Guarani", fact: "'O Guarani' (1857) de José de Alencar inspirou uma ópera homônima de Carlos Gomes." },
+            { question: "Quem é o autor de 'As Aventuras de Tom Sawyer'?", options: ["Mark Twain", "Louisa May Alcott", "Jack London", "Harriet Beecher Stowe"], answer: "Mark Twain", fact: "Mark Twain baseou 'As Aventuras de Tom Sawyer' (1876) em suas memórias de infância em Hannibal, Missouri." },
+            { question: "Qual é o gênero de 'Drácula' de Bram Stoker?", options: ["Terror", "Romance", "Fantasia", "Mistério"], answer: "Terror", fact: "'Drácula' (1897) foi inspirado em lendas do folclore europeu e em figuras históricas como Vlad, o Empalador." },
+            { question: "Quem escreveu 'A Divina Comédia'?", options: ["Dante Alighieri", "Giovanni Boccaccio", "Petrarca", "Homero"], answer: "Dante Alighieri", fact: "'A Divina Comédia' (1320) de Dante influenciou a literatura ocidental e popularizou o uso do italiano vernacular." },
+            { question: "Qual obra é de autoria de Graciliano Ramos?", options: ["Vidas Secas", "A Moreninha", "O Ateneu", "Senhora"], answer: "Vidas Secas", fact: "Graciliano Ramos escreveu 'Vidas Secas' (1938) enquanto estava preso por suas ideias políticas." },
+            { question: "Quem é o autor de 'Guerra e Paz'?", options: ["Leo Tolstoy", "Fyodor Dostoevsky", "Ivan Turgenev", "Nikolai Gogol"], answer: "Leo Tolstoy", fact: "'Guerra e Paz' (1865-1869) de Tolstoy levou seis anos para ser escrito e contém mais de 500 personagens." },
+            { question: "Qual é a nacionalidade de Jorge Amado?", options: ["Brasileiro", "Argentino", "Português", "Mexicano"], answer: "Brasileiro", fact: "Jorge Amado foi eleito para a Academia Brasileira de Letras em 1961, ocupando a cadeira 23." },
+            { question: "Quem escreveu 'Capitães da Areia'?", options: ["Jorge Amado", "Érico Veríssimo", "Aluísio Azevedo", "Manuel Bandeira"], answer: "Jorge Amado", fact: "'Capitães da Areia' (1937) foi proibido e queimado em praça pública pelo regime do Estado Novo no Brasil." },
+            { question: "Qual obra foi escrita por Virginia Woolf?", options: ["Mrs. Dalloway", "Middlemarch", "Jane Eyre", "Persuasão"], answer: "Mrs. Dalloway", fact: "'Mrs. Dalloway' (1925) de Virginia Woolf foi originalmente planejado como uma história curta." },
+            { question: "Quem é o autor de 'A Ilíada'?", options: ["Homero", "Virgílio", "Sófocles", "Eurípedes"], answer: "Homero", fact: "'A Ilíada' é tradicionalmente atribuída a Homero, mas sua autoria é debatida por estudiosos há séculos." },
+            { question: "Qual é o gênero de 'A Revolução dos Bichos'?", options: ["Sátira", "Romance", "Fantasia", "Suspense"], answer: "Sátira", fact: "'A Revolução dos Bichos' (1945) de Orwell foi rejeitada por várias editoras por sua crítica ao stalinismo." },
+            { question: "Quem escreveu 'O Cortiço'?", options: ["Aluísio Azevedo", "José de Alencar", "Machado de Assis", "Raul Pompeia"], answer: "Aluísio Azevedo", fact: "'O Cortiço' (1890) é considerado o principal romance naturalista do Brasil." },
+            { question: "Qual obra é de autoria de Ernest Hemingway?", options: ["O Velho e o Mar", "As Vinhas da Ira", "O Sol Também se Levanta", "Por Quem os Sinos Dobram"], answer: "O Velho e o Mar", fact: "'O Velho e o Mar' (1952) rendeu a Hemingway o Prêmio Pulitzer e contribuiu para seu Nobel de Literatura." },
+            { question: "Quem é o autor de 'Macunaíma'?", options: ["Mário de Andrade", "Oswald de Andrade", "Manuel Bandeira", "João Cabral de Melo Neto"], answer: "Mário de Andrade", fact: "'Macunaíma' (1928) de Mário de Andrade foi escrito em apenas uma semana." },
+            { question: "Qual é a nacionalidade de Isabel Allende?", options: ["Chilena", "Peruana", "Colombiana", "Argentina"], answer: "Chilena", fact: "Isabel Allende é sobrinha do ex-presidente chileno Salvador Allende, deposto em 1973." },
+            { question: "Quem escreveu 'A Casa dos Espíritos'?", options: ["Isabel Allende", "Laura Esquivel", "Gabriel García Márquez", "Mario Vargas Llosa"], answer: "Isabel Allende", fact: "'A Casa dos Espíritos' (1982) foi o primeiro romance de Isabel Allende e começou como uma carta ao seu avô." },
+            { question: "Qual obra é de autoria de Eça de Queirós?", options: ["O Primo Basílio", "O Ateneu", "Senhora", "Lavoura Arcaica"], answer: "O Primo Basílio", fact: "'O Primo Basílio' (1878) de Eça de Queirós critica a hipocrisia da burguesia portuguesa." },
+            { question: "Quem é o autor de 'O Apanhador no Campo de Centeio'?", options: ["J.D. Salinger", "F. Scott Fitzgerald", "John Steinbeck", "William Faulkner"], answer: "J.D. Salinger", fact: "J.D. Salinger tornou-se recluso após o sucesso de 'O Apanhador no Campo de Centeio' (1951)." },
+            { question: "Qual é o gênero de 'O Nome da Rosa' de Umberto Eco?", options: ["Mistério", "Fantasia", "Romance", "Biografia"], answer: "Mistério", fact: "'O Nome da Rosa' (1980) de Umberto Eco combina ficção histórica com semiótica." },
+            { question: "Quem escreveu 'Sagarana'?", options: ["João Guimarães Rosa", "Graciliano Ramos", "Lygia Fagundes Telles", "Clarice Lispector"], answer: "João Guimarães Rosa", fact: "'Sagarana' (1946) é a primeira obra publicada de Guimarães Rosa, uma coletânea de contos." },
+            { question: "Qual obra é de autoria de Fernando Pessoa?", options: ["Livro do Desassossego", "Memorial de Aires", "Os Sertões", "Triste Fim de Policarpo Quaresma"], answer: "Livro do Desassossego", fact: "'Livro do Desassossego' foi publicado postumamente e atribuído ao semi-heterônimo Bernardo Soares." },
+            { question: "Quem é o autor de 'O Grande Gatsby'?", options: ["F. Scott Fitzgerald", "Ernest Hemingway", "William Faulkner", "John Steinbeck"], answer: "F. Scott Fitzgerald", fact: "'O Grande Gatsby' (1925) foi inspirado pela vida extravagante de Fitzgerald na Long Island." },
+            { question: "Qual é a nacionalidade de Milan Kundera?", options: ["Tcheco", "Polonês", "Húngaro", "Russo"], answer: "Tcheco", fact: "Milan Kundera exilou-se na França em 1975 devido à repressão comunista na Tchecoslováquia." },
+            { question: "Quem escreveu 'A Insustentável Leveza do Ser'?", options: ["Milan Kundera", "Franz Kafka", "Italo Calvino", "Thomas Mann"], answer: "Milan Kundera", fact: "'A Insustentável Leveza do Ser' (1984) foi banido na Tchecoslováquia até 1989." },
+            { question: "Qual obra é de autoria de Guimarães Rosa?", options: ["Sagarana", "O Cortiço", "Iracema", "Memórias de um Sargento de Milícias"], answer: "Sagarana", fact: "Guimarães Rosa era médico e diplomata antes de se dedicar à literatura." },
+            { question: "Quem é o autor de 'O Estrangeiro'?", options: ["Albert Camus", "Jean-Paul Sartre", "Simone de Beauvoir", "André Gide"], answer: "Albert Camus", fact: "'O Estrangeiro' (1942) reflete a filosofia do absurdo de Camus, que ele desenvolveu durante a Segunda Guerra." },
+            { question: "Qual é o gênero de 'Admirável Mundo Novo' de Aldous Huxley?", options: ["Distopia", "Fantasia", "Romance", "Suspense"], answer: "Distopia", fact: "Aldous Huxley escreveu 'Admirável Mundo Novo' (1932) inspirado por avanços científicos e totalitarismo." },
+            { question: "Quem escreveu 'O Processo'?", options: ["Franz Kafka", "Hermann Hesse", "Thomas Mann", "Günter Grass"], answer: "Franz Kafka", fact: "'O Processo' (1925) foi publicado postumamente contra a vontade de Kafka, que pediu que seus manuscritos fossem destruídos." },
+            { question: "Qual obra é de autoria de Manuel Bandeira?", options: ["Libertinagem", "Claro Enigma", "Romanceiro da Inconfidência", "Poemas Completos"], answer: "Libertinagem", fact: "'Libertinagem' (1930) marca a adesão de Manuel Bandeira ao modernismo brasileiro." },
+            { question: "Quem é o autor de 'Os Miseráveis'?", options: ["Victor Hugo", "Alexandre Dumas", "Émile Zola", "Gustave Flaubert"], answer: "Victor Hugo", fact: "Victor Hugo levou 17 anos para completar 'Os Miseráveis' (1862), escrevendo partes durante seu exílio." },
+            { question: "Qual é a nacionalidade de Haruki Murakami?", options: ["Japonês", "Chinês", "Coreano", "Tailandês"], answer: "Japonês", fact: "Haruki Murakami era dono de um bar de jazz antes de se tornar escritor." },
+            { question: "Quem escreveu 'Norwegian Wood'?", options: ["Haruki Murakami", "Banana Yoshimoto", "Yukio Mishima", "Kenzaburo Oe"], answer: "Haruki Murakami", fact: "'Norwegian Wood' (1987) é inspirado na música dos Beatles e lançou Murakami à fama." },
+            { question: "Qual obra é de autoria de Lima Barreto?", options: ["Triste Fim de Policarpo Quaresma", "O Ateneu", "O Mulato", "A Moreninha"], answer: "Triste Fim de Policarpo Quaresma", fact: "Lima Barreto enfrentou racismo e dificuldades financeiras durante sua carreira literária." },
+            { question: "Quem é o autor de 'A Peste'?", options: ["Albert Camus", "Jean-Paul Sartre", "André Gide", "Simone de Beauvoir"], answer: "Albert Camus", fact: "'A Peste' (1947) foi inspirado pela epidemia de cólera na Argélia e pela ocupação nazista." },
+            { question: "Qual é o gênero de 'Lolita' de Vladimir Nabokov?", options: ["Romance", "Suspense", "Fantasia", "Sátira"], answer: "Romance", fact: "Nabokov escreveu 'Lolita' (1955) em inglês, embora sua língua nativa fosse o russo." },
+            { question: "Quem escreveu 'Madame Bovary'?", options: ["Gustave Flaubert", "Émile Zola", "Victor Hugo", "Honoré de Balzac"], answer: "Gustave Flaubert", fact: "Flaubert foi processado por imoralidade após a publicação de 'Madame Bovary' (1857)." },
+            { question: "Qual obra é de autoria de Lygia Fagundes Telles?", options: ["As Meninas", "Felicidade Clandestina", "Água Viva", "A Paixão Segundo G.H."], answer: "As Meninas", fact: "'As Meninas' (1973) ganhou o Prêmio Jabuti e reflete o período da ditadura militar no Brasil." },
+            { question: "Quem é o autor de 'O Som e a Fúria'?", options: ["William Faulkner", "F. Scott Fitzgerald", "John Steinbeck", "Ernest Hemingway"], answer: "William Faulkner", fact: "Faulkner escreveu 'O Som e a Fúria' (1929) usando quatro perspectivas narrativas diferentes." },
+            { question: "Qual é a nacionalidade de Toni Morrison?", options: ["Americana", "Britânica", "Canadense", "Australiana"], answer: "Americana", fact: "Toni Morrison foi a primeira mulher negra a ganhar o Nobel de Literatura, em 1993." },
+            { question: "Quem escreveu 'Amada'?", options: ["Toni Morrison", "Alice Walker", "Maya Angelou", "Zora Neale Hurston"], answer: "Toni Morrison", fact: "'Amada' (1987) foi inspirado em uma história real de uma escrava fugitiva." },
+            { question: "Qual obra é de autoria de Érico Veríssimo?", options: ["Olhai os Lírios do Campo", "O Cortiço", "Senhora", "O Guarani"], answer: "Olhai os Lírios do Campo", fact: "'Olhai os Lírios do Campo' (1938) explora conflitos entre materialismo e idealismo." },
+            { question: "Quem é o autor de 'A Montanha Mágica'?", options: ["Thomas Mann", "Hermann Hesse", "Franz Kafka", "Günter Grass"], answer: "Thomas Mann", fact: "'A Montanha Mágica' (1924) foi inspirado pela internação da esposa de Mann em um sanatório." },
+            { question: "Qual é o gênero de 'O Hobbit' de J.R.R. Tolkien?", options: ["Fantasia", "Mistério", "Romance", "Histórico"], answer: "Fantasia", fact: "'O Hobbit' (1937) foi escrito por Tolkien para seus filhos e se tornou um clássico." },
+            { question: "Quem escreveu 'Os Irmãos Karamazov'?", options: ["Fyodor Dostoevsky", "Leo Tolstoy", "Ivan Turgenev", "Nikolai Gogol"], answer: "Fyodor Dostoevsky", fact: "'Os Irmãos Karamazov' (1880) foi o último romance de Dostoevsky, concluído pouco antes de sua morte." },
+            { question: "Qual obra é de autoria de Cecília Meireles?", options: ["Romanceiro da Inconfidência", "Claro Enigma", "Libertinagem", "Morte e Vida Severina"], answer: "Romanceiro da Inconfidência", fact: "Cecília Meireles pesquisou documentos históricos para escrever 'Romanceiro da Inconfidência' (1953)." },
+            { question: "Quem é o autor de 'O Médico e o Monstro'?", options: ["Robert Louis Stevenson", "Bram Stoker", "Oscar Wilde", "H.G. Wells"], answer: "Robert Louis Stevenson", fact: "'O Médico e o Monstro' (1886) foi inspirado por um pesadelo de Stevenson." },
+            { question: "Qual é a nacionalidade de Salman Rushdie?", options: ["Indiano", "Paquistanês", "Egípcio", "Iraniano"], answer: "Indiano", fact: "Salman Rushdie viveu sob proteção após ameaças devido a 'Os Versos Satânicos'." },
+            { question: "Quem escreveu 'Os Versos Satânicos'?", options: ["Salman Rushdie", "Arundhati Roy", "Vikram Seth", "Amitav Ghosh"], answer: "Salman Rushdie", fact: "'Os Versos Satânicos' (1988) causou controvérsia global e levou a um decreto religioso contra Rushdie." },
+            { question: "Qual obra é de autoria de Raul Pompeia?", options: ["O Ateneu", "O Mulato", "Senhora", "A Moreninha"], answer: "O Ateneu", fact: "'O Ateneu' (1888) é baseado nas experiências de Raul Pompeia em um colégio interno." },
+            { question: "Quem é o autor de 'As Vinhas da Ira'?", options: ["John Steinbeck", "F. Scott Fitzgerald", "William Faulkner", "Ernest Hemingway"], answer: "John Steinbeck", fact: "'As Vinhas da Ira' (1939) ganhou o Pulitzer e inspirou um filme clássico." },
+            { question: "Qual é o gênero de 'O Perfume' de Patrick Süskind?", options: ["Suspense", "Fantasia", "Romance", "Histórico"], answer: "Suspense", fact: "'O Perfume' (1985) foi adaptado para o cinema em 2006, mas Süskind raramente dá entrevistas." },
+            { question: "Quem escreveu 'O Lobo da Estepe'?", options: ["Hermann Hesse", "Thomas Mann", "Franz Kafka", "Günter Grass"], answer: "Hermann Hesse", fact: "'O Lobo da Estepe' (1927) reflete a crise pessoal de Hesse durante seus 40 anos." },
+            { question: "Qual obra é de autoria de João Cabral de Melo Neto?", options: ["Morte e Vida Severina", "Claro Enigma", "Libertinagem", "Romanceiro da Inconfidência"], answer: "Morte e Vida Severina", fact: "'Morte e Vida Severina' (1955) foi adaptado para teatro e cinema." },
+            { question: "Quem é o autor de 'O Senhor das Moscas'?", options: ["William Golding", "Aldous Huxley", "George Orwell", "Ray Bradbury"], answer: "William Golding", fact: "'O Senhor das Moscas' (1954) foi rejeitado por 21 editoras antes de ser publicado." },
+            { question: "Qual é a nacionalidade de Chinua Achebe?", options: ["Nigeriano", "Queniano", "Sul-africano", "Ganense"], answer: "Nigeriano", fact: "Chinua Achebe é considerado o pai da literatura africana moderna." },
+            { question: "Quem escreveu 'O Mundo se Despedaça'?", options: ["Chinua Achebe", "Ngũgĩ wa Thiong'o", "Wole Soyinka", "Buchi Emecheta"], answer: "Chinua Achebe", fact: "'O Mundo se Despedaça' (1958) é um dos livros africanos mais lidos no mundo." },
+            { question: "Qual obra é de autoria de Raduan Nassar?", options: ["Lavoura Arcaica", "O Cortiço", "Senhora", "O Guarani"], answer: "Lavoura Arcaica", fact: "Raduan Nassar abandonou a literatura após publicar apenas dois livros, incluindo 'Lavoura Arcaica' (1975)." },
+            { question: "Quem é o autor de 'Fahrenheit 451'?", options: ["Ray Bradbury", "Aldous Huxley", "George Orwell", "Philip K. Dick"], answer: "Ray Bradbury", fact: "Bradbury escreveu 'Fahrenheit 451' (1953) em uma máquina de escrever alugada em uma biblioteca." },
+            { question: "Qual é o gênero de 'O Conto da Aia' de Margaret Atwood?", options: ["Distopia", "Fantasia", "Romance", "Suspense"], answer: "Distopia", fact: "'O Conto da Aia' (1985) foi inspirado por regimes teocráticos e ganhou uma adaptação premiada para TV." },
+            { question: "Quem escreveu 'O Castelo'?", options: ["Franz Kafka", "Hermann Hesse", "Thomas Mann", "Günter Grass"], answer: "Franz Kafka", fact: "'O Castelo' (1926) é um romance inacabado de Kafka, publicado postumamente." },
+            { question: "Qual obra é de autoria de Carlos Drummond de Andrade?", options: ["Claro Enigma", "Libertinagem", "Romanceiro da Inconfidência", "Morte e Vida Severina"], answer: "Claro Enigma", fact: "Drummond trabalhou como funcionário público enquanto escrevia 'Claro Enigma' (1951)." },
+            { question: "Quem é o autor de 'A Máquina do Tempo'?", options: ["H.G. Wells", "Jules Verne", "Isaac Asimov", "Arthur C. Clarke"], answer: "H.G. Wells", fact: "'A Máquina do Tempo' (1895) popularizou o conceito de viagem no tempo na ficção." },
+            { question: "Qual é a nacionalidade de Jhumpa Lahiri?", options: ["Indiana", "Paquistanesa", "Bangladesh", "Sri Lanka"], answer: "Indiana", fact: "Jhumpa Lahiri escreve em inglês, mas aprendeu italiano e publicou um livro nesse idioma." },
+            { question: "Quem escreveu 'O Intérprete de Males'?", options: ["Jhumpa Lahiri", "Arundhati Roy", "Salman Rushdie", "Vikram Seth"], answer: "Jhumpa Lahiri", fact: "'O Intérprete de Males' (1999) ganhou o Prêmio Pulitzer de Ficção." },
+            { question: "Qual obra é de autoria de Bernardo Guimarães?", options: ["A Escrava Isaura", "O Mulato", "O Ateneu", "Senhora"], answer: "A Escrava Isaura", fact: "'A Escrava Isaura' (1875) foi um marco na literatura abolicionista brasileira." },
+            { question: "Quem é o autor de 'Ao Farol'?", options: ["Virginia Woolf", "Jane Austen", "George Eliot", "Charlotte Brontë"], answer: "Virginia Woolf", fact: "'Ao Farol' (1927) é inspirado nas memórias de infância de Woolf." },
+            { question: "Qual é o gênero de 'Neuromancer' de William Gibson?", options: ["Cyberpunk", "Fantasia", "Romance", "Histórico"], answer: "Cyberpunk", fact: "'Neuromancer' (1984) cunhou o termo 'ciberespaço' e influenciou a cultura digital." },
+            { question: "Quem escreveu 'O Jogo da Amarelinha'?", options: ["Julio Cortázar", "Gabriel García Márquez", "Mario Vargas Llosa", "Jorge Luis Borges"], answer: "Julio Cortázar", fact: "'O Jogo da Amarelinha' (1963) pode ser lido em diferentes ordens, conforme instruções do autor." },
+            { question: "Qual obra é de autoria de Oswald de Andrade?", options: ["Memórias Sentimentais de João Miramar", "Claro Enigma", "Libertinagem", "Romanceiro da Inconfidência"], answer: "Memórias Sentimentais de João Miramar", fact: "Oswald de Andrade foi um dos líderes da Semana de Arte Moderna de 1922." },
+            { question: "Quem é o autor de 'Duna'?", options: ["Frank Herbert", "Isaac Asimov", "Arthur C. Clarke", "Robert A. Heinlein"], answer: "Frank Herbert", fact: "'Duna' (1965) foi inspirado por pesquisas de Herbert sobre ecologia e desertos." },
+            { question: "Qual é a nacionalidade de Mo Yan?", options: ["Chinês", "Japonês", "Coreano", "Tailandês"], answer: "Chinês", fact: "Mo Yan, pseudônimo de Guan Moye, ganhou o Nobel de Literatura em 2012." },
+            { question: "Quem escreveu 'O Vermelho e o Negro'?", options: ["Stendhal", "Honoré de Balzac", "Gustave Flaubert", "Émile Zola"], answer: "Stendhal", fact: "'O Vermelho e o Negro' (1830) é baseado em um caso real de um jovem condenado por tentativa de assassinato." },
+            { question: "Qual obra é de autoria de Euclides da Cunha?", options: ["Os Sertões", "O Cortiço", "Senhora", "O Guarani"], answer: "Os Sertões", fact: "'Os Sertões' (1902) mistura jornalismo, história e literatura para narrar a Guerra de Canudos." },
+            { question: "Qual autor escreveu 'A Revolta de Atlas'?", options: ["Ayn Rand", "George Orwell", "Ray Bradbury", "Isaac Asimov"], answer: "Ayn Rand", fact: "'A Revolta de Atlas' (1957) é a obra mais extensa de Ayn Rand, com mais de mil páginas." },
+            { question: "Qual obra é um clássico da literatura africana moderna?", options: ["Coisas Desmoronam-se", "O Leão e o Rato", "O Velho e o Mar", "O Sol é Para Todos"], answer: "Coisas Desmoronam-se", fact: "'Coisas Desmoronam-se' (1958) de Chinua Achebe foi traduzido para mais de 50 idiomas." },
+            { question: "Quem escreveu 'Crepúsculo'?", options: ["Stephenie Meyer", "J.K. Rowling", "Suzanne Collins", "Cassandra Clare"], answer: "Stephenie Meyer", fact: "'Crepúsculo' (2005) foi inspirado por um sonho de Stephenie Meyer sobre um vampiro." },
+            { question: "Qual é o gênero de 'O Guia do Mochileiro das Galáxias'?", options: ["Ficção Científica", "Fantasia", "Comédia", "Mistério"], answer: "Ficção Científica", fact: "'O Guia do Mochileiro das Galáxias' (1979) começou como um programa de rádio na BBC." },
+            { question: "Quem é o autor de 'Memórias do Subsolo'?", options: ["Fyodor Dostoevsky", "Leo Tolstoy", "Anton Chekhov", "Nikolai Gogol"], answer: "Fyodor Dostoevsky", fact: "'Memórias do Subsolo' (1864) é considerado um precursor do existencialismo." },
+            { question: "Qual obra foi escrita por Agatha Christie?", options: ["Assassinato no Expresso do Oriente", "O Nome da Rosa", "O Código Da Vinci", "O Conde de Monte Cristo"], answer: "Assassinato no Expresso do Oriente", fact: "Agatha Christie escreveu 'Assassinato no Expresso do Oriente' (1934) inspirada por uma viagem real." },
+            { question: "Qual é a nacionalidade de Chimamanda Ngozi Adichie?", options: ["Nigeriana", "Ganesa", "Sul-africana", "Kenyana"], answer: "Nigeriana", fact: "Chimamanda Ngozi Adichie ganhou fama mundial com seu TED Talk 'We Should All Be Feminists'." },
+            { question: "Quem escreveu 'O Sol é Para Todos'?", options: ["Harper Lee", "Mark Twain", "John Steinbeck", "Ernest Hemingway"], answer: "Harper Lee", fact: "'O Sol é Para Todos' (1960) foi o único romance publicado por Harper Lee até 2015." },
+            { question: "Qual obra é um exemplo de poesia épica?", options: ["A Odisseia", "Cem Anos de Solidão", "Madame Bovary", "O Pequeno Príncipe"], answer: "A Odisseia", fact: "'A Odisseia' de Homero influenciou obras modernas como 'Ulysses' de James Joyce." },
+            { question: "Quem escreveu 'A Revolução dos Caracóis'?", options: ["Mia Couto", "Chinua Achebe", "Ngũgĩ wa Thiong'o", "Wole Soyinka"], answer: "Mia Couto", fact: "Mia Couto é conhecido por sua prosa poética, influenciada pela oralidade moçambicana." }
         ];
 
         let availableQuestions = [...questionsPool];
@@ -614,6 +626,7 @@
             const question = shuffleAndGetQuestion();
             if (!question) return;
             document.getElementById('question').textContent = question.question;
+            document.getElementById('fact').style.display = 'none';
             const optionsDiv = document.getElementById('options');
             optionsDiv.innerHTML = '';
             let shuffledOptions = shuffleArray([...question.options]);
@@ -632,13 +645,15 @@
         function checkAnswer(selected) {
             const options = document.querySelectorAll('.option');
             clearInterval(timerInterval);
-            options.forEach(option => option.disabled = true); // Desabilita os botões
-            document.getElementById('loading').style.display = 'block'; // Mostra feedback de carregamento
+            options.forEach(option => option.disabled = true);
+            document.getElementById('loading').style.display = 'block';
             if (selected === currentQuestion.answer) {
                 score += 10;
                 options.forEach(option => {
                     if (option.textContent === selected) option.classList.add('correct');
                 });
+                document.getElementById('fact').textContent = `Curiosidade: ${currentQuestion.fact}`;
+                document.getElementById('fact').style.display = 'block';
             } else {
                 options.forEach(option => {
                     if (option.textContent === selected) option.classList.add('wrong');
@@ -647,20 +662,22 @@
             }
             document.getElementById('score').textContent = `Pontuação: ${score}`;
             setTimeout(() => {
-                document.getElementById('loading').style.display = 'none'; // Esconde o feedback
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('fact').style.display = 'none';
                 options.forEach(option => {
                     option.classList.remove('correct', 'wrong');
-                    option.disabled = false; // Reabilita os botões
+                    option.disabled = false;
                 });
                 startTimer();
                 displayQuestion();
-            }, 1000);
+            }, 10000);
         }
 
         function endQuiz() {
             clearInterval(timerInterval);
             document.getElementById('timer').style.display = 'none';
             document.getElementById('question').style.display = 'none';
+            document.getElementById('fact').style.display = 'none';
             document.getElementById('options').style.display = 'none';
             document.getElementById('end-btn').style.display = 'none';
             document.getElementById('score').textContent = `Pontuação Final: ${score}`;
@@ -675,7 +692,6 @@
             }
 
             let leaderboard = JSON.parse(localStorage.getItem('leaderboard')) || [];
-            // Remove qualquer entrada anterior com o mesmo nome
             leaderboard = leaderboard.filter(entry => entry.name !== name);
             leaderboard.push({ name, score });
             leaderboard.sort((a, b) => b.score - a.score);

@@ -7,9 +7,34 @@
     <title>Despertar Literário</title>
     <link rel="manifest" href="/manifest.json">
     <link rel="apple-touch-icon" href="/icon-192.png">
-    <!-- Font Awesome para ícone do GitHub -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+    <script>
+      window.OneSignalDeferred = window.OneSignalDeferred || [];
+      OneSignalDeferred.push(async function(OneSignal) {
+        await OneSignal.init({
+          appId: "4b8ac219-e93b-4b72-be09-969169fcfc74", // SEU APP ID DO ONESIGNAL
+          // Você pode adicionar outras configurações aqui conforme o OneSignal recomendar
+          // Por exemplo, para um "prompt suave":
+          // welcomeNotification: {
+          //     disableForUserIds: ['YOUR_OPTIONAL_USER_ID'],
+          //     title: "Bem-vindo ao Despertar Literário!",
+          //     message: "Fique por dentro das novidades e novos poemas!",
+          // },
+          // prompts: {
+          //     slidedown: {
+          //         enabled: true,
+          //         autoPrompt: true,
+          //         timeDelay: 5, // Atraso em segundos
+          //         // outras opções...
+          //     },
+          // },
+        });
+      });
+    </script>
     <style>
+        /* ... (Todo o seu CSS existente) ... */
         * {
             margin: 0;
             padding: 0;
@@ -525,6 +550,7 @@
                 <div class="magic-particles" id="particles3"></div>
             </div>
             <button id="install-button" class="btn" style="display: none;">Instalar App</button>
+            <button id="activate-notifications-button" class="btn">Ativar Notificações</button>
         </div>
     </div>
     <div class="footer">
@@ -706,6 +732,25 @@
                     }
                 });
             }
+        }
+
+        // NOVO: Lógica para o botão de ativar notificações
+        const activateNotificationsButton = document.getElementById('activate-notifications-button');
+        if (activateNotificationsButton) {
+            activateNotificationsButton.addEventListener('click', () => {
+                console.log('Botão de ativar notificações clicado.');
+                // O OneSignal automaticamente mostra o prompt se o usuário não aceitou
+                // Ou gerencia a inscrição se já aceitou
+                window.OneSignal.getUserId(function(userId) { // Acessa OneSignal via window.OneSignal
+                    console.log("OneSignal User ID:", userId);
+                    if (userId) {
+                        alert("Notificações ativadas! Seu ID de usuário OneSignal é: " + userId);
+                        // Você pode enviar este userId para o seu backend para armazenar e enviar notificações personalizadas
+                    } else {
+                        alert("Não foi possível obter o ID de usuário OneSignal. Verifique as permissões.");
+                    }
+                });
+            });
         }
     </script>
 </body>

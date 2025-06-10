@@ -15,20 +15,18 @@
       OneSignalDeferred.push(async function(OneSignal) {
         await OneSignal.init({
           appId: "4b8ac219-e93b-4b72-be09-969169fcfc74", // SEU APP ID DO ONESIGNAL
-          // Você pode adicionar outras configurações aqui conforme o OneSignal recomendar
-          // Por exemplo, para um "prompt suave":
-          // welcomeNotification: {
-          //     disableForUserIds: ['YOUR_OPTIONAL_USER_ID'],
-          //     title: "Bem-vindo ao Despertar Literário!",
-          //     message: "Fique por dentro das novidades e novos poemas!",
-          // },
+          notifyButton: { // ESSA É A CONFIGURAÇÃO DO SINO
+            enable: true, // Garante que o sino está ativado
+            // Você pode personalizar aqui o sino se quiser (ex: icon, text)
+          },
+          // Se você não quer prompts adicionais (como slidedown), remova ou deixe comentados.
+          // O sino já pedirá permissão por si só.
           // prompts: {
-          //     slidedown: {
-          //         enabled: true,
-          //         autoPrompt: true,
-          //         timeDelay: 5, // Atraso em segundos
-          //         // outras opções...
-          //     },
+          //   slidedown: {
+          //     enabled: true,
+          //     autoPrompt: true, // Mostra automaticamente
+          //     timeDelay: 5, // Atraso em segundos
+          //   },
           // },
         });
       });
@@ -734,24 +732,21 @@
             }
         }
 
-        // NOVO: Lógica para o botão de ativar notificações
-        const activateNotificationsButton = document.getElementById('activate-notifications-button');
-        if (activateNotificationsButton) {
-            activateNotificationsButton.addEventListener('click', () => {
-                console.log('Botão de ativar notificações clicado.');
-                // O OneSignal automaticamente mostra o prompt se o usuário não aceitou
-                // Ou gerencia a inscrição se já aceitou
-                window.OneSignal.getUserId(function(userId) { // Acessa OneSignal via window.OneSignal
-                    console.log("OneSignal User ID:", userId);
-                    if (userId) {
-                        alert("Notificações ativadas! Seu ID de usuário OneSignal é: " + userId);
-                        // Você pode enviar este userId para o seu backend para armazenar e enviar notificações personalizadas
-                    } else {
-                        alert("Não foi possível obter o ID de usuário OneSignal. Verifique as permissões.");
-                    }
-                });
-            });
-        }
+        // NOVO: Lógica para o botão de ativar notificações (REMOVIDO)
+        // const activateNotificationsButton = document.getElementById('activate-notifications-button');
+        // if (activateNotificationsButton) {
+        //     activateNotificationsButton.addEventListener('click', () => {
+        //         console.log('Botão de ativar notificações clicado.');
+        //         window.OneSignal.getUserId(function(userId) { 
+        //             console.log("OneSignal User ID:", userId);
+        //             if (userId) {
+        //                 alert("Notificações ativadas! Seu ID de usuário OneSignal é: " + userId);
+        //             } else {
+        //                 alert("Não foi possível obter o ID de usuário OneSignal. Verifique as permissões.");
+        //             }
+        //         });
+        //     });
+        // }
     </script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 
-importScripts('https://cdn.onesignal.com/sdks/web/v16/OneSignalSDKWorker.js'); 
+importScripts('https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.js'); 
 
 // --- CACHING EXISTENTE ---
 const CACHE_NAME = 'despertar-literario-v1.0.7'; // Atualizei o nome para forçar um novo cache e registro do SW

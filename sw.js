@@ -1,4 +1,11 @@
-const CACHE_NAME = 'despertar-literario-v1.0.4'; // Novo nome para forçar atualização
+// service-worker.js (Este deve ser o nome do seu arquivo agora)
+
+// --- NOVO: Importa o SDK do OneSignal Worker ---
+// Esta linha DEVE vir no topo, antes de qualquer outro código seu.
+importScripts('https://cdn.onesignal.com/sdks/web/v16/OneSignalSDKWorker.js'); 
+
+// --- SEU CÓDIGO DE CACHING EXISTENTE ---
+const CACHE_NAME = 'despertar-literario-v1.0.7'; // Atualizei o nome para forçar um novo cache e registro do SW
 const urlsToCache = [
     '/',
     '/index.html',
@@ -47,3 +54,4 @@ self.addEventListener('fetch', event => {
         })
     );
 });
+

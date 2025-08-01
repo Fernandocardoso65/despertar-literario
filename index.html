@@ -650,31 +650,7 @@
         document.querySelectorAll('.btn-container')[1].addEventListener('mouseover', () => handleMouseOver('particles2'));
         document.querySelectorAll('.btn-container')[2].addEventListener('mouseover', () => handleMouseOver('particles3'));
 
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function() {
-                navigator.serviceWorker.register('/sw.js')
-                    .then(function(registration) {
-                        console.log('Service Worker registrado com sucesso:', registration);
-                        // Detectar atualização do Service Worker
-                        registration.addEventListener('updatefound', () => {
-                            const newWorker = registration.installing;
-                            newWorker.addEventListener('statechange', () => {
-                                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                    // Novo Service Worker está pronto, recarregar a página
-                                    window.location.reload();
-                                }
-                            });
-                        });
-                    })
-                    .catch(function(error) {
-                        console.log('Falha ao registrar o Service Worker:', error);
-                        alert('Erro ao registrar o Service Worker. Verifique se o arquivo /sw.js existe no servidor.');
-                    });
-            });
-        }
-
-        if ('serviceWorker' in navigator && 'BeforeInstallPromptEvent' in window) {
-            let deferredPrompt;
+    
 
             window.addEventListener('beforeinstallprompt', (e) => {
                 e.preventDefault();
@@ -710,4 +686,3 @@
     </script>
 </body>
 </html>
-
